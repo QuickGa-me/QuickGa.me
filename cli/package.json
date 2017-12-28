@@ -1,0 +1,14 @@
+{
+  "name": "quickgame-cli",
+  "version": "1.0.0",
+  "author": "Salvatore <dested@gmail.com>",
+  "private": true,
+  "bin": {
+    "qg": "./bin/quickgame.js"
+  },
+  "scripts": {},
+  "dependencies": {
+    "webpack": "^3.10.0"
+  },
+  "devDependencies": {}
+}
