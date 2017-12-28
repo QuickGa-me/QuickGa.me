@@ -6,6 +6,7 @@
     "removeComments": false,
     "allowUnreachableCode": true,
     "allowJs": true,
+    "noEmit": true,
     "strict": true,
     "moduleResolution": "node",
     "target": "es2015",
@@ -19,7 +20,7 @@
     "baseUrl": "./",
     "jsx": "react",
     "paths": {
-      "@common/*": [
+      "@framework-common/*": [
         "../common/*"
       ]
     }

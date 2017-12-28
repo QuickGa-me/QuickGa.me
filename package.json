@@ -1,0 +1,13 @@
+{
+  "name": "quickgame",
+  "version": "1.0.0",
+  "author": "Salvatore <dested@gmail.com>",
+  "private": true,
+  "scripts": {
+    "tsc": "cd framework/client & tsc & cd ../server & tsc & cd ../../games/sudoku/client & tsc & cd ../server & tsc & cd ../../site/client & tsc & cd ../server & tsc "
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

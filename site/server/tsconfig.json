@@ -9,6 +9,7 @@
     "strict": true,
     "noImplicitAny": false,
     "allowJs": true,
+    "noEmit": true,
     "outDir": "./bin",
     "baseUrl": "./",
     "paths": {
