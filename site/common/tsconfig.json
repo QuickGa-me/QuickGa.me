@@ -7,7 +7,6 @@
     "removeComments": false,
     "allowUnreachableCode": true,
     "allowJs": true,
-    "strict": true,
     "noEmit": true,
     "moduleResolution": "node",
     "target": "es2015",
@@ -21,15 +20,7 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "jsx": "react",
-    "paths": {
-      "@common/*": [
-        "../common/*"
-      ]
-    }
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
     "node_modules"
   ]

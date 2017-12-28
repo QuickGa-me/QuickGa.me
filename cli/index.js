@@ -66,7 +66,7 @@ async function run(args) {
             }).on("error", (err) => {
                 console.log("Error: " + err.message);
             });
-            req.write(JSON.stringify({clientSource: clientBundle, serverSource: serverBundle, gameConfig: JSON.stringify(gameConfig)}));
+            req.write(JSON.stringify({clientSource: clientBundle, serverSource: serverBundle, gameConfig: gameConfig}));
             req.end();
         }
     }

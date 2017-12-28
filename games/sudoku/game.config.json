@@ -1,3 +1,5 @@
 {
-  "gameId": "5a44b5146d6c782f58b7e256"
+  "gameId": "5a44b5146d6c782f58b7e256",
+  "hasLobby": true,
+  "adRunInterval": "EveryGame"
 }
