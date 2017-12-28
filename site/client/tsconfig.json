@@ -1,0 +1,34 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "removeComments": false,
+    "allowUnreachableCode": true,
+    "allowJs": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "es2015",
+      "esnext.asynciterable"
+    ],
+    "outDir": "./dist/",
+    "inlineSourceMap": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "jsx": "react",
+    "paths": {
+      "@common/*": [
+        "../common/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

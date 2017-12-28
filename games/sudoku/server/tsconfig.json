@@ -1,0 +1,24 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "removeComments": false,
+    "strict": true,
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "es2015",
+      "esnext.asynciterable"
+    ],
+    "inlineSourceMap": true,
+    "outDir": "dist/",
+    "baseUrl": "./",
+    "paths": {
+      "@common/*": ["../common/*"]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
