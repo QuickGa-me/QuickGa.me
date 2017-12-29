@@ -4,7 +4,7 @@ import {RouteComponentProps} from 'react-router';
 import {GameDataService} from '../services/dataServices';
 import {LobbyNetworkService} from '../services/lobbyNetworkService';
 import {ClientLobbyMessage, ClientLobbyUpdateMessage} from '@common/lobby/lobbyMessage';
-import {GameModel} from "@common/models/game/gameModel";
+import {GameModel} from '@common/models/game/gameModel';
 
 interface LobbyProps extends RouteComponentProps<{gameId: string}> {}
 

@@ -20,11 +20,10 @@ export class DataManager {
     }
 }
 
-type Query<T> = {[key in keyof T]?:T[key]} ;
+type Query<T> = {[key in keyof T]?: T[key]};
 
 export class DocumentManager<T extends MongoDocument> {
-    constructor(private collectionName: string) {
-    }
+    constructor(private collectionName: string) {}
 
     public async insertDocument(document: T): Promise<T> {
         let result = await DataManager.dbConnection.collection(this.collectionName).insertOne(document);
@@ -36,7 +35,6 @@ export class DocumentManager<T extends MongoDocument> {
         DataManager.dbConnection.collection(this.collectionName).findOneAndUpdate({_id: document._id}, document);
         return document;
     }
-
 
     public async getOne(query: Query<T> = {}): Promise<T> {
         return await DataManager.dbConnection.collection(this.collectionName).findOne(query);
@@ -55,19 +53,18 @@ export class DocumentManager<T extends MongoDocument> {
     }
 }
 
-
 interface Name {
-    Fred,
-    Vilma
+    Fred;
+    Vilma;
 }
 
 type Names = keyof Name; // type Names = "Fred" | "Vilma";
 type Data = {};
 
-const data: { [name in Names]: Data } = {
+const data: {[name in Names]: Data} = {
     Fred: {},
-    Vilma: {},
-}
+    Vilma: {}
+};
 
 function getData(name: Names) {
     return data[name]; // error here

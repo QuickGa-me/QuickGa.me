@@ -1,12 +1,11 @@
 import {ClientLobbyMessage, ServerLobbyMessage} from '@common/lobby/lobbyMessage';
-import {Config} from "../config";
-import {StorageService} from "./storageService";
+import {Config} from '../config';
+import {StorageService} from './storageService';
 
 export class LobbyNetworkService {
     private socket: WebSocket;
 
-    constructor() {
-    }
+    constructor() {}
 
     connect(onJoin: () => void, onMessage: (message: ClientLobbyMessage) => void) {
         this.socket = new WebSocket(Config.websocketUrl(StorageService.jwt));

@@ -1,4 +1,4 @@
-import {UserModel} from "../models/user/userModel";
+import {UserModel} from '../models/user/userModel';
 
 export type ClientLobbyMessage =
     | {

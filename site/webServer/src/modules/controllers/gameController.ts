@@ -8,13 +8,11 @@ import {
     UpdateGameRequest
 } from '@common/models/http/gameController';
 import {DBGame} from '@serverCommon/db/models/dbGame';
-import {AuthService} from "../auth/auth.service";
+import {AuthService} from '../auth/auth.service';
 
 @Controller('games')
 export class GameController {
-    constructor(private readonly authService: AuthService) {
-
-    }
+    constructor(private readonly authService: AuthService) {}
 
     @Get()
     async getAllGames(): Promise<SuccessResponse<GetAllGamesResponse>> {

@@ -1,4 +1,4 @@
-import {UserModel} from "../user/userModel";
+import {UserModel} from '../user/userModel';
 
 export interface SignInRequest {
     username: string;
@@ -9,7 +9,6 @@ export interface VerifyUserRequest {
     username: string;
 }
 
-
 export interface UserResponse {
     user: UserModel;
 }
@@ -17,4 +16,3 @@ export interface UserResponse {
 export interface JwtUserResponse extends UserResponse {
     jwt: string;
 }
-

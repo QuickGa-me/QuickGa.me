@@ -2,12 +2,11 @@ import * as React from 'react';
 import {Route, Link} from 'react-router-dom';
 import {RouteComponentProps} from 'react-router';
 import {GameDataService, UserDataService} from '../services/dataServices';
-import {GameModel} from "@common/models/game/gameModel";
-import {StorageService} from "../services/storageService";
-import {UserModel} from "@common/models/user/userModel";
+import {GameModel} from '@common/models/game/gameModel';
+import {StorageService} from '../services/storageService';
+import {UserModel} from '@common/models/user/userModel';
 
-interface HomeProps extends RouteComponentProps<{}> {
-}
+interface HomeProps extends RouteComponentProps<{}> {}
 
 interface HomeState {
     games: GameModel[];
@@ -24,7 +23,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
             user: null
         };
     }
-
 
     async componentWillMount() {
         if (StorageService.jwt) {
@@ -54,17 +52,19 @@ export class Home extends React.Component<HomeProps, HomeState> {
     render() {
         return (
             <>
-            <h1>Quick Game</h1>
-            <h1 style={{position: 'absolute', right: 10, top: 10}}>{this.state.user && this.state.user.username}</h1>
-            {this.state.loadingGames ? (
-                <span>Loading...</span>
-            ) : (
-                this.state.games.map(game => (
-                    <div key={game.gameId}>
-                        {game.gameId} - {game.gameName} <Link to={this.getGamePath(game)}>Play</Link>
-                    </div>
-                ))
-            )}
+                <h1>Quick Game</h1>
+                <h1 style={{position: 'absolute', right: 10, top: 10}}>
+                    {this.state.user && this.state.user.username}
+                </h1>
+                {this.state.loadingGames ? (
+                    <span>Loading...</span>
+                ) : (
+                    this.state.games.map(game => (
+                        <div key={game.gameId}>
+                            {game.gameId} - {game.gameName} <Link to={this.getGamePath(game)}>Play</Link>
+                        </div>
+                    ))
+                )}
             </>
         );
     }

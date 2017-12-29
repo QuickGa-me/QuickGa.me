@@ -1,4 +1,4 @@
-import {GameConfig} from "./gameConfig";
+import {GameConfig} from './gameConfig';
 
 export interface GameModel {
     gameName: string;

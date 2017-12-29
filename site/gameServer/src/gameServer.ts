@@ -14,14 +14,9 @@ export class GameServer {
                     console.error(ex);
                 }
             });
-            ws.on('error', async () => {
+            ws.on('error', async () => {});
 
-            });
-
-            ws.on('close', async () => {
-
-            });
+            ws.on('close', async () => {});
         });
     }
-
 }

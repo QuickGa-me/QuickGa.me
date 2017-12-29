@@ -1,6 +1,5 @@
 import {GameConfig} from '../game/gameConfig';
-import {GameModel} from "../game/gameModel";
-
+import {GameModel} from '../game/gameModel';
 
 export interface GetAllGamesResponse {
     games: GameModel[];

@@ -4,12 +4,12 @@ import {Server} from 'ws';
 import {DBGame} from '@serverCommon/db/models/dbGame';
 import {GameConfig} from '@common/models/game/gameConfig';
 import {ClientLobbyMessage, ServerLobbyMessage} from '@common/lobby/lobbyMessage';
-import {Config} from "@serverCommon/config";
-import {UserModel} from "@common/models/user/userModel";
+import {Config} from '@serverCommon/config';
+import {UserModel} from '@common/models/user/userModel';
 
 export interface UserSocket {
     user: UserModel;
-    socket: { send: (data: any) => void };
+    socket: {send: (data: any) => void};
 }
 
 export interface LobbyGame {
@@ -23,7 +23,7 @@ export interface LobbyGame {
 
 export class LobbyServer {
     users: UserSocket[] = [];
-    games: { [gameId: string]: LobbyGame } = {};
+    games: {[gameId: string]: LobbyGame} = {};
 
     constructor(port: number) {
         const wss = new Server({port: port});
@@ -31,7 +31,7 @@ export class LobbyServer {
         //todo load balance lobby
 
         wss.on('connection', (ws, req) => {
-            let jwt = req.url!.replace("/?jwt=", "");
+            let jwt = req.url!.replace('/?jwt=', '');
             let userModel = this.verifyUser(jwt, ws);
             if (!userModel) return;
 
@@ -177,8 +177,7 @@ export class LobbyServer {
         for (let user of game.users) {
             try {
                 user.socket.send(JSON.stringify(message));
-            } catch (ex) {
-            }
+            } catch (ex) {}
         }
     }
 

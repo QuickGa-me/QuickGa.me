@@ -1,7 +1,7 @@
-import {CanActivate, ExecutionContext, Guard, HttpStatus} from "@nestjs/common";
-import {Observable} from "rxjs/Observable";
-import * as passport from "passport";
-import {HttpException} from "@nestjs/core";
+import {CanActivate, ExecutionContext, Guard, HttpStatus} from '@nestjs/common';
+import {Observable} from 'rxjs/Observable';
+import * as passport from 'passport';
+import {HttpException} from '@nestjs/core';
 
 @Guard()
 export class AuthGuard implements CanActivate {
