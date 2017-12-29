@@ -1,14 +1,18 @@
-import {Body, Controller, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import {SuccessResponse} from '@common/models/http/successResponse';
 import {
     CreateGameRequest,
     CreateGameResponse,
     GetAllGamesResponse,
     GetGameResponse,
+    GetLiveGameResponse,
     UpdateGameRequest
 } from '@common/models/http/gameController';
 import {DBGame} from '@serverCommon/db/models/dbGame';
 import {AuthService} from '../auth/auth.service';
+import {DBLiveGame} from '@serverCommon/db/models/dbLiveGame';
+import {AuthGuard} from '../guards/authGuard';
+import {UserModel} from '@common/models/user/userModel';
 
 @Controller('games')
 export class GameController {
@@ -36,6 +40,44 @@ export class GameController {
                 gameName: dbGame.gameName,
                 gameId: dbGame._id.toHexString(),
                 gameConfig: dbGame.gameConfig!
+            }
+        });
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/live/:liveGameId')
+    async getLiveGame(
+        @Param('liveGameId') liveGameId: string,
+        @Req() req: {user: UserModel}
+    ): Promise<SuccessResponse<GetLiveGameResponse>> {
+        debugger;
+        console.log(liveGameId);
+        let dbLiveGame = await DBLiveGame.db.getById(liveGameId);
+        if (!dbLiveGame) {
+            return SuccessResponse.fail();
+        }
+        let dbGame = await DBGame.db.getById(dbLiveGame.gameId);
+        if (!dbGame) {
+            return SuccessResponse.fail();
+        }
+
+        let found = false;
+        for (let user of dbLiveGame.users) {
+            if (user.id === req.user.id) {
+                found = true;
+            }
+        }
+        if (!found) {
+            return SuccessResponse.fail();
+        }
+
+        return SuccessResponse.success({
+            liveGame: {
+                gameName: dbGame.gameName,
+                gameId: dbGame._id.toHexString(),
+                gameConfig: dbGame.gameConfig!,
+                clientSource: dbGame.clientSource!,
+                gameServerAddress: dbLiveGame.gameServerAddress
             }
         });
     }

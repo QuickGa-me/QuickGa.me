@@ -4,15 +4,15 @@ import {RouteComponentProps} from 'react-router';
 import {GameDataService} from '../services/dataServices';
 import {GameModel} from '@common/models/game/gameModel';
 
-interface GameProps extends RouteComponentProps<{gameId: string}> {}
+interface Props extends RouteComponentProps<{gameId: string}> {}
 
-interface GameState {
+interface State {
     game: GameModel | null;
     loadingGame: boolean;
 }
 
-export class Game extends React.Component<GameProps, GameState> {
-    constructor(props: GameProps, context: any) {
+export class Game extends React.Component<Props, State> {
+    constructor(props: Props, context: any) {
         super(props, context);
         this.state = {
             game: null,

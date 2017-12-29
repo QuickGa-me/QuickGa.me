@@ -3,6 +3,8 @@ import {UserModel} from '../models/user/userModel';
 export type ClientLobbyMessage =
     | {
           type: 'game-ready';
+          liveGameId: string;
+          gameServerAddress: string;
       }
     | {
           type: 'lobby-update';

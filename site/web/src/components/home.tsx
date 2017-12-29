@@ -6,16 +6,16 @@ import {GameModel} from '@common/models/game/gameModel';
 import {StorageService} from '../services/storageService';
 import {UserModel} from '@common/models/user/userModel';
 
-interface HomeProps extends RouteComponentProps<{}> {}
+interface Props extends RouteComponentProps<{}> {}
 
-interface HomeState {
+interface State {
     games: GameModel[];
     loadingGames: boolean;
     user: UserModel | null;
 }
 
-export class Home extends React.Component<HomeProps, HomeState> {
-    constructor(props: HomeProps, context: any) {
+export class Home extends React.Component<Props, State> {
+    constructor(props: Props, context: any) {
         super(props, context);
         this.state = {
             games: [],

@@ -3,12 +3,14 @@ import {render} from 'react-dom';
 import {BrowserRouter as Router, Route, Link, HashRouter} from 'react-router-dom';
 import {Home} from './components/home';
 import {Game} from './components/game';
+import {LiveGame} from './components/liveGame';
 import {Lobby} from './components/lobby';
 
 const Wrapper = () => (
     <HashRouter>
         <>
             <Route exact path="/" component={Home} />
+            <Route path="/live-game/:liveGameId" component={LiveGame} />
             <Route path="/game/:gameId" component={Game} />
             <Route path="/lobby/:gameId" component={Lobby} />
         </>

@@ -1,18 +1,23 @@
-import * as jsonwebtoken from 'jsonwebtoken';
-
 import {Server} from 'ws';
 import {DBGame} from '@serverCommon/db/models/dbGame';
 import {GameConfig} from '@common/models/game/gameConfig';
 import {ClientLobbyMessage, ServerLobbyMessage} from '@common/lobby/lobbyMessage';
 import {Config} from '@serverCommon/config';
 import {UserModel} from '@common/models/user/userModel';
+import {DBLiveGame} from '@serverCommon/db/models/dbLiveGame';
+import {ObjectID} from 'bson';
+import {PubSub} from '@serverCommon/pubSub';
+import {NewGameRequest, NewGameResponse} from '@serverCommon/models/redis/newGameModel';
+import {UserUtils} from '@serverCommon/models/utils/userUtils';
+import {Utils} from '@common/utils';
 
-export interface UserSocket {
+interface UserSocket {
     user: UserModel;
     socket: {send: (data: any) => void};
 }
 
 export interface LobbyGame {
+    started: boolean;
     startTimerFinish: number;
     startTimer: number;
     gameId: string;
@@ -27,18 +32,20 @@ export class LobbyServer {
 
     constructor(port: number) {
         const wss = new Server({port: port});
-
         //todo load balance lobby
 
         wss.on('connection', (ws, req) => {
             let jwt = req.url!.replace('/?jwt=', '');
-            let userModel = LobbyServer.verifyUser(jwt, ws);
+            let userModel = UserUtils.verifyUser(jwt, () => {
+                ws.send('401');
+                ws.close();
+            });
+
             if (!userModel) return;
 
             ws.binaryType = 'arraybuffer';
             const user = {
                 user: userModel,
-                currentGameId: null,
                 socket: ws
             } as UserSocket;
 
@@ -58,28 +65,6 @@ export class LobbyServer {
                 await this.userLeft(user);
             });
         });
-    }
-
-    private static verifyUser(jwt: string, ws: any): UserModel | null {
-        if (!jwt) {
-            ws.send('401');
-            ws.close();
-            return null;
-        }
-        let userModel: UserModel;
-        try {
-            userModel = jsonwebtoken.verify(jwt, Config.jwtKey) as UserModel;
-            if (!userModel) {
-                ws.send('401');
-                ws.close();
-                return null;
-            }
-        } catch (ex) {
-            ws.send('401');
-            ws.close();
-            return null;
-        }
-        return userModel;
     }
 
     private async userLeft(user: UserSocket) {
@@ -126,7 +111,8 @@ export class LobbyServer {
                 config: game.gameConfig!,
                 users: [],
                 startTimer: -1,
-                startTimerFinish: -1
+                startTimerFinish: -1,
+                started: false
             };
         } else {
             throw 'Game Not Found ' + gameId;
@@ -135,6 +121,7 @@ export class LobbyServer {
 
     private async processGameLogic(game: LobbyGame) {
         let config = game.config;
+        if (game.started) return;
 
         if (game.users.length === 0) {
             delete this.games[game.gameId];
@@ -145,7 +132,7 @@ export class LobbyServer {
             if (game.startTimer !== -1) {
                 clearTimeout(game.startTimer);
             }
-            await this.startGame(game);
+            this.startGame(game);
         } else if (game.users.length < config.lobbyRules.minPlayers) {
             if (game.startTimer !== -1) {
                 clearTimeout(game.startTimer);
@@ -158,7 +145,7 @@ export class LobbyServer {
             }
             game.startTimerFinish = +new Date() + config.lobbyRules.waitSecondsForPlayers * 1000;
             game.startTimer = <number>(<any>setTimeout(async () => {
-                await this.startGame(game);
+                this.startGame(game);
             }, config.lobbyRules.waitSecondsForPlayers * 1000));
         }
 
@@ -182,9 +169,23 @@ export class LobbyServer {
     }
 
     private async startGame(game: LobbyGame) {
-        //todo find game server
-        await this.sendGameMessage(game, {
-            type: 'game-ready'
+        game.started = true;
+        let liveGame = new DBLiveGame();
+        liveGame.gameId = game.gameId;
+        liveGame.users = game.users.map(a => a.user);
+        liveGame = await DBLiveGame.db.insertDocument(liveGame);
+
+        let newGameResponse = await PubSub.pushAndWait<NewGameRequest, NewGameResponse>('new-game', {
+            messageId: Utils.guid(),
+            liveGameId: liveGame._id.toHexString(),
+            lobbyId: PubSub.id
         });
+
+        await this.sendGameMessage(game, {
+            type: 'game-ready',
+            liveGameId: liveGame._id.toHexString(),
+            gameServerAddress: newGameResponse.gameServerAddress
+        });
+        delete this.games[game.gameId];
     }
 }

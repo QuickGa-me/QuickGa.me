@@ -6,9 +6,9 @@ import {LobbyNetworkService} from '../services/lobbyNetworkService';
 import {ClientLobbyMessage, ClientLobbyUpdateMessage} from '@common/lobby/lobbyMessage';
 import {GameModel} from '@common/models/game/gameModel';
 
-interface LobbyProps extends RouteComponentProps<{gameId: string}> {}
+interface Props extends RouteComponentProps<{gameId: string}> {}
 
-interface LobbyState {
+interface State {
     game: GameModel | null;
     lobby: ClientLobbyUpdateMessage | null;
     loadingGame: boolean;
@@ -16,11 +16,11 @@ interface LobbyState {
     countdownTimer: number;
 }
 
-export class Lobby extends React.Component<LobbyProps, LobbyState> {
+export class Lobby extends React.Component<Props, State> {
     waitTick: number;
     private lobbyNetwork: LobbyNetworkService;
 
-    constructor(props: LobbyProps, context: any) {
+    constructor(props: Props, context: any) {
         super(props, context);
         this.state = {
             game: null,
@@ -92,6 +92,8 @@ export class Lobby extends React.Component<LobbyProps, LobbyState> {
                 break;
             }
             case 'game-ready': {
+                this.lobbyNetwork.disconnect();
+                this.props.history.push(`/live-game/${message.liveGameId}`);
                 break;
             }
         }

@@ -1,4 +1,4 @@
-import {GetAllGamesResponse, GetGameResponse} from '@common/models/http/gameController';
+import {GetAllGamesResponse, GetGameResponse, GetLiveGameResponse} from '@common/models/http/gameController';
 import {StorageService} from './storageService';
 import {SuccessResponse} from '@common/models/http/successResponse';
 import {Config} from '../config';
@@ -82,6 +82,12 @@ export class GameDataService extends DataService {
         return await this.fetch<SuccessResponse<GetGameResponse>>({
             method: 'GET',
             url: `${this.apiUrl}/games/${gameId}`
+        });
+    }
+    static async getLiveGameData(liveGameId: string) {
+        return await this.fetch<SuccessResponse<GetLiveGameResponse>>({
+            method: 'GET',
+            url: `${this.apiUrl}/games/live/${liveGameId}`
         });
     }
 }
