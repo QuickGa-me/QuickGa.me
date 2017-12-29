@@ -1,13 +1,14 @@
 import {ClientLobbyMessage, ServerLobbyMessage} from '@common/lobby/lobbyMessage';
+import {Config} from "../config";
 
 export class LobbyNetworkService {
     private socket: WebSocket;
 
-    constructor() {}
+    constructor() {
+    }
 
     connect(onJoin: () => void, onMessage: (message: ClientLobbyMessage) => void) {
-        this.socket = new WebSocket('ws://localhost:7898');
-        // this. socket = new WebSocket('ws://ec2-34-211-236-203.us-west-2.compute.amazonaws.com:7898');
+        this.socket = new WebSocket(Config.websocketUrl);
         this.socket.binaryType = 'arraybuffer';
         this.socket.onopen = () => {
             onJoin();

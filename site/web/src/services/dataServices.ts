@@ -1,9 +1,10 @@
 import {GetAllGamesResponse, GetGameResponse} from '@common/models/http/gameController';
 import {StorageService} from './storageService';
 import {SuccessResponse} from '@common/models/http/successResponse';
+import {Config} from "../config";
 
 export class DataService {
-    static apiUrl = 'http://localhost:3000';
+    static apiUrl = Config.apiUrl;
 
     static async fetch<T>(options: {method: string; data?: any; params?: any; url: string}): Promise<T> {
         let body;

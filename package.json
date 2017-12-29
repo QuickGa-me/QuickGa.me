@@ -4,13 +4,17 @@
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
   "scripts": {
-    "tsc": "cd framework/client & tsc & cd ../server & tsc & cd ../../games/sudoku/client & tsc & cd ../server & tsc & cd ../../../site/client & tsc & cd ../webServer & tsc & cd ../lobbyServer & tsc ",
+    "tsc": "cd framework/client & tsc & cd ../server & tsc & cd ../../games/sudoku/client & tsc & cd ../server & tsc & cd ../../../site/web & tsc & cd ../webServer & tsc & cd ../lobbyServer & tsc ",
     "pretty": "prettier \"*/**/*.ts*\"  --config .prettierrc --write",
-    "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/client & npm install & cd ../webServer & npm install & cd ../lobbyServer & npm install ",
+    "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/web & npm install & cd ../webServer & npm install & cd ../lobbyServer & npm install ",
 
-    "deploy:site": "cd site/client & npm run deploy",
+    "deploy:web": "cd site/web & npm run deploy",
     "deploy:webserver": "cd site/webServer & npm run deploy",
-    "deploy:lobby": "cd site/lobbyServer & npm run deploy"
+    "deploy:lobby": "cd site/lobbyServer & npm run deploy",
+
+    "run:web": "cd site/web & npm run dev",
+    "run:webserver": "cd site/webServer & npm run dev",
+    "run:lobby": "cd site/lobbyServer & npm run dev"
   },
   "dependencies": {
   },
