@@ -31,7 +31,7 @@ export class DBUser extends MongoDocument {
     }
 }
 
-export class UserUtils {
+class UserUtils {
     /*
 (c) by Thomas Konings
 Random Name Generator for Javascript
