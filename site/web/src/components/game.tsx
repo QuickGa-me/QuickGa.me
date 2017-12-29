@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Route, Link} from 'react-router-dom';
 import {RouteComponentProps} from 'react-router';
-import {GameModel} from '@common/models/http/gameController';
 import {GameDataService} from '../services/dataServices';
+import {GameModel} from "@common/models/game/gameModel";
 
 interface GameProps extends RouteComponentProps<{gameId: string}> {}
 

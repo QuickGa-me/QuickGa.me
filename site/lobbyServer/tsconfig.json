@@ -4,7 +4,6 @@
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
     "inlineSourceMap": true,
     "strict": true,
     "noImplicitAny": false,
@@ -12,6 +11,12 @@
     "noEmit": true,
     "outDir": "./bin",
     "baseUrl": "./",
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "es2015",
+      "esnext.asynciterable"
+    ],
     "paths": {
       "@common/*": [
         "../common/*"

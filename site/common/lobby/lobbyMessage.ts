@@ -1,3 +1,5 @@
+import {UserModel} from "../models/user/userModel";
+
 export type ClientLobbyMessage =
     | {
           type: 'game-ready';
@@ -9,7 +11,7 @@ export type ClientLobbyMessage =
 export type ClientLobbyUpdateMessage = {
     gameName: string;
     startCountdown: number;
-    players: {playerId: string; avatar: string; name: string; color: string}[];
+    users: UserModel[];
 };
 
 export type ServerLobbyMessage = {

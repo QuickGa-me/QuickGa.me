@@ -1,16 +1,15 @@
+import * as jsonwebtoken from 'jsonwebtoken';
+
 import {Server} from 'ws';
-import {DBGame} from '@serverCommon/db/models/game';
+import {DBGame} from '@serverCommon/db/models/dbGame';
 import {GameConfig} from '@common/models/game/gameConfig';
 import {ClientLobbyMessage, ServerLobbyMessage} from '@common/lobby/lobbyMessage';
+import {Config} from "@serverCommon/config";
+import {UserModel} from "@common/models/user/userModel";
 
-export interface PlayerSocket {
-    player: {
-        playerId: string;
-        avatar: string;
-        name: string;
-        color: string;
-    } | null;
-    socket: {send: (data: any) => void};
+export interface UserSocket {
+    user: UserModel;
+    socket: { send: (data: any) => void };
 }
 
 export interface LobbyGame {
@@ -19,12 +18,12 @@ export interface LobbyGame {
     gameId: string;
     gameName: string;
     config: GameConfig;
-    players: PlayerSocket[];
+    users: UserSocket[];
 }
 
 export class LobbyServer {
-    players: PlayerSocket[] = [];
-    games: {[gameId: string]: LobbyGame} = {};
+    users: UserSocket[] = [];
+    games: { [gameId: string]: LobbyGame } = {};
 
     constructor(port: number) {
         const wss = new Server({port: port});
@@ -32,69 +31,89 @@ export class LobbyServer {
         //todo load balance lobby
 
         wss.on('connection', (ws, req) => {
-            let auth = req.headers['Authorization'];
-            //todo add player auth here
+            let jwt = req.url!.replace("/?jwt=", "");
+            let userModel = this.verifyUser(jwt, ws);
+            if (!userModel) return;
 
             ws.binaryType = 'arraybuffer';
-            const player = {
-                player: {
-                    name: ((Math.random() * 100000) | 0).toString(),
-                    playerId: ((Math.random() * 100000) | 0).toString()
-                } as any,
+            const user = {
+                user: userModel,
                 currentGameId: null,
                 socket: ws
-            };
+            } as UserSocket;
 
-            this.players.push(player);
+            this.users.push(user);
             ws.on('message', async (m: string) => {
                 try {
-                    await this.processMessage(player, JSON.parse(m) as ServerLobbyMessage);
+                    await this.processMessage(user, JSON.parse(m) as ServerLobbyMessage);
                 } catch (ex) {
                     console.error(ex);
                 }
             });
             ws.on('error', async () => {
-                await this.playerLeft(player);
+                await this.userLeft(user);
             });
 
             ws.on('close', async () => {
-                await this.playerLeft(player);
+                await this.userLeft(user);
             });
         });
     }
 
-    private async playerLeft(player: PlayerSocket) {
-        this.players.splice(this.players.indexOf(player), 1);
+    private verifyUser(jwt: string, ws): UserModel | null {
+        if (!jwt) {
+            ws.send('401');
+            ws.close();
+            return null;
+        }
+        let userModel: UserModel;
+        try {
+            userModel = jsonwebtoken.verify(jwt, Config.jwtKey) as UserModel;
+            if (!userModel) {
+                ws.send('401');
+                ws.close();
+                return null;
+            }
+        } catch (ex) {
+            ws.send('401');
+            ws.close();
+            return null;
+        }
+        return userModel;
+    }
+
+    private async userLeft(user: UserSocket) {
+        this.users.splice(this.users.indexOf(user), 1);
 
         for (let gameId in this.games) {
-            let ind = this.games[gameId].players.indexOf(player);
+            let ind = this.games[gameId].users.indexOf(user);
             if (ind >= 0) {
-                await this.removePlayerFromGame(this.games[gameId], player);
+                await this.removeUserFromGame(this.games[gameId], user);
             }
         }
     }
 
-    private async processMessage(player: PlayerSocket, message: ServerLobbyMessage) {
+    private async processMessage(user: UserSocket, message: ServerLobbyMessage) {
         switch (message.type) {
             case 'join-lobby':
                 if (!this.games[message.gameId]) {
                     await this.createGame(message.gameId);
                 }
-                await this.addPlayerToGame(this.games[message.gameId], player);
+                await this.addUserToGame(this.games[message.gameId], user);
                 break;
         }
     }
 
-    private async addPlayerToGame(game: LobbyGame, player: PlayerSocket) {
-        if (game.players.find(a => a.player!.playerId == player.player!.playerId)) {
+    private async addUserToGame(game: LobbyGame, user: UserSocket) {
+        if (game.users.find(a => a.user.id == user.user.id)) {
             return;
         }
-        game.players.push(player);
+        game.users.push(user);
         await this.processGameLogic(game);
     }
 
-    private async removePlayerFromGame(game: LobbyGame, player: PlayerSocket) {
-        game.players.splice(game.players.indexOf(player), 1);
+    private async removeUserFromGame(game: LobbyGame, user: UserSocket) {
+        game.users.splice(game.users.indexOf(user), 1);
         await this.processGameLogic(game);
     }
 
@@ -105,7 +124,7 @@ export class LobbyServer {
                 gameId: gameId,
                 gameName: game.gameName,
                 config: game.gameConfig!,
-                players: [],
+                users: [],
                 startTimer: -1,
                 startTimerFinish: -1
             };
@@ -117,17 +136,17 @@ export class LobbyServer {
     private async processGameLogic(game: LobbyGame) {
         let config = game.config;
 
-        if (game.players.length === 0) {
+        if (game.users.length === 0) {
             delete this.games[game.gameId];
             return;
         }
 
-        if (game.players.length === config.lobbyRules.maxPlayers) {
+        if (game.users.length === config.lobbyRules.maxPlayers) {
             if (game.startTimer !== -1) {
                 clearTimeout(game.startTimer);
             }
             await this.startGame(game);
-        } else if (game.players.length < config.lobbyRules.minPlayers) {
+        } else if (game.users.length < config.lobbyRules.minPlayers) {
             if (game.startTimer !== -1) {
                 clearTimeout(game.startTimer);
             }
@@ -149,16 +168,17 @@ export class LobbyServer {
                 gameName: game.gameName,
                 startCountdown:
                     game.startTimerFinish === -1 ? game.startTimerFinish : game.startTimerFinish - +new Date(),
-                players: game.players.map(p => p.player!)
+                users: game.users.map(p => p.user)
             }
         });
     }
 
     private async sendGameMessage(game: LobbyGame, message: ClientLobbyMessage) {
-        for (let player of game.players) {
+        for (let user of game.users) {
             try {
-                player.socket.send(JSON.stringify(message));
-            } catch (ex) {}
+                user.socket.send(JSON.stringify(message));
+            } catch (ex) {
+            }
         }
     }
 

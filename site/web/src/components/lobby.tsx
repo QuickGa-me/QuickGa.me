@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Route, Link} from 'react-router-dom';
 import {RouteComponentProps} from 'react-router';
-import {GameModel} from '@common/models/http/gameController';
 import {GameDataService} from '../services/dataServices';
 import {LobbyNetworkService} from '../services/lobbyNetworkService';
 import {ClientLobbyMessage, ClientLobbyUpdateMessage} from '@common/lobby/lobbyMessage';
+import {GameModel} from "@common/models/game/gameModel";
 
 interface LobbyProps extends RouteComponentProps<{gameId: string}> {}
 
@@ -112,7 +112,7 @@ export class Lobby extends React.Component<LobbyProps, LobbyState> {
                     </div>
                     <div>
                         Players
-                        <ul>{lobby.players.map(p => <li key={p.name}>{p.name}</li>)}</ul>
+                        <ul>{lobby.users.map(p => <li key={p.id}>{p.username}</li>)}</ul>
                     </div>
                 </div>
             </div>

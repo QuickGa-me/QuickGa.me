@@ -2,11 +2,13 @@ import {GetAllGamesResponse, GetGameResponse} from '@common/models/http/gameCont
 import {StorageService} from './storageService';
 import {SuccessResponse} from '@common/models/http/successResponse';
 import {Config} from "../config";
+import {JwtUserResponse} from "@common/models/http/userController";
+import {UserModel} from "@common/models/user/userModel";
 
 export class DataService {
     static apiUrl = Config.apiUrl;
 
-    static async fetch<T>(options: {method: string; data?: any; params?: any; url: string}): Promise<T> {
+    static async fetch<T>(options: { method: string; data?: any; params?: any; url: string }): Promise<T> {
         let body;
         if (options.method.toLocaleLowerCase() !== 'get') {
             options.data = options.data || {};
@@ -43,7 +45,7 @@ export class DataService {
             console.log('status', status);
             console.log(options.url);
             throw 'Server could not be reached';
-        } else if (status === 200) {
+        } else if (status >= 200 && status <= 299) {
             return await response.json();
         } else if (status >= 500) {
             console.log('status', status);
@@ -55,7 +57,7 @@ export class DataService {
     }
 
     static async getHeaders() {
-        let headers: {[key: string]: string} = {
+        let headers: { [key: string]: string } = {
             'Content-Type': 'application/json',
             Accept: 'application/json'
             // "__Date": moment().format('YYYY-MM-DD'),
@@ -63,7 +65,7 @@ export class DataService {
         };
 
         const value = StorageService.jwt;
-        if (value) headers.Authorization = value;
+        if (value) headers.Authorization = "Bearer " + value;
         return headers;
     }
 }
@@ -82,4 +84,47 @@ export class GameDataService extends DataService {
             url: `${this.apiUrl}/games/${gameId}`
         });
     }
+}
+
+export class UserDataService extends DataService {
+    static async generateTempUser(): Promise<UserModel | null> {
+        let result = await this.fetch<SuccessResponse<JwtUserResponse>>({
+            method: 'POST',
+            url: `${this.apiUrl}/user/temp`
+        });
+        if (result.success) {
+            StorageService.jwt = result.body!.jwt;
+            //todo mobx user
+            return result.body!.user;
+        }
+        return null;
+    }
+
+    static async getUserDetails(): Promise<UserModel | null> {
+        let result = await this.fetch<SuccessResponse<JwtUserResponse>>({
+            method: 'GET',
+            url: `${this.apiUrl}/user`
+        });
+        if (result.success) {
+            StorageService.jwt = result.body!.jwt;
+            //todo mobx user
+            return result.body!.user;
+        }
+        return null;
+    }
+
+    static async verifyUser(userName: string): Promise<UserModel | null> {
+        let result = await this.fetch<SuccessResponse<JwtUserResponse>>({
+            method: 'POST',
+            data: {userName},
+            url: `${this.apiUrl}/user/verify`
+        });
+        if (result.success) {
+            StorageService.jwt = result.body!.jwt;
+            //todo mobx user
+            return result.body!.user;
+        }
+        return null;
+    }
+
 }

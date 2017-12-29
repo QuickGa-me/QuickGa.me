@@ -1,10 +1,6 @@
 import {GameConfig} from '../game/gameConfig';
+import {GameModel} from "../game/gameModel";
 
-export interface GameModel {
-    gameName: string;
-    gameId: string;
-    gameConfig: GameConfig;
-}
 
 export interface GetAllGamesResponse {
     games: GameModel[];
