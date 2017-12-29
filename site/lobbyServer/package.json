@@ -4,7 +4,9 @@
   "description": "",
   "scripts": {
     "dev": "webpack --watch",
-    "start": "node ./dist/bundle.js"
+    "start": "node ./dist/bundle.js",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "deploy": "npm run build & eb deploy"
   },
   "dependencies": {
     "mongodb": "^3.0.1",

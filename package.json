@@ -6,7 +6,11 @@
   "scripts": {
     "tsc": "cd framework/client & tsc & cd ../server & tsc & cd ../../games/sudoku/client & tsc & cd ../server & tsc & cd ../../../site/client & tsc & cd ../webServer & tsc & cd ../lobbyServer & tsc ",
     "pretty": "prettier \"*/**/*.ts*\"  --config .prettierrc --write",
-    "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/client & npm install & cd ../webServer & npm install & cd ../lobbyServer & npm install "
+    "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/client & npm install & cd ../webServer & npm install & cd ../lobbyServer & npm install ",
+
+    "deploy:site": "cd site/client & npm run deploy",
+    "deploy:webserver": "cd site/webServer & npm run deploy",
+    "deploy:lobby": "cd site/lobbyServer & npm run deploy"
   },
   "dependencies": {
   },

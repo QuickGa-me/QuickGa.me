@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --port 8241 --open",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "deploy": "npm run build & gulp deploy"
   },
   "dependencies": {
     "glamor": "^2.20.40",
@@ -23,6 +24,9 @@
     "ts-loader": "^2.3.6",
     "typescript": "^2.5.2",
     "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.2.0"
+    "webpack-dev-server": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-cloudfront-invalidate": "^0.1.4",
+    "gulp-s3-upload": "^1.6.4"
   }
 }
