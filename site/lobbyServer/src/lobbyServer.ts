@@ -54,27 +54,24 @@ export class LobbyServer {
                 }
             });
             ws.on('error', async () => {
-                this.players.splice(this.players.indexOf(player), 1);
-
-                for (let gameId in this.games) {
-                    let ind = this.games[gameId].players.indexOf(player);
-                    if (ind >= 0) {
-                        await this.removePlayerFromGame(this.games[gameId], player);
-                    }
-                }
+                await this.playerLeft(player);
             });
 
             ws.on('close', async () => {
-                this.players.splice(this.players.indexOf(player), 1);
-
-                for (let gameId in this.games) {
-                    let ind = this.games[gameId].players.indexOf(player);
-                    if (ind >= 0) {
-                        await this.removePlayerFromGame(this.games[gameId], player);
-                    }
-                }
+                await this.playerLeft(player);
             });
         });
+    }
+
+    private async playerLeft(player: PlayerSocket) {
+        this.players.splice(this.players.indexOf(player), 1);
+
+        for (let gameId in this.games) {
+            let ind = this.games[gameId].players.indexOf(player);
+            if (ind >= 0) {
+                await this.removePlayerFromGame(this.games[gameId], player);
+            }
+        }
     }
 
     private async processMessage(player: PlayerSocket, message: ServerLobbyMessage) {
