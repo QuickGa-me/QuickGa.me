@@ -7,7 +7,7 @@ var config = {
         filename: './dist/bundle.js'
     },
     target: "node",
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
         extensions: ['.ts', '.tsx', '.js'], // note if using webpack 1 you'd also need a '' in the array as well

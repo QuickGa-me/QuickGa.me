@@ -5,7 +5,7 @@ module.exports = {
     output: {
         filename: './dist/bundle.js'
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
@@ -24,4 +24,5 @@ module.exports = {
                 }
             }
         ]
-    }};
+    }
+};

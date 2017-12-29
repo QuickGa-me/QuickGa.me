@@ -4,7 +4,7 @@
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
     "allowJs": true,

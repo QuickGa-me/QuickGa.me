@@ -5,7 +5,8 @@ import {StorageService} from './storageService';
 export class LobbyNetworkService {
     private socket: WebSocket;
 
-    constructor() {}
+    constructor() {
+    }
 
     connect(onJoin: () => void, onMessage: (message: ClientLobbyMessage) => void) {
         this.socket = new WebSocket(Config.websocketUrl(StorageService.jwt));
@@ -15,7 +16,7 @@ export class LobbyNetworkService {
         };
         this.socket.onmessage = m => {
             if (m.data === '401') {
-                window.location.pathname = '/';
+                window.location.replace('https://quickga.me');
                 return;
             }
             onMessage(JSON.parse(m.data) as ClientLobbyMessage);

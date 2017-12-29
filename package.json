@@ -12,9 +12,9 @@
     "deploy:webserver": "cd site/webServer & npm run deploy",
     "deploy:lobby": "cd site/lobbyServer & npm run deploy",
 
-    "run:web": "cd site/web & npm run dev",
-    "run:webserver": "cd site/webServer & npm run dev",
-    "run:lobby": "cd site/lobbyServer & npm run dev"
+    "web": "cd site/web & npm run dev",
+    "webserver": "cd site/webServer & npm run dev",
+    "lobby": "cd site/lobbyServer & npm run dev"
   },
   "dependencies": {
   },

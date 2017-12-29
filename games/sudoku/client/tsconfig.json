@@ -16,7 +16,7 @@
       "esnext.asynciterable"
     ],
     "outDir": "./dist/",
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "baseUrl": "./",
     "jsx": "react",
     "paths": {

@@ -14,12 +14,13 @@ export class JwtStrategy extends Strategy {
                 passReqToCallback: true,
                 secretOrKey: Config.jwtKey
             },
-            async (req: any, payload: UserModel, next: any) => await this.validateUser(payload, next)
+            async (req: any, payload: UserModel, next: any) => await this.validateUser(req, payload, next)
         );
         passport.use(this);
     }
 
-    async validateUser(user: UserModel, done: any): Promise<boolean> {
+    async validateUser(req: any, user: UserModel, done: any): Promise<boolean> {
+        req.user = user;
         done(null, user);
         return true;
     }

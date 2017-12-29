@@ -12,7 +12,7 @@
       "es2015",
       "esnext.asynciterable"
     ],
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "outDir": "dist/",
     "baseUrl": "./",
     "paths": {
