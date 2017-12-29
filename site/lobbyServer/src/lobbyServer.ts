@@ -32,7 +32,7 @@ export class LobbyServer {
 
         wss.on('connection', (ws, req) => {
             let jwt = req.url!.replace('/?jwt=', '');
-            let userModel = this.verifyUser(jwt, ws);
+            let userModel = LobbyServer.verifyUser(jwt, ws);
             if (!userModel) return;
 
             ws.binaryType = 'arraybuffer';
@@ -60,7 +60,7 @@ export class LobbyServer {
         });
     }
 
-    private verifyUser(jwt: string, ws): UserModel | null {
+    private static verifyUser(jwt: string, ws: any): UserModel | null {
         if (!jwt) {
             ws.send('401');
             ws.close();

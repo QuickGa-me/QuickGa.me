@@ -14,7 +14,7 @@ export class JwtStrategy extends Strategy {
                 passReqToCallback: true,
                 secretOrKey: Config.jwtKey
             },
-            async (req, payload, next) => await this.validateUser(payload, next)
+            async (req: any, payload: UserModel, next: any) => await this.validateUser(payload, next)
         );
         passport.use(this);
     }

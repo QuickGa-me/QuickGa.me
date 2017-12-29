@@ -5,7 +5,7 @@ import {HttpException} from '@nestjs/core';
 
 @Guard()
 export class AuthGuard implements CanActivate {
-    async canActivate(dataOrRequest, context: ExecutionContext): Promise<boolean> {
+    async canActivate(dataOrRequest: any, context: ExecutionContext): Promise<boolean> {
         const isAuthenticated = await new Promise<boolean>((resolve, reject) => {
             passport.authenticate('jwt', {session: false}, (_, user, __) => {
                 if (user) {

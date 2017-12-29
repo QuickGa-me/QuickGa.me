@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "inlineSourceMap": true,
     "strict": true,
-    "noImplicitAny": false,
+    "skipLibCheck": true,
     "allowJs": true,
     "noEmit": true,
     "outDir": "./bin",

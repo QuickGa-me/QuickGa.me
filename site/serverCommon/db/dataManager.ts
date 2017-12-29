@@ -52,20 +52,3 @@ export class DocumentManager<T extends MongoDocument> {
         return await DataManager.dbConnection.collection(this.collectionName).count(query);
     }
 }
-
-interface Name {
-    Fred;
-    Vilma;
-}
-
-type Names = keyof Name; // type Names = "Fred" | "Vilma";
-type Data = {};
-
-const data: {[name in Names]: Data} = {
-    Fred: {},
-    Vilma: {}
-};
-
-function getData(name: Names) {
-    return data[name]; // error here
-}
