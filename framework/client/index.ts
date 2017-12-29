@@ -1,4 +1,4 @@
-import {Message, SerializedGameState, SerializedPlayerState} from "@framework-common/models";
+import {Message, SerializedGameState, SerializedPlayerState} from '@framework-common/models';
 
 export abstract class QGClient {
     abstract initializeUI(ui: {
@@ -18,7 +18,7 @@ export abstract class QGClient {
     }
     abstract receiveMessages(message: Message): void;
 
-    abstract onPlayerJoin(player: SerializedPlayerState):void;
-    abstract onPlayerLeave(player: SerializedPlayerState):void;
+    abstract onPlayerJoin(player: SerializedPlayerState): void;
+    abstract onPlayerLeave(player: SerializedPlayerState): void;
     abstract receiveState(state: SerializedGameState): void;
 }

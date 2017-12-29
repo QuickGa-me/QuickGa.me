@@ -1,25 +1,28 @@
 import {Body, Controller, Get, Param, Post, Put} from '@nestjs/common';
-import {DBGame} from "../../db/models/game";
-import {SuccessResponse} from "@common/models/http/successResponse";
-import {CreateGameRequest, CreateGameResponse, GetAllGamesResponse, GetGameResponse, UpdateGameRequest} from "@common/models/http/gameController";
-
+import {SuccessResponse} from '@common/models/http/successResponse';
+import {
+    CreateGameRequest,
+    CreateGameResponse,
+    GetAllGamesResponse,
+    GetGameResponse,
+    UpdateGameRequest
+} from '@common/models/http/gameController';
+import {DBGame} from '@serverCommon/db/models/game';
 
 @Controller('games')
 export class GameController {
-
     @Get()
     async getAllGames(): Promise<SuccessResponse<GetAllGamesResponse>> {
         return SuccessResponse.success({
-            games: (await DBGame.db.getAll())
-                .map(g => ({
-                    gameName: g.gameName,
-                    gameId: g._id.toHexString(),
-                    gameConfig: g.gameConfig
-                }))
+            games: (await DBGame.db.getAll()).map(g => ({
+                gameName: g.gameName,
+                gameId: g._id.toHexString(),
+                gameConfig: g.gameConfig!
+            }))
         });
     }
 
-    @Get("/:gameId")
+    @Get('/:gameId')
     async getGame(@Param('gameId') gameId: string): Promise<SuccessResponse<GetGameResponse>> {
         let dbGame = await DBGame.db.getById(gameId);
         if (!dbGame) {
@@ -29,12 +32,12 @@ export class GameController {
             game: {
                 gameName: dbGame.gameName,
                 gameId: dbGame._id.toHexString(),
-                gameConfig: dbGame.gameConfig
+                gameConfig: dbGame.gameConfig!
             }
         });
     }
 
-    @Post("/:gameId")
+    @Post('/:gameId')
     async updateGame(@Param('gameId') gameId: string, @Body() model: UpdateGameRequest): Promise<SuccessResponse> {
         try {
             let game = await DBGame.db.getById(gameId);
@@ -50,7 +53,7 @@ export class GameController {
         }
     }
 
-    @Put("/")
+    @Put('/')
     async createGame(@Body() model: CreateGameRequest): Promise<SuccessResponse<CreateGameResponse>> {
         try {
             const game = new DBGame();

@@ -1,5 +1,4 @@
-import {Message, SerializedGameState} from "@framework-common/models";
-
+import {Message, SerializedGameState} from '@framework-common/models';
 
 export type GameState = {
     currentTick: number;
@@ -12,7 +11,6 @@ export type PlayerState = {
     name: string;
     color: string;
 };
-
 
 export interface ServerConfig {
     logicTickInterval: -1 | number;
@@ -45,8 +43,6 @@ export abstract class QGServer {
 
     abstract serializeState(): SerializedGameState;
 }
-
-
 
 /*import {Server} from 'ws';
 

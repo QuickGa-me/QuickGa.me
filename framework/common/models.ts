@@ -1,4 +1,3 @@
-
 export type Message = {tickRecieved: number} & ({type: 'ping'} | {type: 'player-join'} | {type: 'pong'});
 
 export type SerializedGameState = {

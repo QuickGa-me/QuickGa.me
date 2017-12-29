@@ -1,15 +1,10 @@
 import * as React from 'react';
-import {
-    Route,
-    Link,
-} from 'react-router-dom';
-import {RouteComponentProps} from "react-router";
-import {GameModel} from "@common/models/http/gameController";
-import {GameDataService} from "../services/dataServices";
+import {Route, Link} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router';
+import {GameModel} from '@common/models/http/gameController';
+import {GameDataService} from '../services/dataServices';
 
-interface HomeProps extends RouteComponentProps<{}> {
-
-}
+interface HomeProps extends RouteComponentProps<{}> {}
 
 interface HomeState {
     games: GameModel[];
@@ -17,7 +12,6 @@ interface HomeState {
 }
 
 export class Home extends React.Component<HomeProps, HomeState> {
-
     constructor(props: HomeProps, context: any) {
         super(props, context);
         this.state = {
@@ -26,10 +20,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
         };
     }
 
-
     async componentDidMount() {
         const gameResponse = await GameDataService.getAllGames();
-        this.setState((oldState) => ({
+        this.setState(oldState => ({
             ...oldState,
             loadingGames: false,
             games: gameResponse.body!.games
@@ -40,19 +33,24 @@ export class Home extends React.Component<HomeProps, HomeState> {
         return (
             <div>
                 <h1>Quick Game</h1>
-                {
-                    this.state.loadingGames ? (
-                        <span>Loading...</span>
-                    ) : (
-                        this.state.games.map(game => (
-                            <div key={game.gameId}>
-                                {game.gameId} - {game.gameName} <Link to={"/game/" + game.gameId}>Play</Link>
-                            </div>
-                        ))
-                    )
-                }
+                {this.state.loadingGames ? (
+                    <span>Loading...</span>
+                ) : (
+                    this.state.games.map(game => (
+                        <div key={game.gameId}>
+                            {game.gameId} - {game.gameName} <Link to={this.getGamePath(game)}>Play</Link>
+                        </div>
+                    ))
+                )}
             </div>
-        )
+        );
+    }
+
+    private getGamePath(game: GameModel) {
+        if (game.gameConfig.hasLobby) {
+            return '/lobby/' + game.gameId;
+        } else {
+            return '/game/' + game.gameId;
+        }
     }
 }
-

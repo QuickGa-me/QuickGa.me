@@ -1,0 +1,10 @@
+{
+  "name": "quickgame-serverCommon",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mongodb": "^2.2.18"
+  }
+}

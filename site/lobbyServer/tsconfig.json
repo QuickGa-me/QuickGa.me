@@ -15,6 +15,9 @@
     "paths": {
       "@common/*": [
         "../common/*"
+      ],
+      "@serverCommon/*": [
+        "../serverCommon/*"
       ]
     }
   },

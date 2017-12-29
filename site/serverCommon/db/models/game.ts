@@ -1,6 +1,6 @@
-import {MongoDocument} from "./mongoDocument";
-import {DocumentManager} from "../dataManager";
-import {GameConfig} from "@common/models/game/gameConfig";
+import {MongoDocument} from './mongoDocument';
+import {DocumentManager} from '../dataManager';
+import {GameConfig} from '@common/models/game/gameConfig';
 
 export class DBGame extends MongoDocument {
     static collectionName = 'game';
@@ -11,5 +11,3 @@ export class DBGame extends MongoDocument {
     serverSource?: string;
     gameConfig?: GameConfig;
 }
-
-

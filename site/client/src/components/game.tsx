@@ -1,15 +1,10 @@
 import * as React from 'react';
-import {
-    Route,
-    Link,
-} from 'react-router-dom';
-import {RouteComponentProps} from "react-router";
-import {GameModel} from "@common/models/http/gameController";
-import {GameDataService} from "../services/dataServices";
+import {Route, Link} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router';
+import {GameModel} from '@common/models/http/gameController';
+import {GameDataService} from '../services/dataServices';
 
-interface GameProps extends RouteComponentProps<{ gameId: string }> {
-
-}
+interface GameProps extends RouteComponentProps<{gameId: string}> {}
 
 interface GameState {
     game: GameModel | null;
@@ -17,7 +12,6 @@ interface GameState {
 }
 
 export class Game extends React.Component<GameProps, GameState> {
-
     constructor(props: GameProps, context: any) {
         super(props, context);
         this.state = {
@@ -28,7 +22,7 @@ export class Game extends React.Component<GameProps, GameState> {
 
     async componentDidMount() {
         const gameResponse = await GameDataService.getGameData(this.props.match.params.gameId);
-        this.setState((oldState) => ({
+        this.setState(oldState => ({
             ...oldState,
             loadingGame: false,
             game: gameResponse.body!.game
@@ -38,15 +32,14 @@ export class Game extends React.Component<GameProps, GameState> {
     render() {
         return (
             <div>
-                {
-                    this.state.loadingGame ? (
-                        <span>Loading Game...</span>
-                    ) : (
-                        <span>{this.state.game!.gameId} - {this.state.game!.gameName}</span>
-                    )
-                }
+                {this.state.loadingGame ? (
+                    <span>Loading Game...</span>
+                ) : (
+                    <span>
+                        {this.state.game!.gameId} - {this.state.game!.gameName}
+                    </span>
+                )}
             </div>
-        )
+        );
     }
 }
-

@@ -1,8 +1,7 @@
-import {Db, MongoClient} from "mongodb";
-import {Config} from "../config";
-import {MongoDocument} from "./models/mongoDocument";
-import {ObjectID} from "bson";
-
+import {Db, MongoClient} from 'mongodb';
+import {Config} from '../config';
+import {MongoDocument} from './models/mongoDocument';
+import {ObjectID} from 'bson';
 
 export class DataManager {
     static dbConnection: Db;
@@ -22,18 +21,16 @@ export class DataManager {
 }
 
 export class DocumentManager<T extends MongoDocument> {
-
-    constructor(private collectionName: string) {
-    }
+    constructor(private collectionName: string) {}
 
     public async insertDocument(document: T): Promise<T> {
-        let result = (await DataManager.dbConnection.collection(this.collectionName).insertOne(document));
+        let result = await DataManager.dbConnection.collection(this.collectionName).insertOne(document);
         document._id = result.insertedId;
         return document;
     }
 
     public async updateDocument(document: T): Promise<T> {
-        (DataManager.dbConnection.collection(this.collectionName).findOneAndUpdate({_id: document._id}, document));
+        DataManager.dbConnection.collection(this.collectionName).findOneAndUpdate({_id: document._id}, document);
         return document;
     }
 
@@ -50,6 +47,6 @@ export class DocumentManager<T extends MongoDocument> {
     }
 
     public async count(query: Object = {}): Promise<number> {
-        return (await DataManager.dbConnection.collection(this.collectionName).count(query));
+        return await DataManager.dbConnection.collection(this.collectionName).count(query);
     }
 }

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack --watch"
+    "dev": "webpack --watch",
+    "start": "node ./dist/bundle.js"
   },
   "dependencies": {
     "@nestjs/common": "^4.0.0",

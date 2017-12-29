@@ -6,8 +6,8 @@
     "emitDecoratorMetadata": true,
     "removeComments": false,
     "allowUnreachableCode": true,
-    "allowJs": true,
     "strict": true,
+    "allowJs": true,
     "noEmit": true,
     "moduleResolution": "node",
     "target": "es2015",
@@ -20,7 +20,12 @@
     "inlineSourceMap": true,
     "skipLibCheck": true,
     "baseUrl": "./",
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "@common/*": [
+        "../common/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules"

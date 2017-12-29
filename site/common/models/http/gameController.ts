@@ -1,15 +1,16 @@
-import {GameConfig} from "../game/gameConfig";
+import {GameConfig} from '../game/gameConfig';
 
 export interface GameModel {
     gameName: string;
-    gameId: string
+    gameId: string;
+    gameConfig: GameConfig;
 }
 
 export interface GetAllGamesResponse {
-    games: GameModel[]
+    games: GameModel[];
 }
 export interface GetGameResponse {
-    game: GameModel
+    game: GameModel;
 }
 
 export interface CreateGameRequest {

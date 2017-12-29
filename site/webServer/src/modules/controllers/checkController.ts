@@ -4,6 +4,6 @@ import {Controller, Get} from '@nestjs/common';
 export class CheckController {
     @Get()
     check(): boolean {
-        return true
+        return true;
     }
 }

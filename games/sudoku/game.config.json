@@ -1,5 +1,11 @@
 {
   "gameId": "5a44b5146d6c782f58b7e256",
   "hasLobby": true,
-  "adRunInterval": "EveryGame"
+  "adRunInterval": "EveryGame",
+  "maxGamesPerServer": 10,
+  "lobbyRules": {
+    "minPlayers": 3,
+    "maxPlayers": 8,
+    "waitSecondsForPlayers": 20
+  }
 }

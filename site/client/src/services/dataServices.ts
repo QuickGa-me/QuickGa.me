@@ -1,11 +1,11 @@
-import {GetAllGamesResponse, GetGameResponse} from "@common/models/http/gameController";
-import {StorageService} from "./storageService";
-import {SuccessResponse} from "@common/models/http/successResponse";
+import {GetAllGamesResponse, GetGameResponse} from '@common/models/http/gameController';
+import {StorageService} from './storageService';
+import {SuccessResponse} from '@common/models/http/successResponse';
 
 export class DataService {
     static apiUrl = 'http://localhost:3000';
 
-    static async fetch<T>(options: { method: string; data?: any; params?: any; url: string }): Promise<T> {
+    static async fetch<T>(options: {method: string; data?: any; params?: any; url: string}): Promise<T> {
         let body;
         if (options.method.toLocaleLowerCase() !== 'get') {
             options.data = options.data || {};
@@ -54,7 +54,7 @@ export class DataService {
     }
 
     static async getHeaders() {
-        let headers: { [key: string]: string } = {
+        let headers: {[key: string]: string} = {
             'Content-Type': 'application/json',
             Accept: 'application/json'
             // "__Date": moment().format('YYYY-MM-DD'),

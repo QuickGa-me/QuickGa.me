@@ -1,6 +1,6 @@
 import {NestFactory} from '@nestjs/core';
 import {ApplicationModule} from './modules/app.module';
-import {DataManager} from "./db/dataManager";
+import {DataManager} from '@serverCommon/db/dataManager';
 
 async function bootstrap() {
     const app = await NestFactory.create(ApplicationModule);
@@ -11,4 +11,4 @@ async function bootstrap() {
     await app.listen(port, '0.0.0.0');
 }
 
-bootstrap().catch((er) => console.error(er));
+bootstrap().catch(er => console.error(er));

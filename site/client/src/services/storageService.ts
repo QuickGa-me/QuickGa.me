@@ -1,5 +1,4 @@
 export class StorageService {
-
     public static getValue(key: string) {
         if (!localStorage.getItem(key)) return null;
         try {
@@ -17,18 +16,14 @@ export class StorageService {
     public static removeValue(key: string): void {
         try {
             localStorage.removeItem(key);
-        }
-        catch (ex) {
-
-        }
+        } catch (ex) {}
     }
 
-
     public static get jwt(): string {
-        return StorageService.getValue("jwt") || '';
+        return StorageService.getValue('jwt') || '';
     }
 
     public static set jwt(value: string) {
-        StorageService.setValue("jwt", value);
+        StorageService.setValue('jwt', value);
     }
 }

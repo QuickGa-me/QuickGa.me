@@ -1,6 +1,6 @@
-import {GameConfig} from "@common/models/game/gameConfig";
+import {GameConfig} from '@common/models/game/gameConfig';
 
-export class SuccessResponse<T={}> {
+export class SuccessResponse<T = {}> {
     static success<T>(body?: T): SuccessResponse<T> {
         return {success: true, body};
     }
