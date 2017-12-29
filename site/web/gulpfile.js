@@ -9,7 +9,7 @@ gulp.task('deploy', function () {
         paths: ['/*'],         // Paths to invalidate
         wait: false                      // Whether to wait until invalidation is completed (default: false)
     };
-    return gulp.src(['./css/**', './index.html', './dist/bundle.js'])
+    return gulp.src(['./css/**;./index.html;./dist/bundle.js'])
         .pipe(s3({
             Bucket: 'quickga.me',
             ACL: 'public-read'
