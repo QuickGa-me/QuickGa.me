@@ -13,57 +13,43 @@ export type PlayerState = {
 };
 
 export interface ServerConfig {
-    logicTickInterval: -1 | number;
+    logicTickInterval: -1 | 100;
 }
+
 export interface Achievement {}
 
 export abstract class QGServer {
     currentTick: number;
     state: GameState;
+
     constructor(config: ServerConfig) {}
 
     abstract onTick(msSinceLastTick: number): void;
+
     sendMessageToPlayer(playerId: string, message: Message): void {
         /*todo*/
     }
+
     sendMessageToEveryone(message: Message): void {
         /*todo*/
     }
+
     awardAchievement(achievement: Achievement): void {
         /*todo, verify with server*/
     }
 
     get receivedMessages(): Message[] {
-        /* todo */ return null!;
+        /* todo */
+        return null!;
     }
+
     abstract receiveMessages(message: Message): void;
 
     abstract onPlayerJoin(): PlayerState;
+
     abstract onPlayerLeave(): GameState;
 
     abstract serializeState(): SerializedGameState;
 }
 
-/*import {Server} from 'ws';
-
-export class ServerApp {
-
-    constructor() {
-        const wss = new Server({port: 7898});
-        console.log('server open');
-
-        wss.on('connection', (ws) => {
-            ws.binaryType = "arraybuffer";
-            ws.on('message', (m: string) => {
-                let message = JSON.parse(m) ;
-            });
-
-            ws.on('close', () => {
-            });
-        });
-    }
-
-
-}
-
-new ServerApp();*/
+/**/

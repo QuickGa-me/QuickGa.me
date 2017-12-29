@@ -1,7 +1,7 @@
-import {GameState, PlayerState, QGServer} from '@framework/index';
+import {GameState, PlayerState, QGServer} from '../../../framework/server/index';
 import {Message, SerializedGameState} from '@framework-common/models';
 
-export class SudokuServer extends QGServer {
+export default class SudokuServer extends QGServer {
     onTick(msSinceLastTick: number): void {}
 
     receiveMessages(message: Message): void {}

@@ -14,7 +14,9 @@ var config = {
         extensions: ['.ts', '.tsx', '.js'], // note if using webpack 1 you'd also need a '' in the array as well
         alias: {
             "@common": path.resolve(__dirname, "../common/"),
-            "@serverCommon": path.resolve(__dirname, "../serverCommon/")
+            "@serverCommon": path.resolve(__dirname, "../serverCommon/"),
+            "@framework": path.resolve(__dirname, "../../framework/server"),
+            "@framework-common": path.resolve(__dirname, "../../framework/common")
         }
     },
     plugins: [
