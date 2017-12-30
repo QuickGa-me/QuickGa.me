@@ -20,9 +20,9 @@
     "baseUrl": "./",
     "jsx": "react",
     "paths": {
-      "@framework-common/*": [
-        "../common/*"
-      ]
+  /*    "@framework-common*//*": [
+        "../common*//*"
+      ]*/
     }
   },
   "exclude": [

@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
                     return resolve(true);
                 }
                 return resolve(false);
-            })(dataOrRequest.res.req, dataOrRequest.res, dataOrRequest.nex);
+            })(dataOrRequest.res.req, dataOrRequest.res, dataOrRequest.next);
         });
         if (!isAuthenticated) {
             throw new HttpException('', HttpStatus.UNAUTHORIZED);

@@ -6,6 +6,7 @@ import {GameModel, LiveGameModel} from '@common/models/game/gameModel';
 import {LobbyNetworkService} from '../services/lobbyNetworkService';
 import {GameNetworkService} from '../services/gameNetworkService';
 import {ClientGameMessage} from '@common/lobby/gameMessage';
+import {QGClient} from '../../../../framework/client';
 
 interface Props extends RouteComponentProps<{liveGameId: string}> {}
 
@@ -18,6 +19,7 @@ interface State {
 
 export class LiveGame extends React.Component<Props, State> {
     private gameNetwork: GameNetworkService;
+    private client: QGClient;
 
     constructor(props: Props, context: any) {
         super(props, context);
@@ -39,6 +41,9 @@ export class LiveGame extends React.Component<Props, State> {
             liveGame: gameResponse.body!.liveGame
         }));
 
+        let clientCode = eval(gameResponse.body!.liveGame.clientSource!);
+        this.client = new clientCode['default']() as QGClient;
+
         this.gameNetwork = new GameNetworkService();
         this.gameNetwork.connect(
             gameResponse.body!.liveGame.gameServerAddress,
@@ -56,6 +61,14 @@ export class LiveGame extends React.Component<Props, State> {
                 this.processMessage(message);
             }
         );
+
+        await this.client.initializeAssets();
+    }
+
+    componentWillUnmount() {
+        if (this.gameNetwork) {
+            this.gameNetwork.disconnect();
+        }
     }
 
     private processMessage(message: ClientGameMessage) {

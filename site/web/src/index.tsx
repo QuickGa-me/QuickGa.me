@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter as Router, Route, Link, HashRouter} from 'react-router-dom';
-import {Home} from './components/home';
-import {Game} from './components/game';
-import {LiveGame} from './components/liveGame';
-import {Lobby} from './components/lobby';
+import {Home} from './pages/home';
+import {Game} from './pages/game';
+import {LiveGame} from './pages/liveGame';
+import {Lobby} from './pages/lobby';
 
 const Wrapper = () => (
     <HashRouter>

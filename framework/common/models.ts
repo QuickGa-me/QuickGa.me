@@ -1,11 +1,12 @@
-export type Message = {tickRecieved: number} & ({type: 'ping'} | {type: 'player-join'} | {type: 'pong'});
+export type Message = {};
 
-export type SerializedGameState = {
+export interface SerializedGameState {
     players: SerializedPlayerState[];
-};
-export type SerializedPlayerState = {
+}
+
+export interface SerializedPlayerState {
     playerId: string;
     avatar: string;
     name: string;
     color: string;
-};
+}

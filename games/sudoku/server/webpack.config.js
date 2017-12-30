@@ -13,8 +13,8 @@ var config = {
         extensions: ['.ts', '.tsx', '.js'], // note if using webpack 1 you'd also need a '' in the array as well
         alias: {
             "@common": path.resolve(__dirname, "../common/"),
-            "@framework": path.resolve(__dirname, "../../../framework/server"),
-            "@framework-common": path.resolve(__dirname, "../../../framework/common")
+            // "@framework": path.resolve(__dirname, "../../../framework/server"),
+            // "@framework-common": path.resolve(__dirname, "../../../framework/common")
         }
     },
     module: {

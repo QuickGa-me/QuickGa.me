@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --port 8240 --open",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "deploy": "npm run build & gulp deploy"
+    "deploy": "npm run build & gulp deploy & rimraf ./dist"
   },
   "dependencies": {
     "glamor": "^2.20.40",

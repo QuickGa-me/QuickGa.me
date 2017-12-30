@@ -5,6 +5,7 @@
     "emitDecoratorMetadata": true,
     "removeComments": false,
     "strict": true,
+    "noImplicitAny": true,
     "noEmit": true,
     "target": "es2015",
     "lib": [
@@ -16,13 +17,13 @@
     "outDir": "dist/",
     "baseUrl": "./",
     "paths": {
-      "@common/*": ["../common/*"],
-      "@framework/*": [
-        "../../../framework/server/*"
+      "@common/*": ["../common/*"]/*,
+      "@framework*//*": [
+        "../../../framework/server*//*"
       ],
-      "@framework-common/*": [
-        "../../../framework/common/*"
-      ]
+      "@framework-common*//*": [
+        "../../../framework/common*//*"
+      ]*/
     }
   },
   "exclude": [

@@ -33,6 +33,9 @@ export class Lobby extends React.Component<Props, State> {
 
     componentWillUnmount() {
         clearInterval(this.waitTick);
+        if (this.lobbyNetwork) {
+            this.lobbyNetwork.disconnect();
+        }
     }
 
     async componentDidMount() {
@@ -92,7 +95,6 @@ export class Lobby extends React.Component<Props, State> {
                 break;
             }
             case 'game-ready': {
-                this.lobbyNetwork.disconnect();
                 this.props.history.push(`/live-game/${message.liveGameId}`);
                 break;
             }

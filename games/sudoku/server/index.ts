@@ -1,20 +1,21 @@
-import {GameState, PlayerState, QGServer} from '../../../framework/server/index';
-import {Message, SerializedGameState} from '@framework-common/models';
+import {SudokuGameState, SudokuPlayerState} from './models';
+import {SudokuMessage, SudokuSerializedGameState} from '@common/models';
+import {QGServer} from '../../../framework/server/index';
 
 export default class SudokuServer extends QGServer {
     onTick(msSinceLastTick: number): void {}
 
-    receiveMessages(message: Message): void {}
+    receiveMessages(message: SudokuMessage): void {}
 
-    onPlayerJoin(): PlayerState {
+    onPlayerJoin(): SudokuPlayerState {
         return undefined!;
     }
 
-    onPlayerLeave(): GameState {
+    onPlayerLeave(): SudokuGameState {
         return undefined!;
     }
 
-    serializeState(): SerializedGameState {
+    serializeState(): SudokuSerializedGameState {
         return undefined!;
     }
 }

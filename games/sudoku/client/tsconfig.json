@@ -22,13 +22,13 @@
     "paths": {
       "@common/*": [
         "../common/*"
+      ]/*,
+      "@framework*//*": [
+        "../../../framework/client*//*"
       ],
-      "@framework/*": [
-        "../../../framework/client/*"
-      ],
-      "@framework-common/*": [
-        "../../../framework/common/*"
-      ]
+      "@framework-common*//*": [
+        "../../../framework/common*//*"
+      ]*/
     }
   },
   "exclude": [

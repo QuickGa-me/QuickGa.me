@@ -1,4 +1,4 @@
-import {Message, SerializedGameState} from '@framework-common/models';
+import {Message, SerializedGameState} from '../common/models';
 
 export type GameState = {
     currentTick: number;
@@ -51,5 +51,3 @@ export abstract class QGServer {
 
     abstract serializeState(): SerializedGameState;
 }
-
-/**/

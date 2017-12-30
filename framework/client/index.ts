@@ -1,4 +1,4 @@
-import {Message, SerializedGameState, SerializedPlayerState} from '@framework-common/models';
+import {Message, SerializedGameState, SerializedPlayerState} from '../common/models';
 
 export abstract class QGClient {
     abstract initializeUI(ui: {
@@ -7,6 +7,7 @@ export abstract class QGClient {
         parent: HTMLDivElement;
     }): void;
     abstract initializeState(state: SerializedGameState): void;
+    abstract initializeAssets(): Promise<void>;
 
     sendMessage(message: Message): void {
         /*todo*/
