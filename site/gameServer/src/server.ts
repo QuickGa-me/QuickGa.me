@@ -7,8 +7,8 @@ async function bootstrap() {
     let port = parseInt(process.env.PORT || '7888');
     console.log(`Connecting to database`);
     await DataManager.openDbConnection();
-    console.log(`Serving Game Server started on port ${port}`);
     await PubSub.start();
+    console.log(`Serving Game Server started on port ${port}`);
     new GameServer(port);
 }
 

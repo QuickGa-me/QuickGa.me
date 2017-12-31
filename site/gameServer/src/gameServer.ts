@@ -14,7 +14,7 @@ interface User {
     user: UserModel;
     connected: boolean;
     joined: boolean;
-    socket?: {send: (data: any) => void; close: () => void};
+    socket?: { send: (data: any) => void; close: () => void };
 }
 
 interface Game {
@@ -41,9 +41,15 @@ export class GameServer {
                 gameServerAddress: newGame.gameServerAddress
             });
         });
-
+        console.log('socket started');
         const wss = new Server({port: port});
+        console.log('socket open');
+        wss.on('error',()=>{
+            console.log('ws error1',arguments);
+            console.log('ws error2',JSON.stringify(arguments));
+        });
         wss.on('connection', (ws, req) => {
+            console.log('new connection', req.url);
             let jwt = req.url!.replace('/?jwt=', '');
             let userModel = UserUtils.verifyUser(jwt, () => {
                 ws.send('401');
@@ -80,9 +86,11 @@ export class GameServer {
                     console.error(ex);
                 }
             });
-            ws.on('error', async () => {});
+            ws.on('error', async () => {
+            });
 
-            ws.on('close', async () => {});
+            ws.on('close', async () => {
+            });
         });
     }
 
@@ -92,7 +100,7 @@ export class GameServer {
         const dbGame = await DBGame.db.getById(dbLiveGame.gameId);
         let serverCode = eval(dbGame.serverSource!);
         let game: Game = {
-            gameServerAddress: Config.env === 'DEV' ? `ws://localhost:${this.port}` : 'wss://game.hackga.me',
+            gameServerAddress: Config.env === 'DEV' ? `ws://localhost:${this.port}` : 'wss://game.quickga.me',
             dbGame: dbGame,
             gameId: dbGame._id.toHexString(),
             liveGameId: liveGameId,
@@ -151,14 +159,16 @@ export class GameServer {
         for (let user of game.users) {
             try {
                 user.socket!.send(JSON.stringify(message));
-            } catch (ex) {}
+            } catch (ex) {
+            }
         }
     }
 
     private async sendUserMessage(user: User, message: ClientGameMessage) {
         try {
             user.socket!.send(JSON.stringify(message));
-        } catch (ex) {}
+        } catch (ex) {
+        }
     }
 
     private bootUser(game: Game, user: User) {
