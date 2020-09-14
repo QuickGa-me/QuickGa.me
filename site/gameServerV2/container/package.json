@@ -1,0 +1,53 @@
+{
+  "name": "gq-gameserver",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && webpack --mode development",
+    "watch": "rimraf dist && webpack --mode development --watch",
+    "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
+    "lint": "npx tslint -p tsconfig.json --fix",
+    "start": "node ./dist/index.js",
+    "debug": "node --inspect-brk ./dist/index.js",
+    "build-prod": "rimraf dist && webpack --mode production  --progress --hide-modules",
+    "deploy": "yarn build-prod && todo",
+    "docker-run": "docker run -p 80:80 quickgame-gameserver ",
+
+    "docker-build": "yarn build-prod && docker build -t quickgame-gameserver . && docker tag quickgame-gameserver:latest 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-gameserver",
+    "docker-aws-setup-1": "aws ecr create-repository --repository-name quickgame-gameserver --region us-west-2",
+    "docker-aws-login": "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 114394156384.dkr.ecr.us-west-2.amazonaws.com",
+    "docker-aws-push": "docker push 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-gameserver",
+    "docker-aws-delete": "aws ecr delete-repository --repository-name quickgame-gameserver --region us-west-2 --force",
+    "docker-aws-update": "echo \"no update\"",
+
+    "docker-first-time": "yarn docker-aws-setup-1 && yarn docker-build  && yarn docker-aws-login && yarn docker-aws-push",
+    "docker-deploy": "yarn docker-build  && yarn docker-aws-login && yarn docker-aws-push && yarn docker-aws-update"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "reflect-metadata": "^0.1.13",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1",
+    "aws-sdk": "^2.752.0",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "@types/ws": "^7.2.6",
+    "@types/node-fetch": "^2.5.7",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node": "13.9.2",
+    "prettier": "^2.0.2",
+    "webpack-node-externals": "^1.7.2",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.7.0",
+    "tslint": "^6.1.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^4.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "copy-webpack-plugin": "^5.1.1"
+  }
+}
