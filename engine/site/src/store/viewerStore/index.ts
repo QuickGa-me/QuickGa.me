@@ -1,5 +1,4 @@
-import {CreditAvailabilityResponse, HttpViewerModel} from '../../dataServices/app.generated';
-import {action, computed, observable} from 'mobx';
+import {action, observable} from 'mobx';
 
 export class ViewerStore {
   @observable isMobile: boolean = false;

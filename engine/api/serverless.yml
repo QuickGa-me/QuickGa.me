@@ -1,0 +1,73 @@
+org: iamdested
+app: quickgame
+service: quickgame
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+  - serverless-offline-lambda
+  - offline-invalidate
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: true
+    packager: 'yarn'
+  config:
+    CACHE_INSTANCE_SIZE: cache.t2.micro
+  serverless-offline:
+    host: 0.0.0.0
+    noPrependStageInUrl: true
+    httpPort: 3503
+  customDomain:
+    rest:
+      domainName: api.quickga.me
+      basePath: ''
+      stage: ${self:provider.stage}
+      createRoute53Record: true
+      endpointType: 'regional'
+      certificateName: quickga.me
+      securityPolicy: tls_1_2
+    websocket:
+      domainName: lobby.quickga.me
+      basePath: ''
+      stage: ${self:provider.stage}
+      createRoute53Record: true
+      endpointType: 'regional'
+      certificateName: quickga.me
+      securityPolicy: tls_1_2
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  memorySize: 512
+  stage: ${opt:stage, 'dev'}
+  timeout: 29
+  region: us-west-2
+  logRetentionInDays: 7
+  websocketsApiName: quickgame-lobby
+  websocketsApiRouteSelectionExpression: $request.body.action
+  environment:
+    ENV: ${opt:stage, 'dev'}
+
+functions:
+  all:
+    handler: handler.api
+    events:
+      - http:
+          path: /
+          method: any
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - authorization
+      - http:
+          path: /{any+}
+          method: any
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - authorization

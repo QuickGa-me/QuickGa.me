@@ -19,10 +19,10 @@
     "skipLibCheck": true,
     "paths": {
       "@common/*": [
-        "../../common/*"
+        "../../common/src/*"
       ],
       "@serverCommon/*": [
-        "../../serverCommon/*"
+        "../../serverCommon/src/*"
       ],
       "@framework/*": [
         "../../../framework/server/*"

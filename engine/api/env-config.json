@@ -1,0 +1,6 @@
+{
+  "region": "us-west-2",
+  "kmsKeyDescription": "kms-quickgame",
+  "keyDefinitionOutput": "../serverCommon/src/config/envKeys.ts",
+  "kmsKeyId": "e1094d20-3c91-4d2b-9d02-3c52c835407e"
+}

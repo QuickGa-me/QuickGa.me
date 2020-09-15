@@ -1,3 +1,4 @@
+/*
 import {Server} from 'ws';
 import {PubSub} from '@serverCommon/pubSub';
 import {NewGameRequest, NewGameResponse} from '@serverCommon/models/redis/newGameModel';
@@ -151,7 +152,7 @@ export class GameServer {
             await this.sendGameMessage(game, {type: 'game-starting'});
             console.log('game starting');
 
-            /*todo process game logic*/
+            /!*todo process game logic*!/
         }
     }
 
@@ -177,3 +178,4 @@ export class GameServer {
         game.users.splice(game.users.indexOf(user), 1);
     }
 }
+*/

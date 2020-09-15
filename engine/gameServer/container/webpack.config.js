@@ -15,8 +15,8 @@ module.exports = (env) => {
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       alias: {
-        '@common': path.resolve(__dirname, '../../common/'),
-        '@serverCommon': path.resolve(__dirname, '../../serverCommon/'),
+        '@common': path.resolve(__dirname, '../../common/src'),
+        '@serverCommon': path.resolve(__dirname, '../../serverCommon/src'),
         '@framework': path.resolve(__dirname, '../../../framework/server'),
         '@framework-common': path.resolve(__dirname, '../../../framework/common'),
       },

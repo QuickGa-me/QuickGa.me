@@ -4,21 +4,21 @@
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
   "scripts": {
-    "tsc": "cd framework/client & tsc & cd ../server & tsc & cd ../../games/sudoku/client & tsc & cd ../server & tsc & cd ../../../site/web & tsc & cd ../webServer & tsc & cd ../lobbyServer & tsc ",
-    "pretty": "prettier \"*/**/*.ts*\"  --config .prettierrc --write",
-    "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/web & npm install & cd ../webServer & npm install & cd ../serverCommon & npm install & cd ../lobbyServer & npm install ",
-    "precommit": "npm run pretty & npm run tsc",
-
-    "deploy:web": "cd engine/web & npm run deploy",
-    "deploy:webserver": "cd engine/webServer & npm run deploy",
-    "deploy:lobby": "cd engine/lobbyServer & npm run deploy",
-    "deploy:game": "cd engine/gameServer & npm run deploy",
-    "deploy": "start npm run deploy:web & start npm run deploy:webserver & start npm run deploy:lobby & start npm run deploy:game",
-
-    "web": "cd engine/web & npm run dev",
-    "webserver": "cd engine/webServer & npm run dev",
-    "lobby": "cd engine/lobbyServer & npm run dev",
-    "game": "cd engine/gameServer & npm run dev"
+  },
+  "workspaces": {
+    "packages": [
+      "cli",
+      "engine/api",
+      "engine/common",
+      "engine/gameServer",
+      "engine/lobbyServer",
+      "engine/serverCommon",
+      "engine/site",
+      "framework/client",
+      "framework/common",
+      "framework/server"
+    ],
+    "nohoist": ["**/**"]
   },
   "dependencies": {
   },
