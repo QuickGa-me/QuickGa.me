@@ -24,7 +24,7 @@ const removeResolveUrlLoader = (config) => {
   const sassModuleRule = findSassModuleRule(config);
   for (const loaderItem of sassModuleRule.use) {
     if (loaderItem.loader && loaderItem.loader.includes('resolve-url-loader')) {
-      loaderItem.options.removeCR=true;
+      loaderItem.options.removeCR = true;
     }
   }
   return config;
@@ -37,5 +37,19 @@ module.exports = override(
   addWebpackAlias({
     ['@common']: path.resolve(__dirname, '..', 'common'),
     react: path.resolve('./node_modules/react'),
-  })
+  }),
+  function override(config, env) {
+    config.module.rules.some((rule, index) => {
+      if (Array.isArray(rule.use)) {
+        const eslintUse = rule.use.find((item) => Object.keys(item.options).find((key) => key === 'useEslintrc'));
+        eslintOptions = eslintUse && eslintUse.options;
+        if (eslintOptions) {
+          config.module.rules.splice(index, 1);
+          return true;
+        }
+      }
+    });
+
+    return config;
+  }
 );

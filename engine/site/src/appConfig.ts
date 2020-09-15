@@ -3,7 +3,7 @@ export class AppConfig {
   static get host() {
     switch (this.env) {
       case 'local':
-        return 'https://localhost:3503';
+        return 'http://localhost:3503';
       case 'prod':
         return 'https://api.quickga.me';
     }

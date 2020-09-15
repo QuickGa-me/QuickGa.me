@@ -23,6 +23,30 @@ export class AnalyticsClient {
   }
 }
 
+export class GameDetailsClient {
+  static async getGames<TPromise = GetGamesResponse>(
+    model: VoidRequest,
+    handle: {200?: (result: GetGamesResponse) => void; 500?: (result: string) => void; 401?: (error: string) => void}
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game-details/?';
+
+    return makeGetRequest(url, model, 'GET', handle);
+  }
+
+  static async getGameDetails<TPromise = GetGameDetailsResponse>(
+    model: GetGameDetailsRequest,
+    handle: {
+      200?: (result: GetGameDetailsResponse) => void;
+      500?: (result: string) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game-details/details?';
+
+    return makeGetRequest(url, model, 'GET', handle);
+  }
+}
+
 export class LobbySocketClient {
   socket?: WebSocket;
   events?: LobbySocketEvents;
@@ -95,6 +119,34 @@ export interface VoidResponse {}
 export interface VoidRequest {}
 
 export interface MetaResponse {}
+
+export interface GetGamesResponse {
+  games: HttpGameDetailLight[];
+}
+
+export interface HttpGameDetailLight {
+  id: string;
+  logo: string;
+  name: string;
+  description: string;
+}
+
+export interface GetGameDetailsRequest {
+  gameId: string;
+}
+
+export interface GetGameDetailsResponse {
+  details: HttpGameDetail;
+}
+
+export interface HttpGameDetail {
+  id: string;
+  logo: string;
+  name: string;
+  description: string;
+  author: string;
+  numberOfActivePlayers: number;
+}
 
 export interface PlayerJoinRequest {
   playerId: string;

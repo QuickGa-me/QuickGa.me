@@ -41,6 +41,23 @@ export class RequestModelValidator {
     return true;
   }
 
+  static validateGetGameDetailsRequest(
+    model: import('../controllers/gameDetailsController/models').GetGameDetailsRequest
+  ): boolean {
+    let fieldCount = 0;
+    if (model === null) throw new ValidationError('GetGameDetailsRequest', 'missing', '');
+    if (typeof model !== 'object') throw new ValidationError('GetGameDetailsRequest', 'mismatch', '');
+
+    if (model['gameId'] === null) throw new ValidationError('GetGameDetailsRequest', 'missing', 'gameId');
+    fieldCount++;
+    if (typeof model['gameId'] !== 'string') throw new ValidationError('GetGameDetailsRequest', 'mismatch', 'gameId');
+
+    if (Object.keys(model).length !== fieldCount)
+      throw new ValidationError('GetGameDetailsRequest', 'too-many-fields', '');
+
+    return true;
+  }
+
   static validatePlayerJoinRequest(
     model: import('../controllers/lobbySocketController/models').PlayerJoinRequest
   ): boolean {
