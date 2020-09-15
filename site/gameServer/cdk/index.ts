@@ -64,8 +64,10 @@ new GameServerECS(app, 'QuickGame-GameServer', {
 app.synth();
 
 /*
-create task
-create cluster
-create service
+create vpc
+create redis
 create alb
+  create listnere
+no target groups
+create cluster
  * */

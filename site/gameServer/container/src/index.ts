@@ -2,7 +2,7 @@ import {ServerSocket} from './serverSocket';
 import {ServerUtils} from './serverUtils';
 
 async function main() {
-  await ServerUtils.updateLoadBalancer('abc123');
+  await ServerUtils.updateLoadBalancer('abc' + (Math.random() * 10000).toFixed());
 
   const serverSocket = new ServerSocket();
   serverSocket.start({onJoin: () => {}, onLeave: () => {}, onMessage: () => {}});
