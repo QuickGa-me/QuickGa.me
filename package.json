@@ -9,16 +9,16 @@
     "install": "cd framework/client & npm install & cd ../server & npm install & cd ../../games/sudoku/client & npm install & cd ../server & npm install & cd ../../../site/web & npm install & cd ../webServer & npm install & cd ../serverCommon & npm install & cd ../lobbyServer & npm install ",
     "precommit": "npm run pretty & npm run tsc",
 
-    "deploy:web": "cd site/web & npm run deploy",
-    "deploy:webserver": "cd site/webServer & npm run deploy",
-    "deploy:lobby": "cd site/lobbyServer & npm run deploy",
-    "deploy:game": "cd site/gameServer & npm run deploy",
+    "deploy:web": "cd engine/web & npm run deploy",
+    "deploy:webserver": "cd engine/webServer & npm run deploy",
+    "deploy:lobby": "cd engine/lobbyServer & npm run deploy",
+    "deploy:game": "cd engine/gameServer & npm run deploy",
     "deploy": "start npm run deploy:web & start npm run deploy:webserver & start npm run deploy:lobby & start npm run deploy:game",
 
-    "web": "cd site/web & npm run dev",
-    "webserver": "cd site/webServer & npm run dev",
-    "lobby": "cd site/lobbyServer & npm run dev",
-    "game": "cd site/gameServer & npm run dev"
+    "web": "cd engine/web & npm run dev",
+    "webserver": "cd engine/webServer & npm run dev",
+    "lobby": "cd engine/lobbyServer & npm run dev",
+    "game": "cd engine/gameServer & npm run dev"
   },
   "dependencies": {
   },
