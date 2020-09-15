@@ -15,7 +15,7 @@ export const ClientTransformOptions = (options: any): RequestInit => {
 export const ClientOptions: ControllerOptions = {
   baseUrl: AppConfig.host,
   getJwt: () => {
-    return playerStore.jwt!;
+    return playerStore.jwt;
   },
   handleError: (error: string) => {
     if (error.toLowerCase().includes('fetch')) {
@@ -30,10 +30,10 @@ export const ClientOptions: ControllerOptions = {
 
 export const ClientSocketOptions: ControllerOptions = {
   get baseUrl() {
-    return AppConfig.socketHost + '?jwt=' + playerStore.jwt;
+    return AppConfig.lobbyHost + '?jwt=' + playerStore.jwt;
   },
   getJwt: () => {
-    return playerStore.jwt!;
+    return playerStore.jwt;
   },
   handleError: (error: string) => {
     AppToaster.show({message: error, intent: 'danger'});
@@ -56,7 +56,7 @@ export const handle401 = {
 
 export interface ControllerOptions {
   baseUrl: string;
-  getJwt: () => string;
+  getJwt: () => string|undefined;
   handleError: (error: string) => void;
   handleUnauthorized: (error: string) => void;
 }

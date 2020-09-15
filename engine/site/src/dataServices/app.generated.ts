@@ -23,6 +23,51 @@ export class AnalyticsClient {
   }
 }
 
+export class LobbySocketClient {
+  socket?: WebSocket;
+  events?: LobbySocketEvents;
+  connect(events: LobbySocketEvents) {
+    this.events = events;
+    this.socket = new WebSocket(ClientSocketOptions.baseUrl);
+    this.socket.onmessage = message => {
+      if (!this.events) return;
+      const response = JSON.parse(message.data);
+      switch (response.event) {
+        case 'playerJoin':
+          this.events.onPlayerJoin && this.events.onPlayerJoin(response.data);
+          break;
+      }
+    };
+    this.socket.onclose = e => {
+      this.events?.onDisconnect && this.events?.onDisconnect();
+    };
+    this.socket.onopen = () => {
+      this.events?.onConnect && this.events?.onConnect();
+    };
+  }
+  disconnect() {
+    this.socket && this.socket.close();
+  }
+
+  playerJoin(request: PlayerJoinRequest): void {
+    this.socket &&
+      this.socket.send(
+        JSON.stringify({
+          action: 'playerJoin',
+          jwt: ClientSocketOptions.getJwt(),
+          data: request,
+        })
+      );
+  }
+}
+
+export interface LobbySocketEvents {
+  onPlayerJoin: (req: PlayerJoinResponse) => void;
+
+  onDisconnect: () => void;
+  onConnect: () => void;
+}
+
 export class PlayerClient {
   static async getPlayerDetails<TPromise = GetPlayerDetailsResponse>(
     model: VoidRequest,
@@ -50,6 +95,14 @@ export interface VoidResponse {}
 export interface VoidRequest {}
 
 export interface MetaResponse {}
+
+export interface PlayerJoinRequest {
+  playerId: string;
+}
+
+export interface PlayerJoinResponse {
+  playerId: string;
+}
 
 export interface GetPlayerDetailsResponse {
   player: HttpPlayerModel;

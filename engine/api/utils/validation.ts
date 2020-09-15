@@ -40,4 +40,20 @@ export class RequestModelValidator {
 
     return true;
   }
+
+  static validatePlayerJoinRequest(
+    model: import('../controllers/lobbySocketController/models').PlayerJoinRequest
+  ): boolean {
+    let fieldCount = 0;
+    if (model === null) throw new ValidationError('PlayerJoinRequest', 'missing', '');
+    if (typeof model !== 'object') throw new ValidationError('PlayerJoinRequest', 'mismatch', '');
+
+    if (model['playerId'] === null) throw new ValidationError('PlayerJoinRequest', 'missing', 'playerId');
+    fieldCount++;
+    if (typeof model['playerId'] !== 'string') throw new ValidationError('PlayerJoinRequest', 'mismatch', 'playerId');
+
+    if (Object.keys(model).length !== fieldCount) throw new ValidationError('PlayerJoinRequest', 'too-many-fields', '');
+
+    return true;
+  }
 }

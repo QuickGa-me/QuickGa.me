@@ -5,15 +5,15 @@ export class AppConfig {
       case 'local':
         return 'https://localhost:3503';
       case 'prod':
-        return 'https://api.bounceblock.party';
+        return 'https://api.quickga.me';
     }
   }
-  static get socketHost() {
+  static get lobbyHost() {
     switch (this.env) {
       case 'local':
-        return 'ws://localhost:3001';
+        return 'ws://localhost:3503';
       case 'prod':
-        return 'wss://ws.bounceblock.party';
+        return 'wss://lobby.quickga.me';
     }
   }
 }

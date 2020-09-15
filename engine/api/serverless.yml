@@ -1,5 +1,5 @@
-org: iamdested
-app: quickgame
+#org: iamdested
+#app: quickgame
 service: quickgame
 
 plugins:
@@ -71,3 +71,12 @@ functions:
             headers:
               - Content-Type
               - authorization
+  lobby-socket-connection:
+    handler: handler.lobbySocket_connectionManagement
+    events:
+      - websocket: $connect
+      - websocket: $disconnect
+  lobby-socket-playerJoin:
+    handler: handler.lobbySocket_playerJoin
+    events:
+      - websocket: playerJoin
