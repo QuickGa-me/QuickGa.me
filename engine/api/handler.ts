@@ -41,12 +41,10 @@ module.exports.api = async (event: LambdaRequestEvent<any>, context: any) => {
 
   await SecureConfig.setup();
   // await warmDB();
-  console.log(ServerRouter.endpoints);
   let result = ServerRouter.endpoints
     .filter((e) => e.method.toLowerCase() === event.httpMethod.toLowerCase())
     .map((endpoint) => ({result: endpoint.match(event.path), endpoint}))
     .filter((a) => a.result);
-  console.log(result.length);
 
   if (result.length > 1) {
     const found = result.filter((a) => a.result !== false && Object.keys(a.result.params).length === 0);

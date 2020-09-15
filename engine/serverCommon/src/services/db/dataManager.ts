@@ -61,7 +61,7 @@ type FlattenArray<T> = {
 };
 
 export class DocumentManager<T extends {_id: ObjectId}> {
-  constructor(private collectionName: string) {}
+  constructor(public collectionName: string) {}
 
   async aggregate<TAgg>(query: any): Promise<TAgg[]> {
     return (await DataManager.dbConnection()).collection(this.collectionName).aggregate(query).toArray();

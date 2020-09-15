@@ -1,3 +1,5 @@
+import {GameRules, GameRulesSchema} from '../dbModels/dbGame';
+
 export interface HttpGameDetailLight {
   id: string;
   logo: string;
@@ -11,4 +13,7 @@ export interface HttpGameDetail {
   description: string;
   author: string;
   numberOfActivePlayers: number;
+
+  gameRulesSchema: GameRulesSchema;
+  gameRulesDefault: GameRules;
 }

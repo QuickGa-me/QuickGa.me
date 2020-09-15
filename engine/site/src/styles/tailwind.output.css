@@ -9,8 +9,8 @@
 
 .btn-blue {
   --bg-opacity: 1;
-  background-color: #90cdf4;
-  background-color: rgba(144, 205, 244, var(--bg-opacity));
+  background-color: #3182ce;
+  background-color: rgba(49, 130, 206, var(--bg-opacity));
   --text-opacity: 1;
   color: #fff;
   color: rgba(255, 255, 255, var(--text-opacity));

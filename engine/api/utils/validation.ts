@@ -73,4 +73,8 @@ export class RequestModelValidator {
 
     return true;
   }
+
+    static validateJoinLobbyRequest(model: JoinLobbyRequest) {
+        
+    }
 }
