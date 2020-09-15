@@ -1,11 +1,11 @@
-import {viewerStore} from '../store/viewerStore';
+import {playerStore} from '../store/playerStore';
 import {AppConfig} from '../appConfig';
 import {AppToaster} from '../appToaster';
 
 export const ClientTransformOptions = (options: any): RequestInit => {
   options.headers = options.headers ?? {};
-  if (viewerStore.jwt) {
-    options.headers.authorization = `Bearer ${viewerStore.jwt}`;
+  if (playerStore.jwt) {
+    options.headers.authorization = `Bearer ${playerStore.jwt}`;
   }
   options.headers['Content-Type'] = 'application/json';
   options.headers.Accept = 'application/json';
@@ -15,7 +15,7 @@ export const ClientTransformOptions = (options: any): RequestInit => {
 export const ClientOptions: ControllerOptions = {
   baseUrl: AppConfig.host,
   getJwt: () => {
-    return viewerStore.jwt!;
+    return playerStore.jwt!;
   },
   handleError: (error: string) => {
     if (error.toLowerCase().includes('fetch')) {
@@ -24,22 +24,22 @@ export const ClientOptions: ControllerOptions = {
     AppToaster.show({message: error, intent: 'danger'});
   },
   handleUnauthorized: (error: string) => {
-    viewerStore.logout();
+    playerStore.logout();
   },
 };
 
 export const ClientSocketOptions: ControllerOptions = {
   get baseUrl() {
-    return AppConfig.socketHost + '?jwt=' + viewerStore.jwt;
+    return AppConfig.socketHost + '?jwt=' + playerStore.jwt;
   },
   getJwt: () => {
-    return viewerStore.jwt!;
+    return playerStore.jwt!;
   },
   handleError: (error: string) => {
     AppToaster.show({message: error, intent: 'danger'});
   },
   handleUnauthorized: (error: string) => {
-    viewerStore.logout();
+    playerStore.logout();
   },
 };
 

@@ -40,17 +40,4 @@ export class RequestModelValidator {
 
     return true;
   }
-
-  static validateGetViewerDetailsRequest(
-    model: import('../controllers/viewerController/models').GetViewerDetailsRequest
-  ): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('GetViewerDetailsRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('GetViewerDetailsRequest', 'mismatch', '');
-
-    if (Object.keys(model).length !== fieldCount)
-      throw new ValidationError('GetViewerDetailsRequest', 'too-many-fields', '');
-
-    return true;
-  }
 }

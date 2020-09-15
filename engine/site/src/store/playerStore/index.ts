@@ -1,6 +1,6 @@
 import {action, observable} from 'mobx';
 
-export class ViewerStore {
+export class PlayerStore {
   @observable isMobile: boolean = false;
   @observable jwt?: string;
   @action setMobile() {
@@ -15,5 +15,5 @@ export class ViewerStore {
   }
 }
 
-export const viewerStore = new ViewerStore();
-export type ViewerStoreProps = {viewerStore: ViewerStore};
+export const playerStore = new PlayerStore();
+export type PlayerStoreProps = {playerStore: PlayerStore};

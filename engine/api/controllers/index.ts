@@ -1,2 +1,2 @@
-import './viewerController';
+import './playerController';
 import './analyticsController';
