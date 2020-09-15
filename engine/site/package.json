@@ -1,0 +1,70 @@
+{
+  "name": "gq-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "animate.css": "^4.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "node-sass": "^4.14.1",
+    "classnames": "^2.2.6",
+    "chalk": "^4.1.0",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.2",
+    "normalize.css": "^8.0.1",
+    "@blueprintjs/core": "^3.29.0",
+    "planck-js": "^0.3.19",
+    "react-cool-inview": "^1.1.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hook-form": "^6.0.4",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.10",
+    "@types/react": "^16.8.1",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.5",
+    "customize-cra": "^0.9.1",
+    "prettier": "^2.0.5",
+    "react-app-rewired": "^2.1.5",
+    "tcm": "^1.0.15",
+    "tslint": "^6.1.2",
+    "tslib": "^2.0.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "tslint-react": "^5.0.0",
+    "typescript": "^3.9.5",
+    "cross-env": "^7.0.2"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "build-prod": "cross-env REACT_APP_ENV=prod react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "web-deploy": "s3-deploy prod",
+    "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
+    "lint": "npx tslint -p tsconfig.json --fix"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

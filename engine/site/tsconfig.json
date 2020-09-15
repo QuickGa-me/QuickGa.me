@@ -1,0 +1,33 @@
+{
+  "extends": "./paths.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "jsx": "react",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "target": "ES6",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "allowUnreachableCode": true,
+    "strict": true,
+    "lib": [
+      "esnext",
+      "dom",
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    "inlineSourceMap": true,
+    "pretty": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src"
+  ]
+}
