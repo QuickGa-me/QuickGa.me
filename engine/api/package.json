@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.711.0",
+    "bcryptjs": "^2.4.3",
     "axios": "^0.19.2",
     "bson": "^4.0.4",
     "dotenv": "^8.0.0",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@types/redis": "2.8.25",
+    "@types/bcryptjs": "^2.4.2",
     "@types/aws-lambda": "^8.10.57",
     "@types/aws-sdk": "^2.7.0",
     "@types/dotenv": "^6.1.1",

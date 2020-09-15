@@ -861,10 +861,10 @@ export class Aggregator<T> extends AggregatorLookup<T> {
     return pipelines.reverse();
   }
 
-  async result<TDoc extends {_id: ObjectId}>(collection: Collection<TDoc>): Promise<UnwrapArrayishObject<T>[]> {
+  async result<TDoc extends {_id: ObjectId}>(collection: Collection<TDoc>): Promise<T /*UnwrapArrayishObject<T>*/[]> {
     console.time('agg');
     const result = await collection
-      .aggregate<UnwrapArrayishObject<T>>(this.query(), {allowDiskUse: true})
+      .aggregate<T>(this.query(), {allowDiskUse: true})
       .toArray();
     console.timeEnd('agg');
     return result;

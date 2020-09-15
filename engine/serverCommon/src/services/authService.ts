@@ -5,13 +5,9 @@ import {ResponseError} from '@serverCommon/utils/responseError';
 
 export class AuthService {
   static async createPlayerToken(jwtChannelGame: JwtPlayer): Promise<string> {
-    const token = jsonWebToken.sign(
-      {playerId: jwtChannelGame.playerId.toHexString()},
-      Config.playerJwtKey,
-      {
-        expiresIn: '365d',
-      }
-    );
+    const token = jsonWebToken.sign({playerId: jwtChannelGame.playerId.toHexString()}, Config.playerJwtKey, {
+      expiresIn: '4d',
+    });
     return token;
   }
 

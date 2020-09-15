@@ -76,7 +76,11 @@ functions:
     events:
       - websocket: $connect
       - websocket: $disconnect
-  lobby-socket-playerJoin:
-    handler: handler.lobbySocket_playerJoin
+  lobby-socket-join:
+    handler: handler.lobbySocket_join
     events:
-      - websocket: playerJoin
+      - websocket: join
+  lobby-socket-voteStart:
+    handler: handler.lobbySocket_voteStart
+    events:
+      - websocket: voteStart

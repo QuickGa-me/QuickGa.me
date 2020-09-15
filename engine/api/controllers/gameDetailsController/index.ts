@@ -115,6 +115,7 @@ export class GameDetailsController {
     await DbModels.lobbyPlayer.insertDocument({
       lobbyId,
       playerId: player.playerId,
+      connectionId: undefined,
     });
     return {
       lobbyId: lobbyId.toHexString(),
@@ -159,6 +160,7 @@ export class GameDetailsController {
     await DbModels.lobbyPlayer.insertDocument({
       lobbyId,
       playerId: player.playerId,
+      connectionId: undefined,
     });
     return {
       lobbyId: lobbyId.toHexString(),
@@ -186,6 +188,7 @@ export class GameDetailsController {
     await DbModels.lobbyPlayer.insertDocument({
       lobbyId: lobby._id,
       playerId: player.playerId,
+      connectionId: undefined,
     });
     return {
       lobbyId: lobby._id.toHexString(),

@@ -12,7 +12,7 @@ export type DbGameModel = {
   description: string;
   author: string;
   gameConfig: GameConfig;
-  
+
   gameRulesSchema: GameRulesSchema;
   gameRulesDefault: GameRules;
 };
@@ -49,7 +49,7 @@ export class DbGameLogic {
       author: model.author,
       numberOfActivePlayers: 27,
       gameRulesSchema: model.gameRulesSchema,
-      gameRulesDefault: model.gameRulesSchemaDefault,
+      gameRulesDefault: model.gameRulesDefault,
     };
   }
 }

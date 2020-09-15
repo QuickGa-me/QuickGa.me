@@ -45,6 +45,48 @@ export class GameDetailsClient {
 
     return makeGetRequest(url, model, 'GET', handle);
   }
+
+  static async joinLobby<TPromise = JoinLobbyResponse>(
+    model: JoinLobbyRequest,
+    handle: {
+      200?: (result: JoinLobbyResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game-details/join-lobby?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async joinGame<TPromise = JoinLobbyResponse>(
+    model: JoinLobbyGameRequest,
+    handle: {
+      200?: (result: JoinLobbyResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game-details/join-lobby-game?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async startPrivateLobby<TPromise = JoinLobbyResponse>(
+    model: StartPrivateLobbyRequest,
+    handle: {
+      200?: (result: JoinLobbyResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game-details/start-private-lobby?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
 }
 
 export class LobbySocketClient {
@@ -57,8 +99,12 @@ export class LobbySocketClient {
       if (!this.events) return;
       const response = JSON.parse(message.data);
       switch (response.event) {
-        case 'playerJoin':
-          this.events.onPlayerJoin && this.events.onPlayerJoin(response.data);
+        case 'lobbyPlayers':
+          this.events.onLobbyPlayers && this.events.onLobbyPlayers(response.data);
+          break;
+
+        case 'lobbyDetails':
+          this.events.onLobbyDetails && this.events.onLobbyDetails(response.data);
           break;
       }
     };
@@ -73,11 +119,11 @@ export class LobbySocketClient {
     this.socket && this.socket.close();
   }
 
-  playerJoin(request: PlayerJoinRequest): void {
+  join(request: PlayerJoinRequest): void {
     this.socket &&
       this.socket.send(
         JSON.stringify({
-          action: 'playerJoin',
+          action: 'join',
           jwt: ClientSocketOptions.getJwt(),
           data: request,
         })
@@ -86,25 +132,78 @@ export class LobbySocketClient {
 }
 
 export interface LobbySocketEvents {
-  onPlayerJoin: (req: PlayerJoinResponse) => void;
+  onLobbyPlayers: (req: LobbyPlayersResponse) => void;
+
+  onLobbyDetails: (req: LobbyDetailsResponse) => void;
 
   onDisconnect: () => void;
   onConnect: () => void;
 }
 
 export class PlayerClient {
-  static async getPlayerDetails<TPromise = GetPlayerDetailsResponse>(
+  static async getPlayerDetails<TPromise = LoginResponse>(
     model: VoidRequest,
+    handle: {200?: (result: LoginResponse) => void; 500?: (result: string) => void; 401?: (error: string) => void}
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/player/details?';
+
+    return makeGetRequest(url, model, 'GET', handle);
+  }
+
+  static async login<TPromise = LoginResponse>(
+    model: LoginRequest,
     handle: {
-      200?: (result: GetPlayerDetailsResponse) => void;
+      200?: (result: LoginResponse) => void;
       500?: (result: string) => void;
       400: (result: {error: string}) => void;
       401?: (error: string) => void;
     }
   ): Promise<TPromise | undefined> {
-    let url = ClientOptions.baseUrl + '/player/details?';
+    let url = ClientOptions.baseUrl + '/player/login?';
 
-    return makeGetRequest(url, model, 'GET', handle);
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async register<TPromise = LoginResponse>(
+    model: RegisterRequest,
+    handle: {
+      200?: (result: LoginResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/player/register?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async convertAnon<TPromise = LoginResponse>(
+    model: RegisterRequest,
+    handle: {
+      200?: (result: LoginResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/player/convert-anon?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async playAnon<TPromise = LoginResponse>(
+    model: VoidRequest,
+    handle: {
+      200?: (result: LoginResponse) => void;
+      500?: (result: string) => void;
+      400: (result: {error: string}) => void;
+      401?: (error: string) => void;
+    }
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/player/anon?';
+
+    return makeRequest(url, model, 'POST', handle);
   }
 }
 
@@ -146,24 +245,85 @@ export interface HttpGameDetail {
   description: string;
   author: string;
   numberOfActivePlayers: number;
+
+  gameRulesSchema: GameRulesSchema;
+  gameRulesDefault: GameRules;
+}
+
+export type GameRulesSchema = {
+  items: {
+    key: string;
+    option:
+      | {type: 'text'; minLength: number; maxLength: number}
+      | {type: 'number'; minValue: number; maxValue: number}
+      | {type: 'switch'}
+      | {type: 'options'; options: {label: string; value: string}[]};
+  }[];
+};
+
+export type GameRules = {
+  items: {key: string; value: string}[];
+};
+
+export interface JoinLobbyRequest {
+  gameId: string;
+  rules: GameRules;
+}
+
+export interface JoinLobbyResponse {
+  lobbyId: string;
+}
+
+export interface JoinLobbyGameRequest {
+  gameId: string;
+  lobbyCode: string;
+}
+
+export interface StartPrivateLobbyRequest {
+  gameId: string;
+  rules: GameRules;
 }
 
 export interface PlayerJoinRequest {
   playerId: string;
 }
 
-export interface PlayerJoinResponse {
-  playerId: string;
-}
-
-export interface GetPlayerDetailsResponse {
-  player: HttpPlayerModel;
+export interface LobbyPlayersResponse {
+  players: {player: HttpPlayerModel; connected: boolean}[];
 }
 
 export type HttpPlayerModel = {
   playerId: string;
   name: string;
+  email: string;
+  anon: boolean;
 };
+
+export interface LobbyDetailsResponse {
+  lobby: HttpLobbyDetails;
+}
+
+export interface HttpLobbyDetails {
+  lobbyId: string;
+  gameId: string;
+  gameRules: GameRules;
+}
+
+export interface LoginResponse {
+  jwt: string;
+  player: HttpPlayerModel;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  name: string;
+}
 
 async function handleResponse(responseText: string, status: number, handle: any) {
   try {
