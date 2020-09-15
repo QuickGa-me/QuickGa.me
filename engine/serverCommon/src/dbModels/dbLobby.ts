@@ -10,6 +10,7 @@ export type DbLobbyModel = {
   _id: ObjectId;
   gameId: ObjectId;
   gameRules: GameRules;
+  state: 'created' | 'starting' | 'playing';
   active: boolean;
   public: boolean;
   lobbyCode: string;
@@ -17,6 +18,7 @@ export type DbLobbyModel = {
 export type DbLobbyPlayerModel = {
   _id: ObjectId;
   lobbyId: ObjectId;
+  voteStart: boolean;
   playerId: ObjectId;
   connectionId: string | undefined;
 };

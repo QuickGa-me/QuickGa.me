@@ -102,6 +102,7 @@ export class GameDetailsController {
     if (lobbyResult.length === 0) {
       const lobby = await DbModels.lobby.insertDocument({
         gameRules: model.rules,
+        state: 'created',
         active: true,
         public: true,
         gameId: ObjectId.createFromHexString(model.gameId),
@@ -114,6 +115,7 @@ export class GameDetailsController {
 
     await DbModels.lobbyPlayer.insertDocument({
       lobbyId,
+      voteStart: false,
       playerId: player.playerId,
       connectionId: undefined,
     });
@@ -159,6 +161,7 @@ export class GameDetailsController {
 
     await DbModels.lobbyPlayer.insertDocument({
       lobbyId,
+      voteStart: false,
       playerId: player.playerId,
       connectionId: undefined,
     });
@@ -179,6 +182,7 @@ export class GameDetailsController {
 
     const lobby = await DbModels.lobby.insertDocument({
       gameRules: model.rules,
+      state: 'created',
       active: true,
       public: true,
       gameId: ObjectId.createFromHexString(model.gameId),
@@ -189,6 +193,7 @@ export class GameDetailsController {
       lobbyId: lobby._id,
       playerId: player.playerId,
       connectionId: undefined,
+      voteStart: false,
     });
     return {
       lobbyId: lobby._id.toHexString(),

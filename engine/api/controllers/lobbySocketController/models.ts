@@ -7,6 +7,16 @@ export interface LobbyDetailsResponse {
 export interface LobbyPlayersResponse {
   players: {player: HttpPlayerModel; connected: boolean}[];
 }
+export interface GameStartedResponse {
+  gameUrl: string;
+}
+export interface LobbyVoteStartResponse {
+  votes: {start: number; notStart: number};
+}
 export interface PlayerJoinRequest {
   playerId: string;
+}
+
+export interface VoteStartRequest {
+  voteStart: boolean;
 }
