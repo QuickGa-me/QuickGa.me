@@ -1,10 +1,7 @@
-@import '~tailwind-sass';
 @import '~normalize.css';
-@import '~@blueprintjs/core/lib/css/blueprint.css';
 @import './base';
 @import './game';
 @import './boxCard';
-@import '~animate.css/animate.compat.css';
 
 .overlay-button {
   padding: 3px !important;

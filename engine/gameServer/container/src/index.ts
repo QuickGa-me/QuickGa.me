@@ -8,7 +8,7 @@ async function main() {
 
   PubSubService.blockingPop<PubSubStartGameRequest>('new-game', async (result) => {
     console.log('creating new game');
-
+    /*
     const dbLiveGame = await DBLiveGame.db.getById(liveGameId);
     const dbGame = await DBGame.db.getById(dbLiveGame.gameId);
     let serverCode = eval(dbGame.serverSource!);
@@ -30,8 +30,7 @@ async function main() {
     dbLiveGame.gameServerAddress = game.gameServerAddress;
     await DBLiveGame.db.updateDocument(dbLiveGame);
     this.games.push(game);
-    console.log('game created');
-    
+    console.log('game created');*/
 
     console.log('sending new game back to lobby ', result.lobbyId);
     PubSub.push<PubSubStartGameResponse>(result.lobbyId, {

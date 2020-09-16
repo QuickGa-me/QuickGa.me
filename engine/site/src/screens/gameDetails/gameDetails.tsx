@@ -1,3 +1,4 @@
+import './gameDetails.css';
 import {FC, ReactNode, useCallback} from 'react';
 import React from 'react';
 import {observer} from 'mobx-react';

@@ -1,5 +1,4 @@
 import React, {CSSProperties, FC, useCallback, useEffect, useRef, useState} from 'react';
-import {Spinner} from '@blueprintjs/core/lib/esm/components/spinner/spinner';
 import {observer} from 'mobx-react';
 
 type BoxThemeProps = {theme: 'grey' | 'success' | 'gold' | 'danger' | 'warning'};
@@ -111,7 +110,7 @@ export const BoxCardButton: FC<ButtonBoxCardProps> = observer(
         } ${className || ''} `}
         style={{...rest.style, ...size, cursor: disabled ? 'not-allowed' : 'pointer'}}
       >
-        {showLoading ? <Spinner size={(size?.height || 20) * 0.5} /> : rest.children}
+        {showLoading ? 'Loading...' : rest.children}
       </button>
     );
   }
@@ -152,7 +151,7 @@ export const ButtonBoxCardSmall: FC<ButtonBoxCardProps> = observer(
         }  box-${theme} box-card-small ${disabled ? 'box-card-disabled' : ''}`}
         style={{...style, ...size, cursor: disabled ? 'not-allowed' : 'pointer'}}
       >
-        {loading ? <Spinner size={20} /> : rest.children}
+        {loading ? 'Loading....' : rest.children}
       </button>
     );
   }

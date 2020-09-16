@@ -1,5 +1,5 @@
 import './index.scss';
-import './styles/tailwind.output.css';
+import './styles/tailwind.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {webStores} from './store/webStores';

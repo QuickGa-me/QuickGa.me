@@ -1,5 +1,5 @@
 {
-  "name": "quickgame",
+  "name": "qg",
   "version": "1.0.0",
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
@@ -8,15 +8,9 @@
   "workspaces": {
     "packages": [
       "cli",
-      "engine/api",
-      "engine/common",
-      "engine/gameServer",
-      "engine/lobbyServer",
-      "engine/serverCommon",
-      "engine/site",
-      "framework/client",
-      "framework/common",
-      "framework/server"
+      "engine/*",
+      "framework/*",
+      "games/*"
     ],
     "nohoist": ["**/**"]
   },

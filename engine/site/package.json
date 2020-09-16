@@ -1,9 +1,8 @@
 {
-  "name": "gq-web",
+  "name": "qg-site",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^3.29.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -47,17 +46,13 @@
     "typescript": "^3.9.5",
     "chokidar-cli": "^2.1.0",
     "npm-run-all": "^4.1.5",
-    "postcss-import": "^12.0.1"
+    "postcss-import": "^12.0.1",
+    "react-app-rewire-postcss": "^3.0.2"
   },
   "scripts": {
-    "build:tailwind": "postcss src/styles/tailwind.css -o src/styles/tailwind.output.css",
-    "watch:tailwind": "chokidar 'src/**/*.css' --ignore src/styles/tailwind.output.css -c 'npm run build:tailwind'",
-
-    "start": "npm-run-all build:tailwind --parallel watch:tailwind start:react",
-    "start:react": "react-app-rewired start",
-
+    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "build-prod": "yarn build:tailwind && cross-env REACT_APP_ENV=prod react-app-rewired build",
+    "build-prod": "cross-env REACT_APP_ENV=prod react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "web-deploy": "s3-deploy prod",

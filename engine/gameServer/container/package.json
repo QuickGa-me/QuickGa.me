@@ -1,5 +1,5 @@
 {
-  "name": "gq-gameserver",
+  "name": "qg-gameserver",
   "version": "1.0.0",
   "main": "main.ts",
   "license": "MIT",

@@ -1,6 +1,6 @@
 const {removeModuleScopePlugin, override, addWebpackAlias, babelInclude} = require('customize-cra');
 const path = require('path');
-
+const postcss = require('react-app-rewire-postcss');
 const findSassModuleRule = (config) => {
   let sassModuleRuleIndex;
   const cssLoaderModule = config.module.rules.find((ruleItem) => {
@@ -33,6 +33,10 @@ const removeResolveUrlLoader = (config) => {
 module.exports = override(
   removeResolveUrlLoader,
   removeModuleScopePlugin(),
+  (config) => {
+    postcss(config, true /* any truthy value will do */);
+    return config;
+  },
   babelInclude([path.resolve('src'), path.resolve('../common')]),
   addWebpackAlias({
     ['@common']: path.resolve(__dirname, '..', 'common'),

@@ -1,5 +1,5 @@
 {
-  "name": "gq-gameserver-docker",
+  "name": "qg-gameserver-docker",
   "version": "1.0.0",
   "main": "main.ts",
   "license": "MIT",
