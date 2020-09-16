@@ -1,5 +1,6 @@
 import {ObjectId} from 'bson';
 import {HttpPlayerModel} from '../models/httpPlayerModel';
+import {HttpGameDetail, HttpGameDetailLight} from '../models/httpGameDetail';
 import {GameRules} from './dbGame';
 import {HttpLobbyDetails} from '../models/common/httpLobbyDetails';
 import {DbPlayerLogic, DbPlayerModel} from './dbPlayer';
