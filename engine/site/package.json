@@ -12,6 +12,7 @@
     "classnames": "^2.2.6",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
+    "mobx-persist": "^0.4.1",
     "node-sass": "^4.14.1",
     "normalize.css": "^8.0.1",
     "planck-js": "^0.3.19",

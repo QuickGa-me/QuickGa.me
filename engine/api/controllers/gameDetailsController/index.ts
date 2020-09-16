@@ -18,54 +18,24 @@ import {DbModels} from '@serverCommon/dbModels/dbModels';
 import {Aggregator, AggregatorLookup} from '@serverCommon/services/db/typeSafeAggregate';
 import {DbLobbyLogic, DbLobbyModel, DbLobbyPlayerModel} from '@serverCommon/dbModels/dbLobby';
 import {ObjectId} from 'bson';
+import {DbGameLogic} from '@serverCommon/dbModels/dbGame';
 
 @controller('game-details', {})
 export class GameDetailsController {
   @request('GET', '', {statusCodes: []})
   static async getGames(model: VoidRequest, headers: RequestHeaders): Promise<GetGamesResponse> {
     RequestModelValidator.validateVoidRequest(model);
-    return {
-      games: [
-        {
-          id: '1',
-          description: 'A brand new maze racer from the makers of the old maze racer!',
-          name: 'Maze Race!!',
-          logo: 'https://dested.com/assets/project-images/hexmaze.png',
-        },
-        {
-          id: '2',
-          description: 'A brand new maze racer from the makers of the old maze racer!',
-          name: 'Maze Race!!',
-          logo: 'https://dested.com/assets/project-images/hexmaze.png',
-        },
-        {
-          id: '3',
-          description: 'A brand new maze racer from the makers of the old maze racer!',
-          name: 'Maze Race!!',
-          logo: 'https://dested.com/assets/project-images/hexmaze.png',
-        },
-      ],
-    };
+    const games = await DbModels.game.getAll({});
+    return {games: games.map((g) => DbGameLogic.mapLight(g))};
   }
-  @request('GET', 'details', {statusCodes: []})
+  @request('GET', 'details', {statusCodes: [400]})
   static async getGameDetails(model: GetGameDetailsRequest, headers: RequestHeaders): Promise<GetGameDetailsResponse> {
     RequestModelValidator.validateGetGameDetailsRequest(model);
-    return {
-      details: {
-        id: 'maze-race',
-        description: 'A brand new maze racer from the makers of the old maze racer!',
-        name: 'Maze Race!!',
-        logo: 'https://dested.com/assets/project-images/hexmaze.png',
-        author: 'dested',
-        numberOfActivePlayers: 17,
-        gameRulesSchema: {
-          items: [{key: 'shapes', option: {type: 'switch'}}],
-        },
-        gameRulesDefault: {
-          items: [{key: 'shapes', value: 'true'}],
-        },
-      },
-    };
+    const game = await DbModels.game.getOne({gameId: model.gameId});
+    if (!game) {
+      throw new ResponseError(400, 'This game cannot be found!');
+    }
+    return {details: await DbGameLogic.mapDetail(game)};
   }
 
   @request('POST', 'join-lobby', {statusCodes: [400]})
@@ -73,7 +43,7 @@ export class GameDetailsController {
     RequestModelValidator.validateJoinLobbyRequest(model);
     const player = AuthService.validatePlayerToken(headers.authorization);
 
-    const game = await DbModels.game.getById(model.gameId);
+    const game = await DbModels.game.getOne({gameId: model.gameId});
     if (!game) {
       throw new ResponseError(400, 'This game cannot be found!');
     }
@@ -105,7 +75,7 @@ export class GameDetailsController {
         state: 'created',
         active: true,
         public: true,
-        gameId: ObjectId.createFromHexString(model.gameId),
+        gameId: game._id,
         lobbyCode: this.generateLobbyCode(),
       });
       lobbyId = lobby._id;
@@ -125,10 +95,10 @@ export class GameDetailsController {
   }
   @request('POST', 'join-lobby-game', {statusCodes: [400]})
   static async joinGame(model: JoinLobbyGameRequest, headers: RequestHeaders): Promise<JoinLobbyResponse> {
-    RequestModelValidator.validateJoinLobbyRequest(model);
+    RequestModelValidator.validateJoinLobbyGameRequest(model);
     const player = AuthService.validatePlayerToken(headers.authorization);
 
-    const game = await DbModels.game.getById(model.gameId);
+    const game = await DbModels.game.getOne({gameId: model.gameId});
     if (!game) {
       throw new ResponseError(400, 'This game cannot be found!');
     }
@@ -175,7 +145,7 @@ export class GameDetailsController {
     RequestModelValidator.validateJoinLobbyRequest(model);
     const player = AuthService.validatePlayerToken(headers.authorization);
 
-    const game = await DbModels.game.getById(model.gameId);
+    const game = await DbModels.game.getOne({gameId: model.gameId});
     if (!game) {
       throw new ResponseError(400, 'This game cannot be found!');
     }
@@ -185,7 +155,7 @@ export class GameDetailsController {
       state: 'created',
       active: true,
       public: true,
-      gameId: ObjectId.createFromHexString(model.gameId),
+      gameId: game._id,
       lobbyCode: this.generateLobbyCode(),
     });
 
@@ -202,7 +172,7 @@ export class GameDetailsController {
 
   private static generateLobbyCode() {
     function s4() {
-      return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor((1 + Math.random()) * 26)];
+      return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)];
     }
 
     return `${s4()}${s4()}${s4()}${s4()}${s4()}${s4()}${s4()}`;

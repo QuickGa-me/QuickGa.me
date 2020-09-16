@@ -20,6 +20,7 @@ custom:
     host: 0.0.0.0
     noPrependStageInUrl: true
     httpPort: 3503
+    websocketPort: 3939
   customDomain:
     rest:
       domainName: api.quickga.me

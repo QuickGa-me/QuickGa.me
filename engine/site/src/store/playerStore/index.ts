@@ -1,15 +1,24 @@
-import {action, observable} from 'mobx';
+import {action, computed, observable} from 'mobx';
+import {HttpPlayerModel} from '../../dataServices/app.generated';
+import {persist} from 'mobx-persist';
 
 export class PlayerStore {
   @observable isMobile: boolean = false;
-  @observable jwt?: string;
+  @observable @persist jwt?: string;
+  @observable player?: HttpPlayerModel;
+
   @action setMobile() {
     this.isMobile = true;
   }
   @action setJwt(jwt: string) {
     this.jwt = jwt;
   }
-
+  @action setPlayer(player: HttpPlayerModel) {
+    this.player = player;
+  }
+  @computed get isAnon() {
+    return this.player?.anon;
+  }
   @action logout() {
     this.jwt = undefined;
   }

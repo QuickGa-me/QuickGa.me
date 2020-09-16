@@ -2,9 +2,9 @@ import {ApiGatewayManagementApi} from 'aws-sdk';
 
 const publishUrl = () => {
   if (process.env.IS_OFFLINE) {
-    return `http://localhost:3001`;
+    return `http://localhost:3939`;
   } else {
-    return `https://ws.bounceblock.party`;
+    return `https://lobby.quickga.me`;
   }
 };
 const options = {

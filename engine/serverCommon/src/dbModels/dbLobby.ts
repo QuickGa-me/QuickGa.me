@@ -28,6 +28,7 @@ export class DbLobbyLogic {
     return {
       gameId: lobby.gameId.toHexString(),
       gameRules: lobby.gameRules,
+      lobbyCode: lobby.lobbyCode,
       lobbyId: lobby._id.toHexString(),
     };
   }

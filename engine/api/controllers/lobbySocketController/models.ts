@@ -13,9 +13,7 @@ export interface GameStartedResponse {
 export interface LobbyVoteStartResponse {
   votes: {start: number; notStart: number};
 }
-export interface PlayerJoinRequest {
-  playerId: string;
-}
+export interface PlayerJoinRequest {}
 
 export interface VoteStartRequest {
   voteStart: boolean;

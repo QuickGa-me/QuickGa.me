@@ -51,7 +51,7 @@
     "json-loader": "^0.5.7",
     "prettier": "^2.0.5",
     "serverless": "1.80.0",
-    "serverless-domain-manager": "^4.2.0",
+    "serverless-domain-manager": "^4.2.2",
     "serverless-offline": "^6.4.0",
     "serverless-offline-scheduler": "^0.4.2",
     "serverless-webpack": "^5.3.2",

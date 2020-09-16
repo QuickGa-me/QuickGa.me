@@ -11,7 +11,7 @@ export class AppConfig {
   static get lobbyHost() {
     switch (this.env) {
       case 'local':
-        return 'ws://localhost:3503';
+        return 'ws://localhost:3939';
       case 'prod':
         return 'wss://lobby.quickga.me';
     }

@@ -1,3 +1,5 @@
+import {DbModels} from '@serverCommon/dbModels/dbModels';
+
 process.env.IS_OFFLINE = 'true';
 import {Config} from '@serverCommon/config/config';
 import {SecureConfig} from '@serverCommon/config/secureConfig';

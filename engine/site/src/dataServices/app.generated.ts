@@ -38,6 +38,7 @@ export class GameDetailsClient {
     handle: {
       200?: (result: GetGameDetailsResponse) => void;
       500?: (result: string) => void;
+      400: (result: {error: string}) => void;
       401?: (error: string) => void;
     }
   ): Promise<TPromise | undefined> {
@@ -103,6 +104,18 @@ export class LobbySocketClient {
           this.events.onLobbyPlayers && this.events.onLobbyPlayers(response.data);
           break;
 
+        case 'gameStarting':
+          this.events.onGameStarting && this.events.onGameStarting(response.data);
+          break;
+
+        case 'gameStarted':
+          this.events.onGameStarted && this.events.onGameStarted(response.data);
+          break;
+
+        case 'voteStart':
+          this.events.onVoteStart && this.events.onVoteStart(response.data);
+          break;
+
         case 'lobbyDetails':
           this.events.onLobbyDetails && this.events.onLobbyDetails(response.data);
           break;
@@ -129,10 +142,27 @@ export class LobbySocketClient {
         })
       );
   }
+
+  voteStart(request: VoteStartRequest): void {
+    this.socket &&
+      this.socket.send(
+        JSON.stringify({
+          action: 'voteStart',
+          jwt: ClientSocketOptions.getJwt(),
+          data: request,
+        })
+      );
+  }
 }
 
 export interface LobbySocketEvents {
   onLobbyPlayers: (req: LobbyPlayersResponse) => void;
+
+  onGameStarting: (req: VoidResponse) => void;
+
+  onGameStarted: (req: GameStartedResponse) => void;
+
+  onVoteStart: (req: LobbyVoteStartResponse) => void;
 
   onLobbyDetails: (req: LobbyDetailsResponse) => void;
 
@@ -284,8 +314,10 @@ export interface StartPrivateLobbyRequest {
   rules: GameRules;
 }
 
-export interface PlayerJoinRequest {
-  playerId: string;
+export interface PlayerJoinRequest {}
+
+export interface VoteStartRequest {
+  voteStart: boolean;
 }
 
 export interface LobbyPlayersResponse {
@@ -299,6 +331,14 @@ export type HttpPlayerModel = {
   anon: boolean;
 };
 
+export interface GameStartedResponse {
+  gameUrl: string;
+}
+
+export interface LobbyVoteStartResponse {
+  votes: {start: number; notStart: number};
+}
+
 export interface LobbyDetailsResponse {
   lobby: HttpLobbyDetails;
 }
@@ -306,6 +346,7 @@ export interface LobbyDetailsResponse {
 export interface HttpLobbyDetails {
   lobbyId: string;
   gameId: string;
+  lobbyCode: string;
   gameRules: GameRules;
 }
 

@@ -1,5 +1,5 @@
 import './gameDetails.css';
-import {FC, ReactNode, useCallback} from 'react';
+import {FC, ReactNode, useCallback, useState} from 'react';
 import React from 'react';
 import {observer} from 'mobx-react';
 import {useEffectAsync} from '../../hooks/useEffectAsync';
@@ -7,7 +7,8 @@ import {Box} from '../../components/box';
 import {useMountRequest} from '../../hooks/useMountRequest';
 import {GameDetailsClient} from '../../dataServices/app.generated';
 import {Loading} from '../../components/loading';
-import {Link, Redirect, useRouteMatch} from 'react-router-dom';
+import {Link, Redirect, useHistory, useRouteMatch} from 'react-router-dom';
+import {handle400} from '../../dataServices/baseClient';
 
 export const GameDetails: FC = observer(() => {
   const {
@@ -16,10 +17,40 @@ export const GameDetails: FC = observer(() => {
   if (!gameId) {
     return <Redirect to={'/'} />;
   }
+  const history = useHistory();
 
-  const {loading, gameDetails} = useMountRequest('gameDetails', () => GameDetailsClient.getGameDetails({gameId}, {}));
-  const onJoinLobby = useCallback(async () => {}, []);
-  const onStartPrivateGame = useCallback(async () => {}, []);
+  const [findingLobby, setFindingLobby] = useState(false);
+
+  const {loading, gameDetails} = useMountRequest('gameDetails', () =>
+    GameDetailsClient.getGameDetails({gameId}, handle400)
+  );
+  const onJoinLobby = useCallback(async () => {
+    setFindingLobby(true);
+    const result = await GameDetailsClient.joinLobby({gameId, rules: {items: []}}, handle400);
+    if (result) {
+      history.push(`/lobby/${result.lobbyId}`);
+    }
+    setFindingLobby(false);
+  }, []);
+  const onJoinGame = useCallback(async () => {
+    const lobbyCode = prompt('What is the game code');
+    if (lobbyCode) {
+      setFindingLobby(true);
+      const result = await GameDetailsClient.joinGame({gameId, lobbyCode}, handle400);
+      if (result) {
+        history.push(`/lobby/${result.lobbyId}`);
+      }
+      setFindingLobby(false);
+    }
+  }, []);
+  const onStartPrivateGame = useCallback(async () => {
+    setFindingLobby(true);
+    const result = await GameDetailsClient.startPrivateLobby({gameId, rules: {items: []}}, handle400);
+    if (result) {
+      history.push(`/lobby/${result.lobbyId}`);
+    }
+    setFindingLobby(false);
+  }, []);
   return (
     <>
       <div className="container mx-auto flex p-6 bg-white rounded-lg shadow-xl flex flex-col">
@@ -37,11 +68,18 @@ export const GameDetails: FC = observer(() => {
               <div>{gameDetails.details.description}</div>
               <div>{gameDetails.details.numberOfActivePlayers} Active Players</div>
               <div className={'flex justify-around'}>
-                <button className="btn btn-blue w-1/4">Join Lobby</button>
-                <button className="btn btn-blue w-1/4">Join Game</button>
-                <button className="btn btn-blue w-1/4">Start Private Game</button>
+                <button className="btn btn-blue w-1/4" onClick={onJoinLobby}>
+                  Join Lobby
+                </button>
+                <button className="btn btn-blue w-1/4" onClick={onJoinGame}>
+                  Join Game
+                </button>
+                <button className="btn btn-blue w-1/4" onClick={onStartPrivateGame}>
+                  Start Private Game
+                </button>
               </div>
             </div>
+            {findingLobby ? <Loading /> : <></>}
           </div>
         ) : (
           'Sorry an error has occurred'

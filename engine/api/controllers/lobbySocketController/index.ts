@@ -65,7 +65,7 @@ export class LobbySocketController {
     }
   }
   @websocketEvent('gameStarting')
-  static async gameStarting(
+  static async sendGameStarting(
     channel: {socketConnectionId?: string},
     message: WebSocketResponse<VoidResponse>
   ): Promise<void> {
@@ -85,7 +85,7 @@ export class LobbySocketController {
     }
   }
   @websocketEvent('gameStarted')
-  static async gameStarted(
+  static async sendGameStarted(
     channel: {socketConnectionId?: string},
     message: WebSocketResponse<GameStartedResponse>
   ): Promise<void> {
@@ -226,12 +226,16 @@ export class LobbySocketController {
       .$unwind('player')
       .result(await DbModels.lobbyPlayer.getCollection());
 
-    for (const player of players) {
-      if (player.connectionId) {
-        await this.sendLobbyPlayers(
-          {socketConnectionId: player.connectionId},
-          {data: {players: DbLobbyLogic.mapPlayers(players)}}
-        );
+    if (players.length === 0) {
+      await DbModels.lobby.deleteOne({_id: lobby._id});
+    } else {
+      for (const player of players) {
+        if (player.connectionId) {
+          await this.sendLobbyPlayers(
+            {socketConnectionId: player.connectionId},
+            {data: {players: DbLobbyLogic.mapPlayers(players)}}
+          );
+        }
       }
     }
   }
@@ -273,7 +277,7 @@ export class LobbySocketController {
     const players = await DbModels.lobbyPlayer.getAllProject({lobbyId: lobby._id}, {playerId: 1, connectionId: 1});
     for (const player of players) {
       if (player.connectionId) {
-        await this.gameStarting({socketConnectionId: player.connectionId}, {data: {}});
+        await this.sendGameStarting({socketConnectionId: player.connectionId}, {data: {}});
       }
     }
     const liveGame = await DbModels.liveGame.insertDocument({
@@ -298,7 +302,10 @@ export class LobbySocketController {
 
     for (const player of players) {
       if (player.connectionId) {
-        await this.gameStarted({socketConnectionId: player.connectionId}, {data: {gameUrl: newGameResponse.gameUrl}});
+        await this.sendGameStarted(
+          {socketConnectionId: player.connectionId},
+          {data: {gameUrl: newGameResponse.gameUrl}}
+        );
         await SocketService.disconnect(player.connectionId);
       }
     }

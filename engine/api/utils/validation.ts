@@ -164,11 +164,23 @@ export class RequestModelValidator {
     if (model === null) throw new ValidationError('PlayerJoinRequest', 'missing', '');
     if (typeof model !== 'object') throw new ValidationError('PlayerJoinRequest', 'mismatch', '');
 
-    if (model['playerId'] === null) throw new ValidationError('PlayerJoinRequest', 'missing', 'playerId');
-    fieldCount++;
-    if (typeof model['playerId'] !== 'string') throw new ValidationError('PlayerJoinRequest', 'mismatch', 'playerId');
-
     if (Object.keys(model).length !== fieldCount) throw new ValidationError('PlayerJoinRequest', 'too-many-fields', '');
+
+    return true;
+  }
+
+  static validateVoteStartRequest(
+    model: import('../controllers/lobbySocketController/models').VoteStartRequest
+  ): boolean {
+    let fieldCount = 0;
+    if (model === null) throw new ValidationError('VoteStartRequest', 'missing', '');
+    if (typeof model !== 'object') throw new ValidationError('VoteStartRequest', 'mismatch', '');
+
+    if (model['voteStart'] === null) throw new ValidationError('VoteStartRequest', 'missing', 'voteStart');
+    fieldCount++;
+    if (typeof model['voteStart'] !== 'boolean') throw new ValidationError('VoteStartRequest', 'mismatch', 'voteStart');
+
+    if (Object.keys(model).length !== fieldCount) throw new ValidationError('VoteStartRequest', 'too-many-fields', '');
 
     return true;
   }
