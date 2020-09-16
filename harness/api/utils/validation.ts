@@ -9,28 +9,8 @@ export class ValidationError extends Error {
 }
 
 export class RequestModelValidator {
-  static validateEventRequest(model: import('../controllers/analyticsController/models').EventRequest): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('EventRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('EventRequest', 'mismatch', '');
-
-    if (model['eventName'] === null) throw new ValidationError('EventRequest', 'missing', 'eventName');
-    fieldCount++;
-    if (typeof model['eventName'] !== 'string') throw new ValidationError('EventRequest', 'mismatch', 'eventName');
-    if (model['metaData'] === null) throw new ValidationError('EventRequest', 'missing', 'metaData');
-    fieldCount++;
-    if (typeof model['metaData'] !== 'string') throw new ValidationError('EventRequest', 'mismatch', 'metaData');
-    if (model['time'] === null) throw new ValidationError('EventRequest', 'missing', 'time');
-    fieldCount++;
-    if (typeof model['time'] !== 'string') throw new ValidationError('EventRequest', 'mismatch', 'time');
-
-    if (Object.keys(model).length !== fieldCount) throw new ValidationError('EventRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
   static validateVoidRequest(
-    model: import('/Users/dested/code/QuickGa.me/engine/serverCommon/src/models/controller').VoidRequest
+    model: import('/Users/dested/code/QuickGa.me/harness/serverCommon/src/models/controller').VoidRequest
   ): boolean {
     let fieldCount = 0;
     if (model === null) throw new ValidationError('VoidRequest', 'missing', '');
@@ -76,7 +56,7 @@ export class RequestModelValidator {
   }
 
   static validateGameRules(
-    model: import('/Users/dested/code/QuickGa.me/engine/serverCommon/src/dbModels/dbGame').GameRules
+    model: import('/Users/dested/code/QuickGa.me/harness/serverCommon/src/dbModels/dbGame').GameRules
   ): boolean {
     let fieldCount = 0;
     if (model === null) throw new ValidationError('GameRules', 'missing', '');
@@ -153,71 +133,6 @@ export class RequestModelValidator {
 
     if (Object.keys(model).length !== fieldCount)
       throw new ValidationError('StartPrivateLobbyRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
-  static validatePlayerJoinRequest(
-    model: import('../controllers/lobbySocketController/models').PlayerJoinRequest
-  ): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('PlayerJoinRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('PlayerJoinRequest', 'mismatch', '');
-
-    if (Object.keys(model).length !== fieldCount) throw new ValidationError('PlayerJoinRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
-  static validateVoteStartRequest(
-    model: import('../controllers/lobbySocketController/models').VoteStartRequest
-  ): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('VoteStartRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('VoteStartRequest', 'mismatch', '');
-
-    if (model['voteStart'] === null) throw new ValidationError('VoteStartRequest', 'missing', 'voteStart');
-    fieldCount++;
-    if (typeof model['voteStart'] !== 'boolean') throw new ValidationError('VoteStartRequest', 'mismatch', 'voteStart');
-
-    if (Object.keys(model).length !== fieldCount) throw new ValidationError('VoteStartRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
-  static validateLoginRequest(model: import('../controllers/playerController/models').LoginRequest): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('LoginRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('LoginRequest', 'mismatch', '');
-
-    if (model['email'] === null) throw new ValidationError('LoginRequest', 'missing', 'email');
-    fieldCount++;
-    if (typeof model['email'] !== 'string') throw new ValidationError('LoginRequest', 'mismatch', 'email');
-    if (model['password'] === null) throw new ValidationError('LoginRequest', 'missing', 'password');
-    fieldCount++;
-    if (typeof model['password'] !== 'string') throw new ValidationError('LoginRequest', 'mismatch', 'password');
-
-    if (Object.keys(model).length !== fieldCount) throw new ValidationError('LoginRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
-  static validateRegisterRequest(model: import('../controllers/playerController/models').RegisterRequest): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('RegisterRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('RegisterRequest', 'mismatch', '');
-
-    if (model['email'] === null) throw new ValidationError('RegisterRequest', 'missing', 'email');
-    fieldCount++;
-    if (typeof model['email'] !== 'string') throw new ValidationError('RegisterRequest', 'mismatch', 'email');
-    if (model['password'] === null) throw new ValidationError('RegisterRequest', 'missing', 'password');
-    fieldCount++;
-    if (typeof model['password'] !== 'string') throw new ValidationError('RegisterRequest', 'mismatch', 'password');
-    if (model['name'] === null) throw new ValidationError('RegisterRequest', 'missing', 'name');
-    fieldCount++;
-    if (typeof model['name'] !== 'string') throw new ValidationError('RegisterRequest', 'mismatch', 'name');
-
-    if (Object.keys(model).length !== fieldCount) throw new ValidationError('RegisterRequest', 'too-many-fields', '');
 
     return true;
   }

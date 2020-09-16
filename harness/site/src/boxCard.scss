@@ -1,0 +1,163 @@
+.box-grey {
+  --base-color: 200;
+  --base-sat: 20%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-blue {
+  --base-color: 197;
+  --base-sat: 40%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-teal {
+  --base-color: 170;
+  --base-sat: 30%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-success {
+  --base-color: 104;
+  --base-sat: 20%;
+
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-gold {
+  --base-color: 40;
+  --base-sat: 62%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-warning {
+  --base-color: 65;
+  --base-sat: 62%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+.box-danger {
+
+  --base-color: 0;
+  --base-sat: 62%;
+  --bright: hsl(var(--base-color), var(--base-sat), 65%);
+  --border: hsl(var(--base-color), var(--base-sat), 50%);
+  --inner: hsl(var(--base-color), var(--base-sat), 35%);
+
+  --shadow-1: hsl(var(--base-color), var(--base-sat), 40%);
+  --shadow-2: hsl(var(--base-color), var(--base-sat), 30%);
+  --shadow-3: hsl(var(--base-color), var(--base-sat), 20%);
+}
+
+.box-square {
+  letter-spacing: 2px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 400;
+  border-radius: 20px;
+  border: solid 3px var(--bright);
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  transition: all 200ms;
+}
+
+.box-card-button {
+  user-select: none;
+  background-color: var(--border) !important;
+  text-transform: uppercase;
+  padding: 1rem !important;
+  font-weight: bold !important;
+  appearance: none;
+  border: none;
+}
+.box-card-button:focus {
+  outline: 0;
+}
+
+.box-card {
+  padding: 1px;
+  letter-spacing: 2px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 400;
+  border-radius: 20px;
+  background-color: var(--border);
+  transition: all 200ms;
+}
+
+.box-card-header {
+  user-select: none;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0.5rem 1rem;
+  text-shadow: 1px 1px rgba(255, 255, 255, 1);
+}
+
+.box-card-inner {
+  background-color: var(--inner);
+  padding: 1rem;
+  border-radius: 10px;
+  transition: all 200ms;
+  margin: 0.5rem;
+  box-shadow: inset -2px 2px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.box-card-05 {
+  box-shadow: -1.5px 1.5px 0 0 var(--shadow-1);
+  transform: translateX(1.5px) translateY(-1.5px);
+}
+.box-card-1 {
+  box-shadow: -3px 3px 0 0 var(--shadow-1);
+  transform: translateX(3px) translateY(-3px);
+}
+.box-card-2 {
+  box-shadow: -4px 4px 0 0 var(--shadow-2);
+  transform: translateX(4px) translateY(-4px);
+}
+.box-card-3 {
+  box-shadow: -5px 5px 0 0 var(--shadow-3);
+  transform: translateX(5px) translateY(-5px);
+}
+
+.box-card-small {
+  border-radius: 3px;
+  padding: 5px 10px !important;
+}
+
+.box-card-disabled {
+  color: #8a8a8a;
+  background-color: var(--shadow-1) !important;
+}
