@@ -5,7 +5,6 @@ import {IServerSocket, ServerSocketOptions, SocketConnection} from './models';
 // import {AuthService} from '../../../webServer/src/modules/auth/auth.service';
 import {ArrayHash} from './arrayHash';
 import {nextId} from './uuid';
-import {ServerUtils} from './serverUtils';
 
 export class ServerSocket implements IServerSocket {
   connections = new ArrayHash<SocketConnection>('connectionId');
