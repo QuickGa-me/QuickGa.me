@@ -1,0 +1,8 @@
+{
+  "prod": {
+    "bucket": "docs.quickga.me",
+    "cloudfront": "E3I6M50YLPB8RW",
+    "command": "yarn build",
+    "path": "build"
+  }
+}
