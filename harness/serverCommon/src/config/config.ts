@@ -6,12 +6,12 @@ export class Config {
     return 'abc123';
   }
   static get mongoConnectionString(): string {
-    return 'mongodb://localhost:27017/?connectTimeoutMS=10000';
+    return 'mongodb://qg:qg@mongo:27017/quickgame-harness';
   }
   static get mongoDbName(): string {
     return 'quickgame-harness';
   }
   static get redisHost(): string {
-    return '127.0.0.1';
+    return 'redis';
   }
 }

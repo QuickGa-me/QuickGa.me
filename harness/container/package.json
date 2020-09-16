@@ -1,0 +1,24 @@
+{
+  "name": "qg-harness-container",
+  "version": "1.0.0",
+  "scripts": {
+    "unzip-api": "extract-zip ../api/.build/quickgame-harness-api.zip $PWD/build/api && cp ../api/package.json $PWD/build/api/package.json && cp ../api/serverless-publish.yml $PWD/build/api/serverless.yml",
+    "predocker-build": "rm -rf ./build && cd ../api && yarn build && cd ../container && yarn unzip-api",
+    "docker-build": "docker build -t quickgame-harness -f api.Dockerfile . && docker tag quickgame-harness:latest 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-harness",
+
+    "docker-run": "docker-compose up",
+
+    "docker-aws-setup-1": "aws ecr create-repository --repository-name quickgame-harness --region us-west-2",
+    "docker-aws-login": "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 114394156384.dkr.ecr.us-west-2.amazonaws.com",
+    "docker-aws-push": "docker push 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-harness",
+    "docker-aws-delete": "aws ecr delete-repository --repository-name quickgame-harness --region us-west-2 --force",
+
+    "docker-first-time": "yarn docker-aws-setup-1 && yarn docker-build  && yarn docker-aws-login && yarn docker-aws-push",
+    "docker-deploy": "yarn docker-build  && yarn docker-aws-login && yarn docker-aws-push"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "extract-zip": "^2.0.1"
+  }
+}

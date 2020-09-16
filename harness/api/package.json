@@ -7,6 +7,7 @@
   "scripts": {
     "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
     "lint": "npx tslint -p tsconfig.json --fix",
+    "build": "sls package --package ./.build",
     "verify": "tsc --noEmit",
     "start": "serverless offline start",
     "start-debug": "node --inspect \"C:\\Program Files\\nodejs\\node_modules\\serverless\\bin\\serverless\" offline start",

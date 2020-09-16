@@ -14,8 +14,6 @@ custom:
     webpackConfig: 'webpack.config.js'
     includeModules: true
     packager: 'yarn'
-  config:
-    CACHE_INSTANCE_SIZE: cache.t2.micro
   serverless-offline:
     host: 0.0.0.0
     noPrependStageInUrl: true

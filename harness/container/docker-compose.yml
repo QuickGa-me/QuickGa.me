@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  api:
+#    image: 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-harness:latest
+    image: quickgame-harness:latest
+    links:
+      - mongo
+      - redis
+    ports:
+      - "5503:5503"
+    depends_on:
+      - redis
+      - mongo
+  redis:
+    logging:
+      driver: none
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  mongo:
+    logging:
+      driver: none
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: quickgame-harness
+      MONGO_INITDB_ROOT_USERNAME: qg
+      MONGO_INITDB_ROOT_PASSWORD: qg
+      DB_NAME: quickgame-harness
+      DB_USER: qg
+      DB_PASSWORD: qg
+    volumes:
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+#      - data-volume:/data/db
+#volumes:
+#  data-volume:

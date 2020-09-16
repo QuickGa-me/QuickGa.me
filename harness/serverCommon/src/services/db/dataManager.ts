@@ -21,7 +21,7 @@ export class DataManager {
       }
       try {
         mongoClient = await MongoClient.connect(Config.mongoConnectionString, {
-          useUnifiedTopology: true,
+          // useUnifiedTopology: true,
           useNewUrlParser: true,
           loggerLevel: 'warn',
           logger: (e, b) => console.log(b, e),

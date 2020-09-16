@@ -1,15 +1,9 @@
 service: quickgame-harness-api
 
 plugins:
-  - serverless-webpack
   - serverless-offline
-  - offline-invalidate
 
 custom:
-  webpack:
-    webpackConfig: 'webpack.config.js'
-    includeModules: true
-    packager: 'yarn'
   serverless-offline:
     host: 0.0.0.0
     noPrependStageInUrl: true
