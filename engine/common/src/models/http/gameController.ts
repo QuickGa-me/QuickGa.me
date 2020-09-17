@@ -2,26 +2,26 @@ import {GameConfig} from '../game/gameConfig';
 import {GameModel, LiveGameModel} from '../game/gameModel';
 
 export interface GetAllGamesResponse {
-    games: GameModel[];
+  games: GameModel[];
 }
 export interface GetGameResponse {
-    game: GameModel;
+  game: GameModel;
 }
 
 export interface GetLiveGameResponse {
-    liveGame: LiveGameModel;
+  liveGame: LiveGameModel;
 }
 
 export interface CreateGameRequest {
-    gameName: string;
+  gameName: string;
 }
 
 export interface CreateGameResponse {
-    gameId?: string;
+  gameId?: string;
 }
 
 export interface UpdateGameRequest {
-    serverSource: string;
-    clientSource: string;
-    gameConfig: GameConfig;
+  serverSource: string;
+  clientSource: string;
+  gameConfig: GameConfig;
 }

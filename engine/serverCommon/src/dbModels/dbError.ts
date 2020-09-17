@@ -1,6 +1,6 @@
 import {ObjectId} from 'bson';
 import {DbModels} from './dbModels';
-import {AwsService} from '@serverCommon/services/awsService';
+import {AwsService} from '../services/awsService';
 
 export type DbErrorModel = {
   _id: ObjectId;

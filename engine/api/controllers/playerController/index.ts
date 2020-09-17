@@ -31,7 +31,7 @@ export class PlayerController {
 
   @request('POST', 'login', {statusCodes: [400]})
   static async login(model: LoginRequest, headers: RequestHeaders): Promise<LoginResponse> {
-    RequestModelValidator.validateLoginResponse(model);
+    RequestModelValidator.validateLoginRequest(model);
 
     const player = await DbModels.player.getOne({email: model.email});
     if (!player) {

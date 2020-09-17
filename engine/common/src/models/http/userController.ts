@@ -1,18 +1,18 @@
 import {UserModel} from '../user/userModel';
 
 export interface SignInRequest {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export interface VerifyUserRequest {
-    username: string;
+  username: string;
 }
 
 export interface UserResponse {
-    user: UserModel;
+  user: UserModel;
 }
 
 export interface JwtUserResponse extends UserResponse {
-    jwt: string;
+  jwt: string;
 }

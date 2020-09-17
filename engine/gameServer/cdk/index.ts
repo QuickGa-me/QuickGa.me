@@ -1,15 +1,16 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
+export const Todo = 1;
+/*import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
-import * as cdk from '@aws-cdk/core';
 import {SecurityGroup, Vpc} from '@aws-cdk/aws-ec2';
 import {Repository} from '@aws-cdk/aws-ecr';
+import * as cdk from '@aws-cdk/core';
 import {Fn} from '@aws-cdk/core';
-import {Role} from '@aws-cdk/aws-iam';
-
+import {Role} from '@aws-cdk/aws-iam';*/
+/*
 class GameServerECS extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
+    /!*
     const vpc = Vpc.fromLookup(this, id + 'VPC', {vpcName: 'quickgame-vpc'});
     const cluster = new ecs.Cluster(this, id + 'Ec2Cluster', {
       vpc,
@@ -53,7 +54,7 @@ class GameServerECS extends cdk.Stack {
       minHealthyPercent: 0,
       maxHealthyPercent: 100,
       desiredCount: 1,
-    });
+    });*!/
   }
 }
 
@@ -61,7 +62,7 @@ const app = new cdk.App();
 new GameServerECS(app, 'QuickGame-GameServer', {
   env: {region: 'us-west-2', account: '114394156384'},
 });
-app.synth();
+app.synth();*/
 
 /*
 create vpc

@@ -21,6 +21,7 @@ import {ObjectId} from 'bson';
 import {DbGameLogic} from '@serverCommon/dbModels/dbGame';
 import {PubSubService} from '@serverCommon/services/pubSubService';
 import {PubSubGameScriptUpdatedRequest, PubSubGameScriptUpdatedResponse} from '@serverCommon/models/pubsubModels';
+import {PubSubGameScript} from '../../services/pubSubGameScript';
 
 @controller('game', {})
 export class GameController {
@@ -28,9 +29,9 @@ export class GameController {
   static async serverUpdated(model: VoidRequest, headers: RequestHeaders): Promise<VoidResponse> {
     RequestModelValidator.validateVoidRequest(model);
     console.log('starting');
-    await PubSubService.pushAndWait<PubSubGameScriptUpdatedRequest, PubSubGameScriptUpdatedResponse>('game-script', {
+    await PubSubGameScript.pushAndWait<PubSubGameScriptUpdatedRequest, PubSubGameScriptUpdatedResponse>('game-script', {
       messageId: (Math.random() * 100000000).toFixed(0),
-      responseId: PubSubService.id,
+      responseId: PubSubGameScript.id,
     });
     console.log('done');
 

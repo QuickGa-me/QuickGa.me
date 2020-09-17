@@ -31,7 +31,7 @@ export const BottomMessage: FC<Props> = observer((props) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        textAlign:'center',
+        textAlign: 'center',
         margin: 10,
         padding: 10,
         marginTop: 20,

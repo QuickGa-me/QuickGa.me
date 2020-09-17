@@ -96,7 +96,7 @@ export class LobbySocketClient {
   connect(events: LobbySocketEvents) {
     this.events = events;
     this.socket = new WebSocket(ClientSocketOptions.baseUrl);
-    this.socket.onmessage = message => {
+    this.socket.onmessage = (message) => {
       if (!this.events) return;
       const response = JSON.parse(message.data);
       switch (response.event) {
@@ -121,7 +121,7 @@ export class LobbySocketClient {
           break;
       }
     };
-    this.socket.onclose = e => {
+    this.socket.onclose = (e) => {
       this.events?.onDisconnect && this.events?.onDisconnect();
     };
     this.socket.onopen = () => {
@@ -419,8 +419,8 @@ async function makeGetRequest(url: string, model: any, method: string, handle: a
       method,
     } as RequestInit;
     url += Object.keys(model)
-      .filter(key => !!(model as any)[key])
-      .map(key => `${key}=${encodeURIComponent((model as any)[key])}`)
+      .filter((key) => !!(model as any)[key])
+      .map((key) => `${key}=${encodeURIComponent((model as any)[key])}`)
       .join('&');
 
     const response = await fetch(url, ClientTransformOptions(options));

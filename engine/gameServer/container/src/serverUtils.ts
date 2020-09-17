@@ -17,8 +17,7 @@ export class ServerUtils {
     const json: MagicResult = await response1.json();
     this.clusterId = json.Cluster;
     this.taskId = json.TaskARN;
-    const ipAddress = json.Containers.find((c) => c.KnownStatus === 'RUNNING')!.Networks[0]
-      .IPv4Addresses[0] as string;
+    const ipAddress = json.Containers.find((c) => c.KnownStatus === 'RUNNING')!.Networks[0].IPv4Addresses[0] as string;
     console.log(ipAddress);
     const elbv2 = new ELBv2({region: 'us-west-2'});
     const newTargetGroup = await elbv2

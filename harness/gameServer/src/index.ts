@@ -13,11 +13,12 @@ import axios from 'axios';
 async function main() {
   console.log('start shoes');
   console.log('connecting redis');
-  await PubSubService.start();
+  const PubSubGameScript = new PubSubService();
+  await PubSubGameScript.start();
 
   let gameScript = '';
 
-  PubSubService.blockingPop<PubSubGameScriptUpdatedRequest>('game-script', async (result) => {
+  PubSubGameScript.blockingPop<PubSubGameScriptUpdatedRequest>('game-script', async (result) => {
     console.log('got new game script');
 
     const response = await axios({
@@ -31,7 +32,7 @@ async function main() {
     // tslint:disable-next-line:no-eval
     eval(response.data);
 
-    PubSubService.push<PubSubGameScriptUpdatedResponse>(result.responseId, {
+    PubSubGameScript.push<PubSubGameScriptUpdatedResponse>(result.responseId, {
       messageId: result.messageId,
     });
   });

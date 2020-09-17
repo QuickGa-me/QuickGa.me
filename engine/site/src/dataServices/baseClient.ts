@@ -56,7 +56,7 @@ export const handle401 = {
 
 export interface ControllerOptions {
   baseUrl: string;
-  getJwt: () => string|undefined;
+  getJwt: () => string | undefined;
   handleError: (error: string) => void;
   handleUnauthorized: (error: string) => void;
 }

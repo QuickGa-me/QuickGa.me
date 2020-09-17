@@ -7,50 +7,45 @@ export interface WaitMessage {
 }
 
 export class PubSubService {
-  private static pushClient: RedisClient;
-  private static popClient: RedisClient;
-  private static mainPopClient: RedisClient;
-  static id: string;
+  private pushClient?: RedisClient;
+  private popClient?: RedisClient;
+  private mainPopClient?: RedisClient;
+  id: string = Utils.guid();
 
-  static async start() {
+  async start() {
     try {
-      console.log('1');
-
       if (this.pushClient) return;
-      console.log('2');
 
       this.pushClient = createClient(6379, Config.redisHost);
       this.popClient = createClient(6379, Config.redisHost);
       this.mainPopClient = createClient(6379, Config.redisHost);
-      console.log('3');
-      this.id = Utils.guid();
       await Promise.all([
         new Promise((res, rej) => {
-          this.pushClient.on('ready', () => {
+          this.pushClient!.on('ready', () => {
             console.log('push ready');
             res();
           });
-          this.pushClient.on('error', (er) => {
+          this.pushClient!.on('error', (er) => {
             console.error('push', er);
             rej();
           });
         }),
         new Promise((res, rej) => {
-          this.popClient.on('ready', () => {
+          this.popClient!.on('ready', () => {
             console.log('pop ready');
             res();
           });
-          this.popClient.on('error', (er) => {
+          this.popClient!.on('error', (er) => {
             console.error('pop', er);
             rej();
           });
         }),
         new Promise((res, rej) => {
-          this.mainPopClient.on('ready', () => {
+          this.mainPopClient!.on('ready', () => {
             console.log('main pop ready');
             res();
           });
-          this.mainPopClient.on('error', (er) => {
+          this.mainPopClient!.on('error', (er) => {
             console.error('main pop', er);
             rej();
           });
@@ -63,18 +58,15 @@ export class PubSubService {
     }
   }
 
-  static push<T>(channel: string, payload: T) {
-    this.pushClient.rpush(channel, JSON.stringify(payload));
+  push<T>(channel: string, payload: T) {
+    this.pushClient?.rpush(channel, JSON.stringify(payload));
   }
 
-  static pushTests: {test: (res: WaitMessage) => boolean; resolve: (value: any) => void}[] = [];
+  pushTests: {test: (res: WaitMessage) => boolean; resolve: (value: any) => void}[] = [];
 
-  static pushAndWait<TReq extends WaitMessage, TRes extends WaitMessage>(
-    channel: string,
-    payload: TReq
-  ): Promise<TRes> {
+  pushAndWait<TReq extends WaitMessage, TRes extends WaitMessage>(channel: string, payload: TReq): Promise<TRes> {
     return new Promise((res) => {
-      this.pushClient.rpush(channel, JSON.stringify(payload));
+      this.pushClient?.rpush(channel, JSON.stringify(payload));
       const tester = {
         test: (message: WaitMessage) => message.messageId === payload.messageId,
         resolve: (response: TRes) => {
@@ -86,10 +78,10 @@ export class PubSubService {
     });
   }
 
-  static blockingPop<T>(channel: string, callback: (result: T) => void): void {
+  blockingPop<T>(channel: string, callback: (result: T) => void): void {
     const blpop = (cb: (result: string) => void) => {
       console.log('blocking pop', channel);
-      this.popClient.blpop(channel, 0, (caller, payload) => {
+      this.popClient?.blpop(channel, 0, (caller, payload) => {
         console.log('got blocking pop', channel);
         cb(payload[1]);
         blpop(cb);
@@ -100,9 +92,9 @@ export class PubSubService {
     });
   }
 
-  static mainBlockingPop(): void {
+  mainBlockingPop(): void {
     const blpop = (cb: (result: string) => void) => {
-      this.mainPopClient.blpop(this.id, 0, (caller, payload) => {
+      this.mainPopClient?.blpop(this.id!, 0, (caller, payload) => {
         cb(payload[1]);
         blpop(cb);
       });

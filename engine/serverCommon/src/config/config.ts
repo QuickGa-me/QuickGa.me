@@ -22,5 +22,4 @@ export class Config {
   static get redisHost(): string {
     return SecureConfig.getKey('REDIS_HOST');
   }
-
 }

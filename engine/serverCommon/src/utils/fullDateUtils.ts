@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {FullDate, FullTime} from '@serverCommon/models/common/fullDateTime';
+import {FullDate, FullTime} from '../models/common/fullDateTime';
 
 export class FullDateUtils {
   static get now(): FullDate {

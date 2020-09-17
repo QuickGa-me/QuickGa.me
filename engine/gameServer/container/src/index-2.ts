@@ -5,7 +5,7 @@ async function main() {
   const ecs = new ECS({region: 'us-west-2'});
   console.log('starting2');
   for (let i = 0; i < 10; i++) {
-      console.log(i)
+    console.log(i);
     const result = await ecs
       .runTask({
         cluster: 'arn:aws:ecs:us-west-2:114394156384:cluster/qg-gs-cluster',

@@ -28,6 +28,8 @@ import {PubSubService} from '@serverCommon/services/pubSubService';
 import {Utils} from '@common/utils';
 import {PubSubStartGameRequest, PubSubStartGameResponse} from '@serverCommon/models/pubsubModels';
 
+const pubSub = new PubSubService();
+
 @controller('lobbySocket')
 export class LobbySocketController {
   @websocketRequest('$connect')
@@ -292,13 +294,10 @@ export class LobbySocketController {
       }))
     );
 
-    const newGameResponse = await PubSubService.pushAndWait<PubSubStartGameRequest, PubSubStartGameResponse>(
-      'new-game',
-      {
-        messageId: Utils.guid(),
-        liveGameId: liveGame._id.toHexString(),
-      }
-    );
+    const newGameResponse = await pubSub.pushAndWait<PubSubStartGameRequest, PubSubStartGameResponse>('new-game', {
+      messageId: Utils.guid(),
+      liveGameId: liveGame._id.toHexString(),
+    });
 
     for (const player of players) {
       if (player.connectionId) {

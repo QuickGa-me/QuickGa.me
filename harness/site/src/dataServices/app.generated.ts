@@ -227,8 +227,8 @@ async function makeGetRequest(url: string, model: any, method: string, handle: a
       method,
     } as RequestInit;
     url += Object.keys(model)
-      .filter(key => !!(model as any)[key])
-      .map(key => `${key}=${encodeURIComponent((model as any)[key])}`)
+      .filter((key) => !!(model as any)[key])
+      .map((key) => `${key}=${encodeURIComponent((model as any)[key])}`)
       .join('&');
 
     const response = await fetch(url, ClientTransformOptions(options));

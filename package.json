@@ -4,6 +4,7 @@
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
   "scripts": {
+    "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write"
   },
   "workspaces": {
     "packages": [

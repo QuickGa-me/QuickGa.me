@@ -4,5 +4,4 @@ export interface EventRequest {
   time: string;
 }
 
-export interface MetaResponse {
-}
+export interface MetaResponse {}

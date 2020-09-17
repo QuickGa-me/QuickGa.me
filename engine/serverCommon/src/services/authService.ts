@@ -1,7 +1,7 @@
 import * as jsonWebToken from 'jsonwebtoken';
 import {Config} from '../config/config';
 import {ObjectId} from 'bson';
-import {ResponseError} from '@serverCommon/utils/responseError';
+import {ResponseError} from '../utils/responseError';
 
 export class AuthService {
   static async createPlayerToken(jwtChannelGame: JwtPlayer): Promise<string> {
