@@ -16,8 +16,8 @@
     "docker-build-site": "docker build -t quickgame-site-harness -f site.Dockerfile . && docker tag quickgame-site-harness:latest 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-site-harness",
     "docker-build-gameServer": "docker build -t quickgame-gameserver-harness -f gameServer.Dockerfile . && docker tag quickgame-gameserver-harness:latest 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-gameserver-harness",
 
-    "predocker-build": "rm -rf ./build ",
-    "docker-build": "yarn docker-build-api && yarn docker-build-site && yarn docker-build-gameServer",
+    "predocker-build": "rm -rf ./build && mkdir ./build ",
+    "docker-build": "yarn docker-build-gameServer & yarn docker-build-api & yarn docker-build-site ",
 
     "up": "docker-compose build --no-cache && docker-compose up",
     "down": "docker-compose down",

@@ -4,6 +4,8 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const currentPath = process.cwd();
 const webpack = require('webpack');
+const httpServer = require('http-server');
+const axios = require('axios');
 const {spawn} = require('child_process');
 
 const gameConfig = require(currentPath + '/game.config.json');
@@ -36,8 +38,10 @@ async function run(args) {
             clientWebpackConfig.resolveLoader = {
                 modules: [path.join(currentPath, 'client', 'node_modules'), path.join(__dirname, 'node_modules')],
             };
+            clientWebpackConfig.output.filename = 'bundle.js';
+            clientWebpackConfig.output.path = path.join(__dirname, 'game-wrapper', 'src');
+            clientWebpackConfig.mode = 'development';
 
-            let config = eval(fs.readFileSync(path.join(currentPath, 'client', 'webpack.config.js'), 'utf-8'));
             const watcher = chokidar.watch(path.join(currentPath, 'client'), {
                 ignoreInitial: true,
                 persistent: true,
@@ -46,26 +50,18 @@ async function run(args) {
                 alwaysStat: true,
                 ignorePermissionErrors: true,
                 usePolling: true,
-                ignored: path.join(currentPath, 'client', 'dist'),
             });
             watcher.on('change', async (e, b) => {
                 console.log('change', e);
                 let wp = webpack(clientWebpackConfig);
                 let clientResult = await webpackPromise(wp.run.bind(wp));
-                fs.copyFileSync(
-                    path.join(currentPath, 'client', 'dist', 'bundle.js'),
-                    path.join(__dirname, 'game-wrapper', 'src', 'bundle.js')
-                );
             });
 
             let wp = webpack(clientWebpackConfig);
             console.log('webpack ran');
             let clientResult = await webpackPromise(wp.run.bind(wp));
-            console.log('copy');
-            fs.copyFileSync(
-                path.join(currentPath, 'client', 'dist', 'bundle.js'),
-                path.join(__dirname, 'game-wrapper', 'src', 'bundle.js')
-            );
+            console.log(clientResult.compilation.warnings);
+            console.log(clientResult.compilation.errors);
             console.log('starting client');
             const onYarn = spawn(`yarn`, [], {cwd: path.join(__dirname, 'game-wrapper')});
 
@@ -96,7 +92,64 @@ async function run(args) {
             break;
         }
         case 'run-server': {
-            break;
+            process.chdir('server');
+            console.log(path.join(currentPath, 'server', 'webpack.config.js'));
+            let serverWebpackConfig = eval(
+                fs.readFileSync(path.join(currentPath, 'server', 'webpack.config.js'), 'utf-8')
+            );
+
+            serverWebpackConfig.resolveLoader = {
+                modules: [path.join(currentPath, 'server', 'node_modules'), path.join(__dirname, 'node_modules')],
+            };
+            serverWebpackConfig.mode = 'development';
+            serverWebpackConfig.output.filename = 'bundle.js';
+            serverWebpackConfig.output.path = path.join(__dirname, 'game-server');
+
+            const watcher = chokidar.watch(path.join(currentPath, 'server'), {
+                ignoreInitial: true,
+                persistent: true,
+                followSymlinks: false,
+                atomic: false,
+                alwaysStat: true,
+                ignorePermissionErrors: true,
+                usePolling: true,
+            });
+            watcher.on('change', async (e, b) => {
+                console.log('change', e);
+                let wp = webpack(serverWebpackConfig);
+                let serverResult = await webpackPromise(wp.run.bind(wp));
+
+                const result = await axios({
+                    url: 'http://localhost:5503/game/server-updated',
+                    method: 'POST',
+                    responseType: 'text',
+                });
+                console.log('updated', result);
+            });
+
+            let wp = webpack(serverWebpackConfig);
+            console.log('webpack ran');
+            let serverResult = await webpackPromise(wp.run.bind(wp));
+            console.log('warnings', serverResult.compilation.warnings);
+            console.log('errors', serverResult.compilation.errors);
+            console.log('starting server');
+            var server = httpServer.createServer({
+                root: path.join(__dirname, 'game-server'),
+                robots: true,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true',
+                },
+            });
+            server.listen(44442);
+
+            const result = await axios({
+                url: 'http://localhost:5503/game/server-updated',
+                method: 'POST',
+                responseType: 'text',
+            });
+            console.log('updated', result);
+            server.break;
         }
         case 'spin-up': {
             const ls = spawn(`docker-compose`, ['up'], {cwd: path.join(__dirname, 'docker')});

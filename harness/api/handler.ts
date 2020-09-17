@@ -4,6 +4,7 @@ import {ServerRouter} from './controllers/serverRouter';
 import {assert, Utils} from '@common/utils';
 import {DataManager} from '@serverCommon/services/db/dataManager';
 import {LambdaRequestEvent} from '@serverCommon/utils/models';
+import {PubSubService} from '@serverCommon/services/pubSubService';
 
 for (const cron of ServerRouter.bespokeCalls) {
   module.exports[cron.key] = async (ev: any, context: any) => {
@@ -14,6 +15,7 @@ for (const cron of ServerRouter.bespokeCalls) {
 
 async function warmDB() {
   // console.log('handler: getting db');
+
   const db = await DataManager.dbConnection();
   // console.log('handler: got db');
 
@@ -30,6 +32,8 @@ module.exports.api = async (event: LambdaRequestEvent<any>, context: any) => {
   if (event.path === '/robots.txt' || event.path === '/' || event.path === '') {
     return {statusCode: 404, body: ''};
   }
+  console.log('starting redis');
+  await PubSubService.start();
 
   // await warmDB();
   let result = ServerRouter.endpoints

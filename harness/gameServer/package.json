@@ -16,12 +16,14 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "redis": "^3.0.2",
+    "axios": "^0.20.0",
     "reflect-metadata": "^0.1.13",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1",
     "ws": "^7.3.1"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/ws": "^7.2.6",
     "@types/redis": "^2.8.27",
     "@types/node-fetch": "^2.5.7",

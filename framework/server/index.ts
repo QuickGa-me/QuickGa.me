@@ -19,8 +19,8 @@ export interface ServerConfig {
 export interface Achievement {}
 
 export abstract class QGServer {
-    currentTick: number;
-    state: GameState;
+    currentTick?: number;
+    state?: GameState;
 
     constructor(config: ServerConfig) {}
 

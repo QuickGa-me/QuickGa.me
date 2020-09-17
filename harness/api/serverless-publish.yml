@@ -8,6 +8,7 @@ custom:
     host: 0.0.0.0
     noPrependStageInUrl: true
     httpPort: 5503
+    allowCache: true
 
 provider:
   name: aws
