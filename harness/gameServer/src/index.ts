@@ -1,9 +1,13 @@
 import {ServerSocket} from './serverSocket';
 import {PubSubStartGameRequest, PubSubStartGameResponse} from '@serverCommon/models/pubsubModels';
 import {PubSubService} from '@serverCommon/services/pubSubService';
+import {Utils} from '@common/utils';
 
 async function main() {
-
+  console.log('start');
+  await Utils.timeout(5000);
+  console.log('connecting redis');
+  await PubSubService.start();
   PubSubService.blockingPop<PubSubStartGameRequest>('new-game', async (result) => {
     console.log('creating new game');
     /*
@@ -30,11 +34,11 @@ async function main() {
     this.games.push(game);
     console.log('game created');*/
 
-    console.log('sending new game back to lobby ', result.lobbyId);
-    PubSub.push<PubSubStartGameResponse>(result.lobbyId, {
+    /*console.log('sending new game back to lobby ', result.lobbyId);
+    PubSubService.push<PubSubStartGameResponse>(result.lobbyId, {
       messageId: result.messageId,
       gameUrl: newGame.gameUrl,
-    });
+    });*/
   });
 
   const serverSocket = new ServerSocket();

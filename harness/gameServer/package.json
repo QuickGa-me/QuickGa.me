@@ -9,11 +9,13 @@
     "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
     "lint": "npx tslint -p tsconfig.json --fix",
     "start": "node ./dist/index.js",
+    "start-local": "node ./index.js",
     "debug": "node --inspect-brk ./dist/index.js",
     "build-prod": "rimraf dist && webpack --mode production  --progress --hide-modules"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
+    "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/ws": "^7.2.6",
+    "@types/redis": "^2.8.27",
     "@types/node-fetch": "^2.5.7",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "13.9.2",

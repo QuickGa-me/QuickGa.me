@@ -1,7 +1,7 @@
 FROM mhart/alpine-node
 WORKDIR /app
-COPY ./build/api/ ./api
-WORKDIR /app/api
-RUN yarn install
-EXPOSE 5503
-CMD [ "yarn","start"  ]
+COPY ./build/gameServer/ ./gameServer
+WORKDIR /app/gameServer
+RUN yarn install --prod
+EXPOSE 80
+CMD [ "yarn","start-local"  ]

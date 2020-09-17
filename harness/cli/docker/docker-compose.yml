@@ -12,6 +12,18 @@ services:
     depends_on:
       - redis
       - mongo
+  gameserver:
+    #    image: 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-api-harness:latest
+    image: quickgame-gameserver-harness:latest
+    links:
+      - mongo
+      - redis
+    ports:
+      - "33333:80"
+    depends_on:
+      - api
+      - redis
+      - mongo
   site:
     logging:
       driver: none
