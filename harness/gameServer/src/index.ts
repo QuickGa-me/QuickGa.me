@@ -4,8 +4,7 @@ import {PubSubService} from '@serverCommon/services/pubSubService';
 import {Utils} from '@common/utils';
 
 async function main() {
-  console.log('start');
-  await Utils.timeout(5000);
+  console.log('start shoes');
   console.log('connecting redis');
   await PubSubService.start();
   PubSubService.blockingPop<PubSubStartGameRequest>('new-game', async (result) => {

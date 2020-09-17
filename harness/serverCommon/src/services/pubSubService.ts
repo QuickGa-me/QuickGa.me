@@ -13,9 +13,9 @@ export class PubSubService {
   public static id: string;
 
   static async start() {
-    this.pushClient = createClient(Config.redisHost);
-    this.popClient = createClient(Config.redisHost);
-    this.mainPopClient = createClient(Config.redisHost);
+    this.pushClient = createClient(6379,Config.redisHost);
+    this.popClient = createClient(6379,Config.redisHost);
+    this.mainPopClient = createClient(6379,Config.redisHost);
     this.id = Utils.guid();
     await Promise.all([
       new Promise((res, rej) => {
