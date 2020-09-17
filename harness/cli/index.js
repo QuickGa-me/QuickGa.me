@@ -95,6 +95,43 @@ async function run(args) {
 
             break;
         }
+        case 'run-server': {
+            break;
+        }
+        case 'spin-up': {
+            const ls = spawn(`docker-compose`, ['up'], {cwd: path.join(__dirname, 'docker')});
+
+            ls.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
+
+            ls.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
+
+            ls.on('close', (code) => {
+                console.log(`child process exited with code ${code}`);
+            });
+
+            break;
+        }
+        case 'spin-down': {
+            const ls = spawn(`docker-compose`, ['down'], {cwd: path.join(__dirname, 'docker')});
+
+            ls.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
+
+            ls.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
+
+            ls.on('close', (code) => {
+                console.log(`child process exited with code ${code}`);
+            });
+
+            break;
+        }
         case 'publish': {
             console.log('publish');
             process.chdir('client');
