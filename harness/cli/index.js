@@ -1,11 +1,12 @@
 const http = require('http');
 const path = require('path');
+const chokidar = require('chokidar');
 const fs = require('fs');
 const currentPath = process.cwd();
-var webpack = require("webpack");
+const webpack = require('webpack');
+const {spawn} = require('child_process');
 
 const gameConfig = require(currentPath + '/game.config.json');
-
 function webpackPromise(run) {
     return new Promise((res, rej) => {
         run((er, stats) => {
@@ -14,15 +15,87 @@ function webpackPromise(run) {
             } else {
                 res(stats);
             }
-        })
-    })
+        });
+    });
+}
+
+async function timeout(time) {
+    return new Promise((res) => {
+        setTimeout(res, time);
+    });
 }
 
 async function run(args) {
-    console.log(`args: ${JSON.stringify(args)}`);
+    switch (args[2]) {
+        case 'run-client': {
+            process.chdir('client');
+            let clientWebpackConfig = eval(
+                fs.readFileSync(path.join(currentPath, 'client', 'webpack.config.js'), 'utf-8')
+            );
 
-    switch (args[0]) {
-        case "publish": {
+            clientWebpackConfig.resolveLoader = {
+                modules: [path.join(currentPath, 'client', 'node_modules'), path.join(__dirname, 'node_modules')],
+            };
+
+            let config = eval(fs.readFileSync(path.join(currentPath, 'client', 'webpack.config.js'), 'utf-8'));
+            const watcher = chokidar.watch(path.join(currentPath, 'client'), {
+                ignoreInitial: true,
+                persistent: true,
+                followSymlinks: false,
+                atomic: false,
+                alwaysStat: true,
+                ignorePermissionErrors: true,
+                usePolling: true,
+                ignored: path.join(currentPath, 'client', 'dist'),
+            });
+            watcher.on('change', async (e, b) => {
+                console.log('change', e);
+                let wp = webpack(clientWebpackConfig);
+                let clientResult = await webpackPromise(wp.run.bind(wp));
+                fs.copyFileSync(
+                    path.join(currentPath, 'client', 'dist', 'bundle.js'),
+                    path.join(__dirname, 'game-wrapper', 'src', 'bundle.js')
+                );
+            });
+
+            let wp = webpack(clientWebpackConfig);
+            console.log('webpack ran');
+            let clientResult = await webpackPromise(wp.run.bind(wp));
+            console.log('copy');
+            fs.copyFileSync(
+                path.join(currentPath, 'client', 'dist', 'bundle.js'),
+                path.join(__dirname, 'game-wrapper', 'src', 'bundle.js')
+            );
+            console.log('starting client');
+            const onYarn = spawn(`yarn`, [], {cwd: path.join(__dirname, 'game-wrapper')});
+
+            onYarn.stdout.on('data', (data) => {
+                console.log(`stdout: ${data}`);
+            });
+
+            onYarn.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
+
+            onYarn.on('close', (code) => {
+                const ls = spawn(`yarn`, ['start'], {cwd: path.join(__dirname, 'game-wrapper')});
+
+                ls.stdout.on('data', (data) => {
+                    console.log(`stdout: ${data}`);
+                });
+
+                ls.stderr.on('data', (data) => {
+                    console.error(`stderr: ${data}`);
+                });
+
+                ls.on('close', (code) => {
+                    console.log(`child process exited with code ${code}`);
+                });
+            });
+
+            break;
+        }
+        case 'publish': {
             console.log('publish');
             process.chdir('client');
             let clientConfig = eval(fs.readFileSync(path.join(currentPath, 'client', 'webpack.config.js'), 'utf-8'));
@@ -41,7 +114,6 @@ async function run(args) {
 
             let gameConfig = JSON.parse(fs.readFileSync(path.join(currentPath, 'game.config.json'), 'utf-8'));
 
-
             const options = {
                 hostname: 'localhost',
                 port: 3000,
@@ -49,30 +121,33 @@ async function run(args) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
             };
 
-
-            const req = http.request(options, (res) => {
-                console.log(`STATUS: ${res.statusCode}`);
-                console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-                res.setEncoding('utf8');
-                res.on('data', (chunk) => {
-                    console.log(`BODY: ${chunk}`);
+            const req = http
+                .request(options, (res) => {
+                    console.log(`STATUS: ${res.statusCode}`);
+                    console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+                    res.setEncoding('utf8');
+                    res.on('data', (chunk) => {
+                        console.log(`BODY: ${chunk}`);
+                    });
+                    res.on('end', () => {
+                        console.log('No more data in response.');
+                    });
+                })
+                .on('error', (err) => {
+                    console.log('Error: ' + err.message);
                 });
-                res.on('end', () => {
-                    console.log('No more data in response.');
-                });
-            }).on("error", (err) => {
-                console.log("Error: " + err.message);
-            });
             req.write(JSON.stringify({clientSource: clientBundle, serverSource: serverBundle, gameConfig: gameConfig}));
             req.end();
         }
+        default:
+            console.log('command not found');
+            break;
     }
-
 }
 
 module.exports = {
-    run
+    run,
 };
