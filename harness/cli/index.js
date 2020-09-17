@@ -39,6 +39,9 @@ async function run(args) {
       clientWebpackConfig.output.filename = 'bundle.js';
       clientWebpackConfig.output.path = path.join(__dirname, 'game-wrapper', 'src');
       clientWebpackConfig.mode = 'development';
+      clientWebpackConfig.externals = clientWebpackConfig.externals || {};
+      clientWebpackConfig.externals['react'] = 'react';
+      clientWebpackConfig.externals['react-dom'] = 'react-dom';
 
       const watcher = chokidar.watch(path.join(currentPath, 'client'), {
         ignoreInitial: true,

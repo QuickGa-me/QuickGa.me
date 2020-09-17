@@ -1,11 +1,7 @@
 import {Message, SerializedGameState, SerializedPlayerState} from 'quickgame-framework-common';
 
 export abstract class QGClient {
-  abstract initializeUI(ui: {
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    parent: HTMLDivElement;
-  }): void;
+  abstract render(): any;
   abstract initializeState(state: SerializedGameState): void;
   abstract initializeAssets(): Promise<void>;
 
