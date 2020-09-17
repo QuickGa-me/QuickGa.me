@@ -10,9 +10,6 @@
   "dependencies": {
   },
   "devDependencies": {
-    "ts-loader": "^2.3.6",
-    "typescript": "^2.5.2",
-    "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.2.0"
+    "typescript": "^4.0.2"
   }
 }
