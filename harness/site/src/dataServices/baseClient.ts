@@ -27,20 +27,13 @@ export const ClientOptions: ControllerOptions = {
     playerStore.logout();
   },
 };
-
 export const ClientSocketOptions: ControllerOptions = {
-  get baseUrl() {
-    return AppConfig.lobbyHost + '?jwt=' + playerStore.jwt;
-  },
+  baseUrl: '',
   getJwt: () => {
-    return playerStore.jwt;
+    return '';
   },
-  handleError: (error: string) => {
-    AppToaster.show({message: error, intent: 'danger'});
-  },
-  handleUnauthorized: (error: string) => {
-    playerStore.logout();
-  },
+  handleError: (error: string) => {},
+  handleUnauthorized: (error: string) => {},
 };
 
 export const handle400 = {
@@ -56,7 +49,7 @@ export const handle401 = {
 
 export interface ControllerOptions {
   baseUrl: string;
-  getJwt: () => string|undefined;
+  getJwt: () => string | undefined;
   handleError: (error: string) => void;
   handleUnauthorized: (error: string) => void;
 }

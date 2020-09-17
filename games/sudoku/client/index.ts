@@ -2,6 +2,9 @@ import {SudokuMessage, SudokuSerializedGameState, SudokuSerializedPlayerState} f
 import {QGClient} from '../../../framework/client';
 
 export default class SudokuClient extends QGClient {
+    constructor() {
+        super();
+    }
     initializeUI(ui: {canvas: HTMLCanvasElement; context: CanvasRenderingContext2D; parent: HTMLDivElement}): void {}
 
     initializeAssets(): Promise<void> {

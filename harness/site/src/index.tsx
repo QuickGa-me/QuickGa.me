@@ -12,6 +12,7 @@ import {useComponentWill} from './hooks/useComponentWill';
 import {PlayerClient} from './dataServices/app.generated';
 import {handle400} from './dataServices/baseClient';
 import {create} from 'mobx-persist';
+import {Game} from './screens/game/game';
 
 const App = observer(() => {
   const {playerStore} = useWebStores();
@@ -35,6 +36,7 @@ const App = observer(() => {
       {ready && (
         <BrowserRouter>
           <Route exact path="/" component={Home} />
+          <Route exact path="/game" component={Game} />
         </BrowserRouter>
       )}
       <BottomMessage message={webStores.uiStore.message} setMessage={(m) => webStores.uiStore.setMessage(m)} />

@@ -55,10 +55,7 @@
     "build": "react-app-rewired build",
     "build-prod": "cross-env REACT_APP_ENV=prod react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "web-deploy": "s3-deploy prod",
-    "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
-    "lint": "npx tslint -p tsconfig.json --fix"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
