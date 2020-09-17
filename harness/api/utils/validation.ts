@@ -21,23 +21,6 @@ export class RequestModelValidator {
     return true;
   }
 
-  static validateGetGameDetailsRequest(
-    model: import('../controllers/gameDetailsController/models').GetGameDetailsRequest
-  ): boolean {
-    let fieldCount = 0;
-    if (model === null) throw new ValidationError('GetGameDetailsRequest', 'missing', '');
-    if (typeof model !== 'object') throw new ValidationError('GetGameDetailsRequest', 'mismatch', '');
-
-    if (model['gameId'] === null) throw new ValidationError('GetGameDetailsRequest', 'missing', 'gameId');
-    fieldCount++;
-    if (typeof model['gameId'] !== 'string') throw new ValidationError('GetGameDetailsRequest', 'mismatch', 'gameId');
-
-    if (Object.keys(model).length !== fieldCount)
-      throw new ValidationError('GetGameDetailsRequest', 'too-many-fields', '');
-
-    return true;
-  }
-
   static validateitems(model: {key: string; value: string}): boolean {
     let fieldCount = 0;
     if (model === null) throw new ValidationError('items', 'missing', '');
@@ -72,6 +55,41 @@ export class RequestModelValidator {
     }
 
     if (Object.keys(model).length !== fieldCount) throw new ValidationError('GameRules', 'too-many-fields', '');
+
+    return true;
+  }
+
+  static validateNewGameRequest(model: import('../controllers/gameController/models').NewGameRequest): boolean {
+    let fieldCount = 0;
+    if (model === null) throw new ValidationError('NewGameRequest', 'missing', '');
+    if (typeof model !== 'object') throw new ValidationError('NewGameRequest', 'mismatch', '');
+
+    if (model['numberOfPlayers'] === null) throw new ValidationError('NewGameRequest', 'missing', 'numberOfPlayers');
+    fieldCount++;
+    if (typeof model['numberOfPlayers'] !== 'number')
+      throw new ValidationError('NewGameRequest', 'mismatch', 'numberOfPlayers');
+    if (model['gameRules'] === null) throw new ValidationError('NewGameRequest', 'missing', 'gameRules');
+    fieldCount++;
+    this.validateGameRules(model['gameRules']);
+
+    if (Object.keys(model).length !== fieldCount) throw new ValidationError('NewGameRequest', 'too-many-fields', '');
+
+    return true;
+  }
+
+  static validateGetGameDetailsRequest(
+    model: import('../controllers/gameDetailsController/models').GetGameDetailsRequest
+  ): boolean {
+    let fieldCount = 0;
+    if (model === null) throw new ValidationError('GetGameDetailsRequest', 'missing', '');
+    if (typeof model !== 'object') throw new ValidationError('GetGameDetailsRequest', 'mismatch', '');
+
+    if (model['gameId'] === null) throw new ValidationError('GetGameDetailsRequest', 'missing', 'gameId');
+    fieldCount++;
+    if (typeof model['gameId'] !== 'string') throw new ValidationError('GetGameDetailsRequest', 'mismatch', 'gameId');
+
+    if (Object.keys(model).length !== fieldCount)
+      throw new ValidationError('GetGameDetailsRequest', 'too-many-fields', '');
 
     return true;
   }

@@ -1,27 +1,16 @@
 import {controller, request} from '@serverCommon/utils/decorators';
 import {RequestHeaders} from '@serverCommon/utils/models';
 import {ServerRouter} from '../serverRouter';
-import {
-  GetGameDetailsRequest,
-  GetGameDetailsResponse,
-  GetGamesResponse,
-  JoinLobbyGameRequest,
-  JoinLobbyRequest,
-  JoinLobbyResponse,
-  StartPrivateLobbyRequest,
-} from './models';
+import {NewGameRequest, NewGameResponse} from './models';
 import {RequestModelValidator} from '../../utils/validation';
-import {AuthService} from '@serverCommon/services/authService';
-import {ResponseError} from '@serverCommon/utils/responseError';
 import {VoidRequest, VoidResponse} from '@serverCommon/models/controller';
-import {DbModels} from '@serverCommon/dbModels/dbModels';
-import {Aggregator, AggregatorLookup} from '@serverCommon/services/db/typeSafeAggregate';
-import {DbLobbyLogic, DbLobbyModel, DbLobbyPlayerModel} from '@serverCommon/dbModels/dbLobby';
-import {ObjectId} from 'bson';
-import {DbGameLogic} from '@serverCommon/dbModels/dbGame';
-import {PubSubService} from '@serverCommon/services/pubSubService';
-import {PubSubGameScriptUpdatedRequest, PubSubGameScriptUpdatedResponse} from '@serverCommon/models/pubsubModels';
-import {PubSubGameScript} from '../../services/pubSubGameScript';
+import {
+  PubSubGameScriptUpdatedRequest,
+  PubSubGameScriptUpdatedResponse,
+  PubSubNewGameRequest,
+  PubSubNewGameResponse,
+} from '@serverCommon/models/pubsubModels';
+import {PubSubGameScript, PubSubNewGame} from '../../services/pubSubGameScript';
 
 @controller('game', {})
 export class GameController {
@@ -36,6 +25,22 @@ export class GameController {
     console.log('done');
 
     return {};
+  }
+  @request('POST', 'new-game', {statusCodes: []})
+  static async newGame(model: NewGameRequest, headers: RequestHeaders): Promise<NewGameResponse> {
+    RequestModelValidator.validateNewGameRequest(model);
+    console.log('starting');
+    const response = await PubSubNewGame.pushAndWait<PubSubNewGameRequest, PubSubNewGameResponse>('new-game', {
+      messageId: (Math.random() * 100000000).toFixed(0),
+      responseId: PubSubNewGame.id,
+      gameRules: {items: []},
+      numberOfPlayers: 4,
+    });
+    console.log('done');
+
+    return {
+      error: response.error,
+    };
   }
 }
 ServerRouter.registerClass(GameController);

@@ -4,8 +4,7 @@ import {ServerRouter} from './controllers/serverRouter';
 import {assert, Utils} from '@common/utils';
 import {DataManager} from '@serverCommon/services/db/dataManager';
 import {LambdaRequestEvent} from '@serverCommon/utils/models';
-import {PubSubService} from '@serverCommon/services/pubSubService';
-import {PubSubGameScript} from './services/pubSubGameScript';
+import {PubSubGameScript, PubSubNewGame} from './services/pubSubGameScript';
 
 for (const cron of ServerRouter.bespokeCalls) {
   module.exports[cron.key] = async (ev: any, context: any) => {
@@ -35,6 +34,7 @@ module.exports.api = async (event: LambdaRequestEvent<any>, context: any) => {
   }
   console.log('starting redis');
   await PubSubGameScript.start();
+  await PubSubNewGame.start();
 
   // await warmDB();
   let result = ServerRouter.endpoints

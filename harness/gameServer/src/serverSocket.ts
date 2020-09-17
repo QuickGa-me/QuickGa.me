@@ -65,8 +65,9 @@ export class ServerSocket implements IServerSocket {
 
     this.wss.on('connection', (ws, request) => {
       console.log('conn');
-      debugger;
-      if (!request.url) {
+
+      /*
+        if (!request.url) {
         ws.close();
         return;
       }
@@ -82,12 +83,13 @@ export class ServerSocket implements IServerSocket {
       }
 
       let jwtUser: SocketConnection['jwt'];
-      const jwtResult = true; /*AuthService.validate(jwt)*/
+      const jwtResult = true; /!*AuthService.validate(jwt)*!/
       if (!jwtResult) {
         ws.close();
         return;
       }
       // jwtUser = jwtResult;
+      */
       ws.binaryType = 'arraybuffer';
       const me: SocketConnection = {
         socket: ws,

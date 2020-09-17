@@ -3,6 +3,26 @@
 import {ClientTransformOptions, ClientOptions, ClientSocketOptions, ControllerOptions} from './baseClient';
 declare type ObjectId = string;
 
+export class GameClient {
+  static async serverUpdated<TPromise = VoidResponse>(
+    model: VoidRequest,
+    handle: {200?: (result: VoidResponse) => void; 500?: (result: string) => void; 401?: (error: string) => void}
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game/server-updated?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+
+  static async newGame<TPromise = NewGameResponse>(
+    model: NewGameRequest,
+    handle: {200?: (result: NewGameResponse) => void; 500?: (result: string) => void; 401?: (error: string) => void}
+  ): Promise<TPromise | undefined> {
+    let url = ClientOptions.baseUrl + '/game/new-game?';
+
+    return makeRequest(url, model, 'POST', handle);
+  }
+}
+
 export class GameDetailsClient {
   static async getGames<TPromise = GetGamesResponse>(
     model: VoidRequest,
@@ -97,6 +117,21 @@ export class PlayerClient {
 
 export interface VoidRequest {}
 
+export interface VoidResponse {}
+
+export interface NewGameRequest {
+  numberOfPlayers: number;
+  gameRules: GameRules;
+}
+
+export type GameRules = {
+  items: {key: string; value: string}[];
+};
+
+export interface NewGameResponse {
+  error?: string;
+}
+
 export interface GetGamesResponse {
   games: HttpGameDetailLight[];
 }
@@ -137,10 +172,6 @@ export type GameRulesSchema = {
       | {type: 'switch'}
       | {type: 'options'; options: {label: string; value: string}[]};
   }[];
-};
-
-export type GameRules = {
-  items: {key: string; value: string}[];
 };
 
 export interface JoinLobbyRequest {
@@ -227,8 +258,8 @@ async function makeGetRequest(url: string, model: any, method: string, handle: a
       method,
     } as RequestInit;
     url += Object.keys(model)
-      .filter((key) => !!(model as any)[key])
-      .map((key) => `${key}=${encodeURIComponent((model as any)[key])}`)
+      .filter(key => !!(model as any)[key])
+      .map(key => `${key}=${encodeURIComponent((model as any)[key])}`)
       .join('&');
 
     const response = await fetch(url, ClientTransformOptions(options));

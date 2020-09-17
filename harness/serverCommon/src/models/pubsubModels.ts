@@ -1,10 +1,14 @@
-export interface PubSubStartGameRequest {
+import {GameRules} from '../dbModels/dbGame';
+
+export interface PubSubNewGameRequest {
+  responseId: string;
   messageId: string;
-  liveGameId: string;
+  numberOfPlayers: number;
+  gameRules: GameRules;
 }
-export interface PubSubStartGameResponse {
+export interface PubSubNewGameResponse {
   messageId: string;
-  gameUrl: string;
+  error?: string;
 }
 export interface PubSubGameScriptUpdatedRequest {
   messageId: string;
