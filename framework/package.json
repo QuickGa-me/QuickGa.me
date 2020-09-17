@@ -1,0 +1,13 @@
+{
+  "name": "quickgame-framework",
+  "version": "1.0.0",
+  "author": "Salvatore <dested@gmail.com>",
+  "private": true,
+  "scripts": {
+    "link-up": "cd ./client && yarn link && cd ../common && yarn link && cd ../server && yarn link"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

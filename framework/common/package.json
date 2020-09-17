@@ -1,5 +1,5 @@
 {
-  "name": "quickgame-framework-server",
+  "name": "quickgame-framework-common",
   "version": "1.0.0",
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
@@ -8,10 +8,8 @@
   "scripts": {
   },
   "dependencies": {
-    "quickgame-framework-common": "link:latest"
   },
   "devDependencies": {
-    "@types/node": "^8.0.28",
     "typescript": "^4.0.2"
   }
 }

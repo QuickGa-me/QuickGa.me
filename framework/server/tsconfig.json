@@ -4,8 +4,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "removeComments": false,
+    "moduleResolution": "node",
     "strict": true,
-    "noEmit": true,
     "target": "es2015",
     "lib": [
       "dom",
@@ -13,13 +13,14 @@
       "esnext.asynciterable"
     ],
     "sourceMap": true,
-    "outDir": "dist/",
+    "outDir": "./lib/",
+    "declaration": true,
     "baseUrl": "./",
     "paths": {
-//      "@framework-common/*": ["../common/*"]
     }
   },
   "exclude": [
+    "lib",
     "node_modules"
   ]
 }

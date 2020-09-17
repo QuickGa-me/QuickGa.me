@@ -6,26 +6,24 @@
     "removeComments": false,
     "allowUnreachableCode": true,
     "allowJs": true,
-    "noEmit": true,
     "strict": true,
     "moduleResolution": "node",
+    "declaration": true,
     "target": "es2015",
     "lib": [
       "dom",
       "es2015",
       "esnext.asynciterable"
     ],
-    "outDir": "./dist/",
+    "outDir": "./lib/",
     "sourceMap": true,
     "baseUrl": "./",
     "jsx": "react",
     "paths": {
-  /*    "@framework-common*//*": [
-        "../common*//*"
-      ]*/
     }
   },
   "exclude": [
+    "lib",
     "node_modules"
   ]
 }

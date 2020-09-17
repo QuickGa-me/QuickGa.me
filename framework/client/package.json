@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --port 8245 --open",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "quickgame-framework-common": "link:latest"
   },
   "devDependencies": {
     "typescript": "^4.0.2"
