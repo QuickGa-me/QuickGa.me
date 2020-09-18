@@ -21,23 +21,25 @@ export const Game: FC = observer(() => {
   useEffectAsync(async () => {}, []);
   return (
     <>
-      <div className="container mx-auto flex p-6 bg-white rounded-lg shadow-xl flex flex-col">
+      <div>
         <span>{error}</span>
         <button onClick={onNewGame} disabled={loadingNewGame}>
           Start New Game
         </button>
-        <div key={newGameKey}>
-          {[...Array(numberOfPlayers).keys()].map((p) => (
-            <>
-              <iframe
-                key={p}
-                src={'http://localhost:55555'}
-                width={300}
-                height={300}
-                style={{border: 'solid 10px blue'}}
-              />
-            </>
-          ))}
+        <div className="container mx-auto flex p-6 bg-white rounded-lg shadow-xl flex flex-wrap">
+          <div key={newGameKey}>
+            {[...Array(numberOfPlayers).keys()].map((p) => (
+              <>
+                <iframe
+                  key={p}
+                  src={'http://localhost:55555'}
+                  width={600}
+                  height={600}
+                  style={{border: 'solid 1px blue'}}
+                />
+              </>
+            ))}
+          </div>
         </div>
       </div>
     </>
