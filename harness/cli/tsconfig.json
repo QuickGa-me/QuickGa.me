@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": false,
+    "experimentalDecorators": true,
+    "allowUnreachableCode": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "inlineSourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "pretty": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "skipLibCheck": true
+  },
+  "exclude": ["./node_modules", "./game-wrapper", "./game-server"]
+}
