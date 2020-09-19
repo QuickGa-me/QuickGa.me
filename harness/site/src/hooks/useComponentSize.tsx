@@ -10,8 +10,8 @@ function getSize(el: HTMLElement | null) {
   }
 
   return {
-    width: el.offsetWidth,
-    height: el.offsetHeight,
+    width: el.clientWidth,
+    height: el.clientHeight,
   };
 }
 

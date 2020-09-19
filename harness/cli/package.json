@@ -24,7 +24,7 @@
     "predocker-build": "rimraf ./build && mkdirp ./build ",
     "docker-build": "yarn docker-build-gameServer & yarn docker-build-api & yarn docker-build-site ",
 
-    "up": "docker-compose build --no-cache && docker-compose up",
+    "up": "docker-compose up --build",
     "down": "docker-compose down",
 
     "docker-aws-setup-api": "aws ecr create-repository --repository-name quickgame-api-harness --region us-west-2",

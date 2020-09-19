@@ -20,6 +20,7 @@ async function timeout(time: number) {
 async function run(args: string[]) {
   switch (args[2]) {
     case 'run-client': {
+      console.log('Running client code');
       process.chdir('client');
       let clientWebpackConfig = eval(fs.readFileSync(path.join(currentPath, 'client', 'webpack.config.js'), 'utf-8'));
 
@@ -83,6 +84,17 @@ async function run(args: string[]) {
       serverWebpackConfig.output.filename = 'bundle.js';
       serverWebpackConfig.output.path = path.join(__dirname, 'game-server');
 
+      console.log('starting server');
+      var server = httpServer.createServer({
+        root: path.join(__dirname, 'game-server'),
+        robots: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': 'true',
+        },
+      });
+      server.listen(44442);
+
       let wp = webpack(serverWebpackConfig);
       wp.watch({}, async (err, stats) => {
         console.log('Compiled New Code');
@@ -95,24 +107,6 @@ async function run(args: string[]) {
         });
         console.log('Pushed', result.status === 200);
       });
-
-      const result = await axios({
-        url: 'http://localhost:5503/game/server-updated',
-        method: 'POST',
-        responseType: 'text',
-      });
-      console.log('updated', result.status === 200);
-
-      console.log('starting server');
-      var server = httpServer.createServer({
-        root: path.join(__dirname, 'game-server'),
-        robots: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true',
-        },
-      });
-      server.listen(44442);
 
       break;
     }
