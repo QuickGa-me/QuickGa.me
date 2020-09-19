@@ -1,5 +1,5 @@
 {
-  "name": "qg-api",
+  "name": "@quickga.me/engine.api",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",

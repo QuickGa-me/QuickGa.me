@@ -1,5 +1,5 @@
 {
-  "name": "qg-harness-servercommon",
+  "name": "@quickga.me/harness.servercommon",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

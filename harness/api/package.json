@@ -1,5 +1,5 @@
 {
-  "name": "qg-harness-api",
+  "name": "@quickga.me/harness.api",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",

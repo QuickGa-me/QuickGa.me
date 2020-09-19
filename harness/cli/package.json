@@ -1,12 +1,12 @@
 {
-  "name": "qg-cli",
-  "version": "1.0.0",
+  "name": "@quickga.me/cli",
+  "version": "1.0.1",
   "author": "Salvatore <dested@gmail.com>",
-  "private": true,
   "bin": {
     "qg": "./bin/quickgame.js"
   },
   "scripts": {
+
     "unzip-api": "extract-zip ../api/build/quickgame-harness-api.zip %CD%/build/api && cpy --parents ../api/package.json ../cli/build/api/ && cpy --parents ../api/serverless-publish.yml ../cli/build/api/ --rename serverless.yml",
 
     "build-site": "cd ../site && yarn build && cpy --cwd ./build --parents ./**/*.* ../../cli/build/site ",
@@ -68,5 +68,9 @@
     "rimraf": "^3.0.2",
     "cpy-cli": "^3.1.1",
     "mkdirp": "^1.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "scope": "quickga.me"
   }
 }

@@ -1,11 +1,14 @@
 {
-  "name": "quickgame-framework-common",
+  "name": "@quickga.me/framework.common",
   "version": "1.0.0",
   "author": "Salvatore <dested@gmail.com>",
-  "private": true,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "publish-cli": "npm publish --scope=@quickga.me"
   },
   "dependencies": {
   },

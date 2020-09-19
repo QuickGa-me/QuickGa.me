@@ -2321,6 +2321,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@quickga.me/framework.common@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@quickga.me/framework.common/-/framework.common-1.0.0.tgz#4bbe9e18235e941fbab35d69a609613e0fae2b02"
+  integrity sha512-Dnqfqb3018m9spilZVBfpXxXMTDYknUnh+pCdT4AQpyyEhyF0ilvj9XTOzPBBU7I3pPJqK+Q5m3bUGITL6xp2Q==
+
 "@serverless/cli@^1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@serverless/cli/-/cli-1.5.2.tgz#7741d84ea8b5f6dcf18e21406300f01ece2865da"
@@ -16011,13 +16016,6 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
-
-"quickgame-framework-common@link:framework/client/latest":
-  version "0.0.0"
-  uid ""
-
-"quickgame-framework-common@link:framework/server/latest":
-  version "0.0.0"
 
 raf@^3.4.1:
   version "3.4.1"

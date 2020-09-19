@@ -1,5 +1,5 @@
 {
-  "name": "qg-servercommon",
+  "name": "@quickga.me/engine.servercommon",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

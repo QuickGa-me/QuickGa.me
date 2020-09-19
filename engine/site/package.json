@@ -1,5 +1,5 @@
 {
-  "name": "qg-site",
+  "name": "@quickga.me/engine.site",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

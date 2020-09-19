@@ -1,14 +1,15 @@
 {
-  "name": "quickgame-framework-server",
+  "name": "@quickga.me/framework.server",
   "version": "1.0.0",
   "author": "Salvatore <dested@gmail.com>",
-  "private": true,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
-  "scripts": {
+  "publishConfig": {
+    "access": "public",
+    "scope": "quickga.me"
   },
   "dependencies": {
-    "quickgame-framework-common": "link:latest"
+    "@quickga.me/framework.common": "latest"
   },
   "devDependencies": {
     "@types/node": "^8.0.28",
