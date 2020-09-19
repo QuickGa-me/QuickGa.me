@@ -63,8 +63,8 @@ async function run(args) {
       let clientResult = await webpackPromise(wp.run.bind(wp));
       console.log(clientResult.compilation.warnings);
       console.log(clientResult.compilation.errors);
-      console.log('starting client');
-      const onYarn = spawn(`yarn`, [], {cwd: path.join(__dirname, 'game-wrapper')});
+      console.log('starting client', path.join(__dirname, 'game-wrapper'));
+      const onYarn = spawn(`yarn`, [], {shell: isWindows(), cwd: path.join(__dirname, 'game-wrapper')});
 
       onYarn.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -75,7 +75,7 @@ async function run(args) {
       });
 
       onYarn.on('close', (code) => {
-        const ls = spawn(`yarn`, ['start'], {cwd: path.join(__dirname, 'game-wrapper')});
+        const ls = spawn(`yarn`, ['start'], {shell: isWindows(), cwd: path.join(__dirname, 'game-wrapper')});
 
         ls.stdout.on('data', (data) => {
           console.log(`stdout: ${data}`);
@@ -240,3 +240,7 @@ async function run(args) {
 module.exports = {
   run,
 };
+
+function isWindows() {
+  return process && (process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE));
+}

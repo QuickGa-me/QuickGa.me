@@ -4,7 +4,7 @@
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
   "scripts": {
-    "link-up": "cd ./client && yarn link && cd ../common && yarn link && cd ../server && yarn link"
+    "link-up": "cd ./client && yarn link && cd ../common && yarn link && cd ../server && yarn link && yarn link quickgame-framework-common && cd ../client && yarn link quickgame-framework-common"
   },
   "dependencies": {
   },
