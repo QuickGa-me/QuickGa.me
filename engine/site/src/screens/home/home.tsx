@@ -3,6 +3,31 @@ import {FC, ReactNode} from 'react';
 import React from 'react';
 import {observer} from 'mobx-react';
 import {useEffectAsync} from '../../hooks/useEffectAsync';
+import {useMountRequest} from '../../hooks/useMountRequest';
+import {BoxCard} from '../../components/boxCard';
+import {Box} from '../../components/box';
+
+export const Home: FC = observer(() => {
+  useEffectAsync(async () => {}, []);
+  return (
+    <>
+      <Box justify align style={{width: '100vw', height: '100vh'}}>
+        <BoxCard elevation={3} theme={'grey'} header={'Quick Game!'}>
+          <Box flex={1} justify align>
+            <h3>Coming Soon!</h3>
+          </Box>
+        </BoxCard>
+      </Box>
+    </>
+  );
+});
+
+/*
+import './home.scss';
+import {FC, ReactNode} from 'react';
+import React from 'react';
+import {observer} from 'mobx-react';
+import {useEffectAsync} from '../../hooks/useEffectAsync';
 import {Box} from '../../components/box';
 import useInView from 'react-cool-inview';
 import {useMountRequest} from '../../hooks/useMountRequest';
@@ -46,3 +71,4 @@ export const Home: FC = observer(() => {
     </>
   );
 });
+*/

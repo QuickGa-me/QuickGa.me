@@ -16,7 +16,7 @@ import {handle400} from './dataServices/baseClient';
 import {create} from 'mobx-persist';
 
 const App = observer(() => {
-  const {playerStore} = useWebStores();
+  /* const {playerStore} = useWebStores();
   const [ready, setReady] = useState(false);
   useComponentWill(async () => {
     const hydrate = create({});
@@ -30,17 +30,17 @@ const App = observer(() => {
       }
     }
     setReady(true);
-  });
+  });*/
 
   return (
     <>
-      {ready && (
-        <BrowserRouter>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/game/:gameId" component={GameDetails} />
-          <Route exact path="/lobby/:lobbyId" component={GameLobby} />
-        </BrowserRouter>
-      )}
+      {/*{ready && (*/}
+      <BrowserRouter>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/game/:gameId" component={GameDetails} />
+        <Route exact path="/lobby/:lobbyId" component={GameLobby} />
+      </BrowserRouter>
+      {/*)}*/}
       <BottomMessage message={webStores.uiStore.message} setMessage={(m) => webStores.uiStore.setMessage(m)} />
     </>
   );
