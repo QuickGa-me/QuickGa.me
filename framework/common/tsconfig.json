@@ -19,7 +19,7 @@
     "outDir": "./lib/",
     "sourceMap": true,
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "jsx": "react"
   },
   "exclude": [

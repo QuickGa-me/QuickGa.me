@@ -4,7 +4,8 @@
   "author": "Salvatore <dested@gmail.com>",
   "private": true,
   "scripts": {
-    "link-up": "cd ./client && yarn link && cd ../common && yarn link && cd ../server && yarn link && yarn link quickgame-framework-common && cd ../client && yarn link quickgame-framework-common"
+    "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
+    "link-up": "cd ./client && yarn link && cd ../common && yarn link && cd ../server && yarn link && yarn link @quickga.me/framework.common && cd ../client && yarn link @quickga.me/framework.common"
   },
   "dependencies": {
   },

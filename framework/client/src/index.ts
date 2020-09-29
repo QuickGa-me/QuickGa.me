@@ -1,4 +1,6 @@
-import {Message, SerializedGameState, SerializedPlayerState} from 'quickgame-framework-common';
+export * from './socket'
+export * from './game'
+/*
 
 export abstract class QGClient {
   abstract render(): any;
@@ -6,12 +8,12 @@ export abstract class QGClient {
   abstract initializeAssets(): Promise<void>;
 
   sendMessage(message: Message): void {
-    /*todo*/
+    /!*todo*!/
   }
   abstract logicTick(): void;
   abstract draw(msSinceLastDraw: number): void;
   get receivedMessages(): Message[] {
-    /* todo */ return null!;
+    /!* todo *!/ return null!;
   }
   abstract receiveMessages(message: Message): void;
 
@@ -19,3 +21,4 @@ export abstract class QGClient {
   abstract onPlayerLeave(player: SerializedPlayerState): void;
   abstract receiveState(state: SerializedGameState): void;
 }
+*/

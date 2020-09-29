@@ -15,7 +15,7 @@
     "sourceMap": true,
     "outDir": "./lib/",
     "declaration": true,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
     }
   },

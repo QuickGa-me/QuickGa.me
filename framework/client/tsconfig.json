@@ -17,7 +17,7 @@
     ],
     "outDir": "./lib/",
     "sourceMap": true,
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "jsx": "react",
     "paths": {
     }

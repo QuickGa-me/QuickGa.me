@@ -11,8 +11,11 @@
     "publish-cli": "npm publish --scope=@quickga.me"
   },
   "dependencies": {
+    "collisions": "^2.0.13",
+    "quickselect": "^2.0.0"
   },
   "devDependencies": {
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "prettier": "^2.1.2"
   }
 }
