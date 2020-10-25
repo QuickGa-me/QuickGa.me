@@ -1,4 +1,4 @@
-import './home.scss';
+/*import './home.scss';
 import {FC, ReactNode} from 'react';
 import React from 'react';
 import {observer} from 'mobx-react';
@@ -20,9 +20,8 @@ export const Home: FC = observer(() => {
       </Box>
     </>
   );
-});
+});*/
 
-/*
 import './home.scss';
 import {FC, ReactNode} from 'react';
 import React from 'react';
@@ -71,4 +70,3 @@ export const Home: FC = observer(() => {
     </>
   );
 });
-*/

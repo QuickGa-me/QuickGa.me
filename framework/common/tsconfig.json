@@ -11,6 +11,7 @@
     "declaration": true,
     "moduleResolution": "node",
     "target": "es2015",
+    "declarationMap": true,
     "lib": [
       "dom",
       "es2015",

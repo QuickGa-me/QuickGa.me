@@ -1,4 +1,4 @@
-import {Message, SerializedGameState} from 'quickgame-framework-common';
+import {Message, SerializedGameState} from '@quickga.me/framework.common';
 
 export type GameState = {
   currentTick: number;
@@ -18,36 +18,37 @@ export interface ServerConfig {
 
 export interface Achievement {}
 
-export abstract class QGServer {
+type Player = {connectionId: number};
+
+export abstract class QGServer<TMessage extends Message> {
   currentTick?: number;
   state?: GameState;
+  abstract players: Player[];
 
   constructor(config: ServerConfig) {}
 
   abstract onTick(msSinceLastTick: number): void;
+  abstract onStart(): void;
 
-  sendMessageToPlayer(playerId: string, message: Message): void {
-    /*todo*/
+  sendMessageToPlayer(player: Player, message: TMessage): void {
+    (this as any).$send(player.connectionId, message);
   }
 
-  sendMessageToEveryone(message: Message): void {
-    /*todo*/
+  sendMessageToEveryone(message: TMessage): void {
+    for (const player of this.players) {
+      (this as any).$send(player.connectionId, message);
+    }
   }
 
   awardAchievement(achievement: Achievement): void {
     /*todo, verify with server*/
   }
 
-  get receivedMessages(): Message[] {
-    /* todo */
-    return null!;
-  }
+  abstract receiveMessage(connectionId: number, message: TMessage): void;
 
-  abstract receiveMessages(message: Message): void;
+  abstract onPlayerJoin(connectionId: number): PlayerState;
 
-  abstract onPlayerJoin(): PlayerState;
-
-  abstract onPlayerLeave(): GameState;
+  abstract onPlayerLeave(connectionId: number): GameState;
 
   abstract serializeState(): SerializedGameState;
 }

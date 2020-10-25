@@ -1,32 +1,75 @@
 import {
-  BaseEntityModels,
+  assertType,
+  Discriminate,
   Engine,
   Entity,
   Game,
   GameConstants,
+  objectSafeKeys,
   Scheduler,
   unreachable,
 } from '@quickga.me/framework.common';
-import {ActorEntityTypes} from './entities/entityTypeModels';
-import {ExtrapolateStrategy} from './synchronizer/extrapolateStrategy';
+import {ExtrapolateStrategy} from './synchronizer';
 import {IClientSocket} from '../socket';
 
 const STEP_DELAY_MSEC = 12; // if forward drift detected, delay next execution by this amount
 const STEP_HURRY_MSEC = 8; // if backward drift detected, hurry next execution by this amount
 const TIME_RESET_THRESHOLD = 100;
 
-export type ClientGameOptions<EntityModels extends BaseEntityModels> = {
-  onDied: (me: ClientEngine<EntityModels>) => void;
-  onDisconnect: (me: ClientEngine<EntityModels>) => void;
-  onError: (client: ClientEngine<EntityModels>, error: STOCError) => void;
-  onOpen: (me: ClientEngine<EntityModels>) => void;
-  onReady: (me: ClientEngine<EntityModels>) => void;
+export declare type CTOSJoin = {
+  type: 'join';
+};
+export declare type CTOSPing = {
+  ping: number;
+  type: 'ping';
+};
+export declare type CTOSPlayerInput<PlayerInputKeys extends string> = {
+  keys: {
+    [key in PlayerInputKeys]: boolean;
+  };
+  messageIndex: number;
+  step: number;
+  type: 'playerInput';
+};
+export declare type STOCJoined = {
+  playerEntityId: number;
+  serverVersion: number;
+  stepCount: number;
+  type: 'joined';
+};
+export declare type STOCPong = {
+  type: 'pong';
+  ping: number;
+};
+export declare type BaseEngineConfig<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string
+> = {
+  ServerToClientMessage: STOCJoined | STOCPong | STOC;
+  ClientToServerMessage: CTOSJoin | CTOSPing | CTOSPlayerInput<PlayerInputKeys> | CTOS;
+  PlayerInputKeys: PlayerInputKeys;
 };
 
-export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<EntityModels> {
+export type ClientGameOptions<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string,
+  EngineConfig extends BaseEngineConfig<STOC, CTOS, PlayerInputKeys>
+> = {
+  onDisconnect: (me: ClientEngine<STOC, CTOS, PlayerInputKeys, EngineConfig>) => void;
+  onJoin: (me: ClientEngine<STOC, CTOS, PlayerInputKeys, EngineConfig>) => void;
+};
+
+export class ClientEngine<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string,
+  EngineConfig extends BaseEngineConfig<STOC, CTOS, PlayerInputKeys>
+> extends Engine<STOC, CTOS, PlayerInputKeys, EngineConfig> {
   debugValues: {[key: string]: number | string} = {};
   isDead: boolean = false;
-  keys: PlayerInputKeys = {up: false, down: false, left: false, right: false, shoot: false};
+  keys: {[key in EngineConfig['PlayerInputKeys']]: boolean} = this.initialKeys();
   latency: number = 0;
   pingIndex = 0;
   pings: {[pingIndex: number]: number} = {};
@@ -37,16 +80,16 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
   private doReset: boolean = false;
   private lastStepTime: number = 0;
   private messageIndex: number = 1;
-  private messagesToProcess: ServerToClientMessage[] = [];
+  private messagesToProcess: EngineConfig['ServerToClientMessage'][] = [];
   private scheduler?: Scheduler;
-  private synchronizer: ExtrapolateStrategy<EntityModels>;
+  private synchronizer: ExtrapolateStrategy;
   private totalPlayers: number = 0;
 
   constructor(
     private serverPath: string,
-    public options: ClientGameOptions<EntityModels>,
+    public options: ClientGameOptions<STOC, CTOS, PlayerInputKeys, EngineConfig>,
     public socket: IClientSocket,
-    public game: Game<EntityModels>
+    public game: Game<STOC, CTOS, PlayerInputKeys, EngineConfig>
   ) {
     super();
     game.setEngine(this);
@@ -55,9 +98,9 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
   }
 
   assignActor(entity: Entity): void {
-    entity.actor = new ActorEntityTypes[entity.type](this, entity as any);
+    //todo pass in config
+    // entity.actor = new ActorEntityTypes[entity.type](this, entity as any);
   }
-
 
   checkDrift(checkType: 'onServerSync' | 'onEveryStep') {
     if (!this.game.highestServerStep) return;
@@ -86,14 +129,6 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
 
   clearDebug(key: string) {
     delete this.debugValues[key];
-  }
-
-  clientDied() {
-    if (!this.isDead) {
-      this.isDead = true;
-      this.game.clientPlayerId = undefined;
-      this.options.onDied(this);
-    }
   }
 
   clientStep = () => {
@@ -136,7 +171,7 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
     this.connected = true;
     this.socket.connect(this.serverPath, {
       onOpen: () => {
-        this.options.onOpen(this);
+        this.sendMessageToServer({type: 'join'});
       },
       onDisconnect: () => {
         this.options.onDisconnect(this);
@@ -178,7 +213,7 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
     this.sendMessageToServer({type: 'join'});
   }
 
-  sendMessageToServer(message: ClientToServerMessage) {
+  sendMessageToServer(message: EngineConfig['ClientToServerMessage']) {
     this.socket.sendMessage(message);
   }
 
@@ -186,16 +221,12 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
     this.debugValues[key] = value;
   }
 
-  setKey<Key extends keyof PlayerInputKeys>(input: Key, value: PlayerInputKeys[Key]) {
+  setKey(input: EngineConfig['PlayerInputKeys'], value: boolean) {
     this.keys[input] = value;
   }
 
-  setOptions(options: ClientGameOptions<EntityModels>) {
+  setOptions(options: ClientGameOptions<STOC, CTOS, PlayerInputKeys, EngineConfig>) {
     this.options = options;
-  }
-
-  spectateGame() {
-    this.sendMessageToServer({type: 'spectate'});
   }
 
   step = (t: number, dt: number, physicsOnly: boolean) => {
@@ -220,63 +251,44 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
     }
   };
 
-  private handleKeys() {
+  handleKeys() {
     const keys = {...this.keys};
-    if (keys.up || keys.right || keys.left || keys.down || keys.shoot) {
-      if (!this.game.clientPlayer?.canShoot) {
-        keys.shoot = false;
+    let isMoving = false;
+    for (const k of objectSafeKeys(keys)) {
+      if (keys[k]) {
+        isMoving = true;
+        break;
       }
-      const inputEvent: CTOSPlayerInput = {
-        type: 'playerInput',
-        messageIndex: this.messageIndex,
-        step: this.game.stepCount,
-        keys,
-        movement: keys.up || keys.right || keys.left || keys.down,
-      };
-      this.synchronizer.clientInputSave(inputEvent);
-      this.game.processInput(inputEvent, this.game.clientPlayerId!);
-      this.sendMessageToServer(inputEvent);
-      this.messageIndex++;
     }
+    if (!isMoving) return;
+    const inputEvent: CTOSPlayerInput<PlayerInputKeys> = {
+      type: 'playerInput',
+      messageIndex: this.messageIndex,
+      step: this.game.stepCount,
+      keys,
+    };
+    this.synchronizer.clientInputSave(inputEvent);
+    this.game.processInput(inputEvent, this.game.clientPlayerId!);
+    this.sendMessageToServer(inputEvent);
+    this.messageIndex++;
   }
 
   private processMessages() {
     for (const message of this.messagesToProcess) {
       switch (message.type) {
-        case 'joined':
-          this.isDead = false;
-          this.spectatorMode = false;
-          this.game.highestServerStep = message.stepCount;
-          this.game.stepCount = message.stepCount;
-          this.game.clientPlayerId = message.playerEntityId;
-          this.options.onReady(this);
-          break;
-        case 'error':
-          switch (message.reason) {
-            case 'nameInUse':
-            case '500':
-            case 'spectatorCapacity':
-            case 'userCapacity':
-              this.options.onError(this, message);
-              break;
-            default:
-              unreachable(message);
-          }
-          break;
-        case 'spectating':
-          this.serverVersion = message.serverVersion;
-          this.lastXY = undefined;
-          this.spectatorMode = true;
-          console.log('Server version', this.serverVersion);
-          break;
         case 'pong':
-          if (!(message.ping in this.pings)) {
+          /*          ugh okay you need to separate the engine messages and user messages somehow
+          also make bespoke messages harder, most verything happens trhoguh worldstate sync
+          you hate these generics*/
+          assertType<Discriminate<EngineConfig['ServerToClientMessage'], 'type', 'pong'>>(message);
+        /*   if (!(message.ping in this.pings)) {
             throw new Error('Unmatched ping.');
           }
           const time = this.pings[message.ping];
           this.latency = +new Date() - time - GameConstants.serverTickRate;
           delete this.pings[message.ping];
-          break;
+          break;*/
+        /*
         case 'worldState':
           this.totalPlayers = message.totalPlayers;
 
@@ -287,14 +299,16 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
 
           this.checkDrift('onServerSync');
           break;
+*/
         default:
-          unreachable(message);
+          // unreachable(message);
           break;
       }
     }
     this.messagesToProcess.length = 0;
   }
 
+  /*
   private processSync(message: STOCWorldState) {
     this.synchronizer.collectSync(message);
 
@@ -306,5 +320,13 @@ export class ClientEngine<EntityModels extends BaseEntityModels> extends Engine<
       this.game.stepCount = message.stepCount;
     }
   }
+*/
+
+  private initialKeys(): {[key in EngineConfig['PlayerInputKeys']]: boolean} {
+    return undefined as any;
+  }
 }
 
+export type GameTypeConfiguration<TPlayerInputKeys extends {[key: string]: boolean}> = {
+  playerInputKeys: TPlayerInputKeys;
+};

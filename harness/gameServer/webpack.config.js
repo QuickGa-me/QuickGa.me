@@ -17,7 +17,7 @@ module.exports = (env) => {
       alias: {
         '@common': path.resolve(__dirname, '../../engine/common/src'),
         '@serverCommon': path.resolve(__dirname, '../serverCommon/src'),
-        '@framework': path.resolve(__dirname, '../../framework/server'),
+        '@framework-server': path.resolve(__dirname, '../../framework/server'),
         '@framework-common': path.resolve(__dirname, '../../framework/common'),
       },
     },

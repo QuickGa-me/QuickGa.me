@@ -1,15 +1,14 @@
-import {SDSimpleObject} from '../schemaDefiner/schemaDefinerTypes';
+import {SDSimpleObject} from '../schemaDefiner';
 import {ClientActor} from './clientActor';
-import {Game} from '../game/game';
-import {BaseEntityModels} from './entityTypes';
+import {Engine, Game} from '../game';
 
-export abstract class Entity<EntityModels extends BaseEntityModels = any> {
-  actor?: ClientActor<EntityModels, this>;
+export abstract class Entity {
+  actor?: ClientActor<this>;
   entityId: number;
   markToDestroy: boolean = false;
   owningPlayerId?: number;
-  abstract type: EntityModels['type'];
-  constructor(public game: Game<EntityModels>, messageModel: EntityModel) {
+  abstract type: unknown;
+  constructor(public game: Game<any, any, any, any>, messageModel: EntityModel) {
     this.entityId = messageModel.entityId;
   }
 

@@ -1,11 +1,10 @@
 import {Entity, EntityModel} from './entity';
-import {Engine} from '../game/game';
-import {BaseEntityModels} from './entityTypes';
+import {Engine} from '../game';
 
-export abstract class ClientActor<EntityModels extends BaseEntityModels, TEntity extends Entity<EntityModels>> {
+export abstract class ClientActor<TEntity extends Entity> {
   clientDestroyedTick?: number = undefined;
   abstract zIndex: DrawZIndex;
-  constructor(public clientEngine: Engine<EntityModels>, public entity: TEntity) {}
+  constructor(public clientEngine: Engine<any, any, any, any>, public entity: TEntity) {}
   destroyClient(): void {
     if (this.clientDestroyedTick === undefined) this.clientDestroyedTick = 5;
   }

@@ -1,4 +1,4 @@
-import {SDSimpleObject} from '../schemaDefiner/schemaDefinerTypes';
+import {SDSimpleObject} from '../schemaDefiner';
 
 export class TwoVector {
   constructor(public x: number, public y: number) {

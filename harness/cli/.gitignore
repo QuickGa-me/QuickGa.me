@@ -1,3 +1,3 @@
 game-server/bundle.*
-game-wrapper/src/bundle.*
+game-client/src/bundle.*
 build

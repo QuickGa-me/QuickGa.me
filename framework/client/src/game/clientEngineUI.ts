@@ -1,19 +1,19 @@
 import keyboardJS from 'keyboardjs';
 import {ClientEngine, ClientGameOptions} from './clientEngine';
 import {IClientSocket} from '../socket';
-import {BaseEntityModels, Game, GameDebug} from '@quickga.me/framework.common';
+import {Game, GameDebug} from '@quickga.me/framework.common';
 import {GameView} from './gameView';
 
-export class ClientEngineUI<EntityModels extends BaseEntityModels> {
-  clientEngine: ClientEngine<EntityModels>;
+export class ClientEngineUI {
+  clientEngine: ClientEngine;
   drawTick = 0;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
   constructor(
-    game: Game<EntityModels>,
+    game: Game,
     serverPath: string,
-    options: ClientGameOptions<EntityModels>,
+    options: ClientGameOptions,
     socket: IClientSocket
   ) {
     this.clientEngine = new ClientEngine(serverPath, options, socket, game);
@@ -23,9 +23,9 @@ export class ClientEngineUI<EntityModels extends BaseEntityModels> {
     window.addEventListener(
       'resize',
       () => {
-        this.canvas.width = GameConstants.screenSize.width;
-        this.canvas.height = GameConstants.screenSize.height;
-        this.gameView.setBounds(GameConstants.screenSize.width, GameConstants.screenSize.height);
+        this.canvas.width = game.gameConfig.screenSize.width;
+        this.canvas.height = game.gameConfig.screenSize.height;
+        this.gameView.setBounds(game.gameConfig.screenSize.width, game.gameConfig.screenSize.height);
         this.draw();
       },
       true

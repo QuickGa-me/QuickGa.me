@@ -1,25 +1,25 @@
 import {ClientEngine} from '../clientEngine';
-import {BaseEntityModels, Entity, Game, PhysicsEntity} from '@quickga.me/framework.common';
+import {BaseEntityModel, Entity, Game, PhysicsEntity} from '@quickga.me/framework.common';
 
 export type Sync = STOCWorldState;
 
-export abstract class SyncStrategy<EntityModels extends BaseEntityModels> {
+export abstract class SyncStrategy {
   lastSync?: Sync;
   syncs: Sync[] = [];
-  protected gameEngine: Game<EntityModels>;
+  protected gameEngine: Game;
   protected abstract STEP_DRIFT_THRESHOLDS: {
     clientReset: number;
     onEveryStep: {MAX_LAG: number; MAX_LEAD: number};
     onServerSync: {MAX_LAG: number; MAX_LEAD: number};
   };
 
-  constructor(protected clientEngine: ClientEngine<EntityModels>) {
+  constructor(protected clientEngine: ClientEngine) {
     this.clientEngine = clientEngine;
     this.gameEngine = clientEngine.game;
   }
 
   // add an object to our world
-  addNewObject(messageModel: EntityModels): Entity<EntityModels> {
+  addNewObject(messageModel: BaseEntityModel): Entity {
     const curObj = this.gameEngine.instantiateEntity(messageModel);
     this.gameEngine.addObjectToWorld(curObj, true);
     return curObj;

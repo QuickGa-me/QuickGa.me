@@ -28,7 +28,7 @@ async function run(args: string[]) {
         modules: [path.join(currentPath, 'client', 'node_modules'), path.join(__dirname, 'node_modules')],
       };
       clientWebpackConfig.output.filename = 'bundle.js';
-      clientWebpackConfig.output.path = path.join(__dirname, 'game-wrapper', 'src');
+      clientWebpackConfig.output.path = path.join(__dirname, 'game-client', 'src');
       clientWebpackConfig.mode = 'development';
       clientWebpackConfig.externals = clientWebpackConfig.externals || {};
       clientWebpackConfig.externals['react'] = 'react';
@@ -44,7 +44,7 @@ async function run(args: string[]) {
       });
 
       console.log('starting client');
-      const onYarn = spawn(`yarn`, [], {shell: isWindows(), cwd: path.join(__dirname, 'game-wrapper')});
+      const onYarn = spawn(`yarn`, [], {shell: isWindows(), cwd: path.join(__dirname, 'game-client')});
 
       onYarn.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -55,7 +55,7 @@ async function run(args: string[]) {
       });
 
       onYarn.on('close', (code) => {
-        const ls = spawn(`yarn`, ['start'], {shell: isWindows(), cwd: path.join(__dirname, 'game-wrapper')});
+        const ls = spawn(`yarn`, ['start'], {shell: isWindows(), cwd: path.join(__dirname, 'game-client')});
 
         ls.stdout.on('data', (data) => {
           console.log(`stdout: ${data}`);

@@ -34,7 +34,7 @@ export class GameController {
       messageId: (Math.random() * 100000000).toFixed(0),
       responseId: PubSubNewGame.id,
       gameRules: {items: []},
-      numberOfPlayers: 4,
+      numberOfPlayers: model.numberOfPlayers,
     });
     console.log('done');
 

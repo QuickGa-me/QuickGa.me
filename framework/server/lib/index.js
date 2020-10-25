@@ -1,17 +1,15 @@
 export class QGServer {
     constructor(config) { }
-    sendMessageToPlayer(playerId, message) {
-        /*todo*/
+    sendMessageToPlayer(player, message) {
+        this.$send(player.connectionId, message);
     }
     sendMessageToEveryone(message) {
-        /*todo*/
+        for (const player of this.players) {
+            this.$send(player.connectionId, message);
+        }
     }
     awardAchievement(achievement) {
         /*todo, verify with server*/
-    }
-    get receivedMessages() {
-        /* todo */
-        return null;
     }
 }
 //# sourceMappingURL=index.js.map

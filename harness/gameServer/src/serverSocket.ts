@@ -36,7 +36,7 @@ export class ServerSocket implements IServerSocket {
       return;
     }
     // this.totalBytesSent += body.byteLength;
-    // client.socket.send(body);
+    client.socket.send(JSON.stringify(messages));
   }
 
   start(serverSocketOptions: ServerSocketOptions) {
@@ -90,7 +90,7 @@ export class ServerSocket implements IServerSocket {
       }
       // jwtUser = jwtResult;
       */
-      ws.binaryType = 'arraybuffer';
+      // ws.binaryType = 'arraybuffer';
       const me: SocketConnection = {
         socket: ws,
         connectionId: nextId(),
@@ -111,9 +111,8 @@ export class ServerSocket implements IServerSocket {
       };
       // console.log('opened: connections', this.connections.length);
       ws.on('message', (message) => {
-        console.log(message);
         try {
-          if (!(message instanceof ArrayBuffer)) {
+          /* if (!(message instanceof ArrayBuffer)) {
             console.log('bad connection');
             ws.close();
             return;
@@ -127,7 +126,8 @@ export class ServerSocket implements IServerSocket {
           //   ws.close();
           //   return;
           // }
-          onMessage(me.connectionId, {});
+          */
+          onMessage(me.connectionId, JSON.parse(message as string));
         } catch (ex) {
           ws.close();
           return;

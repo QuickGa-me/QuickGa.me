@@ -42,7 +42,7 @@ export const Game: FC = observer(() => {
                   value={numberOfPlayers}
                   onChange={(e) => {
                     setNumberOfPlayers(parseInt(e.target.value));
-                    setNewGameKey(Math.random().toFixed(10));
+                    onNewGame();
                   }}
                   className="form-select"
                 >

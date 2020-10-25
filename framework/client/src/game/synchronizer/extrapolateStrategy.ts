@@ -2,7 +2,6 @@ import {Sync, SyncStrategy} from './syncStrategy';
 import {ClientEngine} from '../clientEngine';
 import {
   assertType,
-  BaseEntityModels,
   Entity,
   EntityUtils,
   PhysicsEntity,
@@ -19,7 +18,7 @@ const defaults = {
   bendingIncrements: 10, // the bending should be applied increments (how many steps for entire bend)
 };
 
-export class ExtrapolateStrategy<EntityModels extends BaseEntityModels> extends SyncStrategy<EntityModels> {
+export class ExtrapolateStrategy extends SyncStrategy {
   options: typeof defaults;
   STEP_DRIFT_THRESHOLDS = {
     onServerSync: {MAX_LEAD: 2, MAX_LAG: 3}, // max step lead/lag allowed after every server sync
@@ -28,7 +27,7 @@ export class ExtrapolateStrategy<EntityModels extends BaseEntityModels> extends 
   };
 
   private readonly recentInputs: {[stepNumber: number]: CTOSPlayerInput};
-  constructor(clientEngine: ClientEngine<EntityModels>, options?: typeof defaults) {
+  constructor(clientEngine: ClientEngine, options?: typeof defaults) {
     super(clientEngine);
     this.options = {...defaults, ...options};
 

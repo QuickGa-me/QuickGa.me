@@ -1,4 +1,4 @@
-import {SDSimpleObject} from '../schemaDefiner/schemaDefinerTypes';
+import {SDSimpleObject} from '../schemaDefiner';
 
 export interface ShadowableEntity {
   inputId: number;

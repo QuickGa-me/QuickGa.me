@@ -24,15 +24,15 @@ services:
       - api
       - redis
       - mongo
-#  site:
-#    logging:
-#      driver: none
-##    image: 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-site-harness:latest
-#    image: quickgame-site-harness:latest
-#    ports:
-#      - "44444:44444"
-#    depends_on:
-#      - api
+  site:
+    logging:
+      driver: none
+#    image: 114394156384.dkr.ecr.us-west-2.amazonaws.com/quickgame-site-harness:latest
+    image: quickgame-site-harness:latest
+    ports:
+      - "44444:44444"
+    depends_on:
+      - api
   redis:
     logging:
       driver: none

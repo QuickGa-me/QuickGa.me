@@ -1,11 +1,10 @@
-import {Game} from '../game/game';
+import {Game} from '../game';
 import {Polygon, Result} from 'collisions';
-import {SDSimpleObject} from '../schemaDefiner/schemaDefinerTypes';
+import {SDSimpleObject} from '../schemaDefiner';
 import {Entity, EntityModel, EntityModelSchema} from './entity';
-import {TwoVector, TwoVectorModel, TwoVectorSchema} from '../utils/twoVector';
-import {MathUtils} from '../utils/mathUtils';
-import {assertType, Utils} from '../utils/utils';
-import {BaseEntityModels} from './entityTypes';
+import {TwoVector, TwoVectorModel, TwoVectorSchema} from '../utils';
+import {MathUtils} from '../utils';
+import {assertType, Utils} from '../utils';
 
 type PartialOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type ImpliedDefaultPhysics<T extends PhysicsEntityModel> = PartialOptional<
@@ -19,7 +18,7 @@ type BoundingBox = {
   polygon?: Polygon;
   width: number;
 };
-export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any> extends Entity<EntityModels> {
+export abstract class PhysicsEntity extends Entity {
   angle!: number;
   mass: number = 1;
   bendingAngleDelta?: number;
@@ -35,7 +34,7 @@ export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any>
   velocity!: TwoVector;
   width: number = 0;
 
-  constructor(game: Game<EntityModels>, messageModel: ImpliedDefaultPhysics<PhysicsEntityModel>) {
+  constructor(game: Game<any, any, any, any>, messageModel: ImpliedDefaultPhysics<PhysicsEntityModel>) {
     super(game, messageModel);
     messageModel.angle = messageModel.angle ?? Utils.byteDegToDeg(90);
     messageModel.friction = messageModel.friction ?? new TwoVector(1, 1);
@@ -117,7 +116,7 @@ export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any>
     this.savedCopy = undefined;
   }
 
-  checkCollisions(collisionPairs: CollisionPair<EntityModels>) {
+  checkCollisions(collisionPairs: CollisionPair) {
     if (this.boundingBoxes.length === 0) {
       return;
     }
@@ -129,7 +128,7 @@ export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any>
       }
       const potentials = polygon.potentials();
       for (const body of potentials) {
-        assertType<PhysicsEntity<EntityModels>>(body.entity);
+        assertType<PhysicsEntity>(body.entity);
 
         if (collisionPairs[body.entity.entityId + '-' + this.entityId]) {
           continue;
@@ -148,9 +147,9 @@ export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any>
     }
   }
 
-  abstract collide(otherEntity: PhysicsEntity<EntityModels>, collisionResult: Result): void;
+  abstract collide(otherEntity: PhysicsEntity, collisionResult: Result): void;
 
-  shouldIgnoreCollision(otherEntity: PhysicsEntity<EntityModels>): boolean {
+  shouldIgnoreCollision(otherEntity: PhysicsEntity): boolean {
     return false;
   }
 
@@ -240,10 +239,10 @@ export abstract class PhysicsEntity<EntityModels extends BaseEntityModels = any>
   }
 }
 
-export type CollisionPair<EntityModels extends BaseEntityModels> = {
+export type CollisionPair = {
   [pairKey: string]: {
-    entity1: PhysicsEntity<EntityModels>;
-    entity2: PhysicsEntity<EntityModels>;
+    entity1: PhysicsEntity;
+    entity2: PhysicsEntity;
     collisionResult: Result;
   };
 };

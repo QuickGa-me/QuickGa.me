@@ -12,7 +12,16 @@ export function GameWrapper() {
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:33333');
     socket.onmessage = (message) => {
-      liveGame.current.onMessage(message);
+      if (message.data) {
+        let d = JSON.parse(message.data);
+        for (const dItem of d) {
+          if (dItem.type === 'state') {
+            liveGame.current.receiveState(dItem.state);
+          } else {
+            liveGame.current.receiveMessages(dItem);
+          }
+        }
+      }
     };
     socket.onerror = (a) => {
       console.log(a);
@@ -23,6 +32,9 @@ export function GameWrapper() {
     };
     socket.onopen = () => {
       setReady(true);
+    };
+    liveGame.current.$send = (message: any) => {
+      socket.send(JSON.stringify(message));
     };
     setInterval(() => {
       liveGame.current.draw(10);

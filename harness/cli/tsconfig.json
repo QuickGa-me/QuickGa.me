@@ -16,5 +16,5 @@
     "baseUrl": "./",
     "skipLibCheck": true
   },
-  "exclude": ["./node_modules", "./game-wrapper", "./game-server"]
+  "exclude": ["./node_modules", "./game-client", "./game-server"]
 }

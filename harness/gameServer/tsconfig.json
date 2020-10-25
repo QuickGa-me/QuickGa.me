@@ -24,7 +24,7 @@
       "@serverCommon/*": [
         "../serverCommon/src/*"
       ],
-      "@framework/*": [
+      "@framework-server/*": [
         "../../framework/server/*"
       ],
       "@framework-common/*": [

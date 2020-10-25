@@ -1,6 +1,6 @@
-import {ArrayBufferBuilder, ArrayBufferReader} from '../parsers/arrayBufferBuilder';
+import {ArrayBufferBuilder, ArrayBufferReader} from '../parsers';
 import {ABFlags, ABSchemaDef} from './schemaDefinerTypes';
-import {assertType, Utils} from '../utils/utils';
+import {assertType, Utils} from '../utils';
 
 export class SchemaDefiner {
   static generateAdderFunction(schema: any): any {

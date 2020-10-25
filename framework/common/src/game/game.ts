@@ -1,29 +1,37 @@
 import {Collisions, Result} from 'collisions';
-import {Entity} from '../baseEntities/entity';
-import {ArrayHash} from '../utils/arrayHash';
-import {CollisionPair, PhysicsEntity} from '../baseEntities/physicsEntity';
-import {TwoVector} from '../utils/twoVector';
-import {nextId} from '../utils/uuid';
-import {EntityUtils} from '../utils/entityUtils';
-import {MathUtils} from '../utils/mathUtils';
-import {BaseEntityModels} from '../baseEntities/entityTypes';
+import {BaseEntityModel, BaseEntityModels, Entity} from '../baseEntities';
+import {ArrayHash} from '../utils';
+import {CollisionPair, PhysicsEntity} from '../baseEntities';
+import {TwoVector} from '../utils';
+import {EntityUtils} from '../utils';
+import {MathUtils} from '../utils';
+
 const dx = new TwoVector(0, 0);
 
-export abstract class Game<EntityModels extends BaseEntityModels> {
+type GameConfig = {screenSize: {width: number; height: number}};
+
+export abstract class Game<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string,
+  EngineConfig extends BaseEngineConfig<STOC, CTOS, PlayerInputKeys>
+> {
+  gameConfig: GameConfig;
   clientPlayerId?: number;
   collisionEngine: Collisions;
   readonly collisionResult: Result;
-  engine!: Engine<EntityModels>;
-  entities = new ArrayHash<Entity<EntityModels>>('entityId');
+  engine!: Engine<STOC, CTOS, PlayerInputKeys, EngineConfig>;
+  entities = new ArrayHash<Entity>('entityId');
   highestServerStep?: number;
   stepCount: number = 0;
   totalPlayers: number = 0;
-  constructor(public isClient: boolean) {
+  constructor(public isClient: boolean, gameConfig: GameConfig) {
+    this.gameConfig = gameConfig;
     this.collisionEngine = new Collisions();
     this.collisionResult = this.collisionEngine.createResult();
   }
 
-  addObjectToWorld(entity: Entity<EntityModels>, instantiatedFromSync: boolean = false) {
+  addObjectToWorld(entity: Entity, instantiatedFromSync: boolean = false) {
     if (this.isClient && !instantiatedFromSync && EntityUtils.isShadowEntity(entity)) {
       entity.entityId += 1000000;
       entity.tickCreated = this.stepCount;
@@ -32,7 +40,7 @@ export abstract class Game<EntityModels extends BaseEntityModels> {
     this.entities.push(entity);
   }
 
-  abstract instantiateEntity(messageModel: EntityModels): Entity<EntityModels>;
+  abstract instantiateEntity(messageModel: BaseEntityModel): Entity;
 
   physicsStep(isReenact: boolean, dt?: number) {
     dt = dt ?? 1;
@@ -65,7 +73,7 @@ export abstract class Game<EntityModels extends BaseEntityModels> {
     this.entities.lookup(playerId)?.applyInput(inputDesc);
   }*/
 
-  setEngine(engine: Engine<EntityModels>) {
+  setEngine(engine: Engine<STOC, CTOS, PlayerInputKeys, EngineConfig>) {
     this.engine = engine;
   }
 
@@ -90,7 +98,7 @@ export abstract class Game<EntityModels extends BaseEntityModels> {
 
   protected checkCollisions() {
     this.collisionEngine.update();
-    const collisionPairs: CollisionPair<EntityModels> = {};
+    const collisionPairs: CollisionPair = {};
     for (let i = this.entities.length - 1; i >= 0; i--) {
       const entity = this.entities.getIndex(i);
       if (entity instanceof PhysicsEntity) {
@@ -106,11 +114,43 @@ export abstract class Game<EntityModels extends BaseEntityModels> {
       MathUtils.resolveCollision(entity1, entity2);
     }
   }
+
+  abstract processInput(inputDesc: CTOSPlayerInput<PlayerInputKeys>, playerId: number): void;
 }
 
-export abstract class Engine<EntityModels extends BaseEntityModels> {
-  abstract assignActor(entity: Entity<EntityModels>): void;
-  abstract clientDied(): void;
-  abstract killPlayer(player: Entity<EntityModels>): void;
+type CTOSJoin = {type: 'join'};
+type CTOSPing = {ping: number; type: 'ping'};
+export type CTOSPlayerInput<PlayerInputKeys extends string> = {
+  keys: {[key in PlayerInputKeys]: boolean};
+  messageIndex: number;
+  step: number;
+  type: 'playerInput';
+};
+
+type STOCJoined = {
+  playerEntityId: number;
+  serverVersion: number;
+  stepCount: number;
+  type: 'joined';
+};
+type STOCPong = {type: 'pong'; ping: number};
+
+export type BaseEngineConfig<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string
+> = {
+  ServerToClientMessage: STOC | STOCJoined | STOCPong;
+  ClientToServerMessage: CTOS | CTOSJoin | CTOSPing | CTOSPlayerInput<PlayerInputKeys>;
+  PlayerInputKeys: PlayerInputKeys;
+};
+
+export abstract class Engine<
+  STOC extends {type: string},
+  CTOS extends {type: string},
+  PlayerInputKeys extends string,
+  EngineConfig extends BaseEngineConfig<STOC, CTOS, PlayerInputKeys>
+> {
+  abstract assignActor(entity: Entity): void;
   abstract setDebug(key: string, value: number | string): void;
 }

@@ -9,9 +9,11 @@
     "scope": "quickga.me"
   },
   "dependencies": {
-    "@quickga.me/framework.common": "latest"
+    "@quickga.me/framework.common": "latest",
+    "keyboardjs": "^2.5.1"
   },
   "devDependencies": {
+    "@types/keyboardjs": "^2.4.1",
     "typescript": "^4.0.2"
   }
 }
